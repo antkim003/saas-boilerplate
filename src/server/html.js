@@ -15,6 +15,7 @@ export default class Html extends Component {
     renderProps: PropTypes.object
   }
 
+  // our template to be used for serverside rendering
   render() {
     const PROD = process.env.NODE_ENV === 'production';
     const {title, store, assets, renderProps} = this.props;

@@ -10,6 +10,11 @@ import jwt from 'express-jwt';
 
 import config from '../../webpack/webpack.config.dev';
 import createSSR from './createSSR';
+// import GraphHTTP from 'express-graphql';
+// import Schema from './app/database/graphql/schema.js';
+import Schema from './app/database/setupDB.babel.js'
+
+
 // import {googleAuthUrl, googleAuthCallback} from './graphql/models/User/oauthGoogle';
 
 // take out graphql possibly
@@ -54,8 +59,16 @@ export function run(worker) {
   // app.get('/auth/google', (req, res) => res.redirect(googleAuthUrl));
   // app.get('/auth/google/callback', googleAuthCallback);
 
+  // api routes to be used
+  app.use('/api', require('./app/api'));
+
   // HTTP GraphQL endpoint
   // app.post('/graphql', jwt({secret: process.env.JWT_SECRET, credentialsRequired: false}), httpGraphQLHandler);
+  // app.post('/graphql', GraphHTTP({
+  //   schema: Schema,
+  //   pretty: true,
+  //   graphiql: true
+  // }))
 
   // server-side rendering
   app.get('*', createSSR);
