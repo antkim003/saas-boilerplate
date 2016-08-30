@@ -13,8 +13,8 @@ import createSSR from './createSSR';
 // import {googleAuthUrl, googleAuthCallback} from './graphql/models/User/oauthGoogle';
 
 // take out graphql possibly
-// import {wsGraphQLHandler, wsGraphQLSubHandler} from './graphql/wsGraphQLHandlers';
-// import httpGraphQLHandler from './graphql/httpGraphQLHandler';
+import {wsGraphQLHandler, wsGraphQLSubHandler} from './graphql/wsGraphQLHandlers';
+import httpGraphQLHandler from './graphql/httpGraphQLHandler';
 
 const PROD = process.env.NODE_ENV === 'production';
 
@@ -55,7 +55,7 @@ export function run(worker) {
   // app.get('/auth/google/callback', googleAuthCallback);
 
   // HTTP GraphQL endpoint
-  // app.post('/graphql', jwt({secret: process.env.JWT_SECRET, credentialsRequired: false}), httpGraphQLHandler);
+  app.post('/graphql', jwt({secret: process.env.JWT_SECRET, credentialsRequired: false}), httpGraphQLHandler);
 
   // server-side rendering
   app.get('*', createSSR);
