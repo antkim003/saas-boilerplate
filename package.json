@@ -83,7 +83,7 @@
     "node-uuid": "1.4.7",
     "pg": "^6.1.0",
     "pg-hstore": "^2.3.2",
-    "piping": "0.3.1",
+    "piping": "^1.0.0-rc.3",
     "react": "15.0.2",
     "react-dnd": "2.1.4",
     "react-dnd-html5-backend": "2.1.2",
@@ -101,6 +101,7 @@
     "redux-promise": "0.5.3",
     "redux-socket-cluster": "0.5.1",
     "redux-thunk": "2.1.0",
+    "sequelize": "^3.24.1",
     "socketcluster": "4.6.1",
     "socketcluster-client": "4.3.17"
   }

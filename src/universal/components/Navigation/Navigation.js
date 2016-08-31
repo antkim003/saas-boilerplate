@@ -16,11 +16,11 @@ export default class Navigation extends Component {
       <Paper zDepth={0} className={styles.nav}>
         <Link to="/" className={styles.brand}>
           <img src={smallLogo} width="38" height="38" alt="React"/>
-          <span>React, Redux, Rethink</span>
+          <span>React, Redux, Postgres, Graphql</span>
         </Link>
         <div className={styles.menuButtons}>
-          <Link className={styles.buttonBuffer} to="/kanban">
-            <FlatButton className={styles.menuButton} label="Kanban"/>
+          <Link className={styles.buttonBuffer} to="/cms">
+            <FlatButton className={styles.menuButton} label="CMS"/>
           </Link>
 
           <span className="spacer"> | </span>
@@ -43,9 +43,6 @@ export default class Navigation extends Component {
       <span>
         <Link className={styles.buttonBuffer} to="/login">
           <FlatButton className={styles.menuButton} label="Login"/>
-        </Link>
-        <Link className={styles.buttonBuffer} to="/signup">
-          <RaisedButton secondary className={styles.menuButton} label="Sign up"/>
         </Link>
       </span>
     );
