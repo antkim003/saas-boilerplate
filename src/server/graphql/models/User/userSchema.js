@@ -25,9 +25,8 @@ export const User  = new GraphQLObjectType({
       },
       password: {
         type: GraphQLString,
-        resolve(user) {
-          return user.password;
-        }
+        describe: "Hashed password",
+        resolve: () => null
       },
       email: {
         type: GraphQLString,
@@ -49,6 +48,15 @@ export const User  = new GraphQLObjectType({
       }
     }
   }
+});
+
+export const UserWithAuthToken = new GraphQLObjectType({
+  name: 'UserWithAuthToken',
+  description: "The user with an optional auth token",
+  fields: () => ({
+    user: {type: User, description: 'The user account'},
+    authToken: {type: GraphQLString, description: 'The auth token to allow for quick login'}
+  })
 });
 
 export const Permission = new GraphQLObjectType({
