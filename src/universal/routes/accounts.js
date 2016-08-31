@@ -6,8 +6,7 @@ export default function (store) {
     childRoutes: [
       require('./login')(store),
       require('./signup'),
-      require('./logout'),
-      require('./verifyEmail')
+      require('./logout')
     ]
   };
 }

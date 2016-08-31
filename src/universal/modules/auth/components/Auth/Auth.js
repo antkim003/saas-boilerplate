@@ -3,7 +3,7 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import styles from './Auth.css';
 import {Link} from 'react-router';
-import {loginUser, signupUser, oauthLogin} from '../../ducks/auth';
+import {loginUser, signupUser} from '../../ducks/auth';
 
 export default class Auth extends Component {
   static propTypes = {
@@ -77,15 +77,9 @@ export default class Auth extends Component {
         <div className={styles.hrWithText}>
           <span className={styles.hrText}>or</span>
         </div>
-        <span onClick={this.loginWithGoogle}>Login with Google</span>
       </div>
     );
   }
-  // need async?
-  loginWithGoogle = () => {
-    const redirectRoute = this.props.location.query.next || '/';
-    this.props.dispatch(oauthLogin('/auth/google', redirectRoute));
-  };
 
   onSubmit = (data, dispatch) => {
     // gotta get that redirect from props

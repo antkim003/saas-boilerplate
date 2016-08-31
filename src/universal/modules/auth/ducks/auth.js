@@ -26,8 +26,7 @@ const initialState = iMap({
   authToken: null,
   user: iMap({
     id: null,
-    email: null,
-    strategies: iMap()
+    email: null
   })
 });
 
@@ -108,11 +107,7 @@ const user = `
 {
   id,
   email,
-  strategies {
-    local {
-      isVerified
-    }
-  }
+  isVerified
 }`;
 
 const userWithAuthToken = `
@@ -229,46 +224,46 @@ export function resetPassword({resetToken, password}, dispatch) {
   });
 }
 
-export function verifyEmail(verifiedEmailToken) {
-  return async function (dispatch) {
-    const query = `
-    mutation {
-       payload: verifyEmail
-       ${userWithAuthToken}
-    }`;
-    const {error, data} = await fetchGraphQL({query, verifiedEmailToken});
-    if (error) {
-      return dispatch({type: VERIFY_EMAIL_ERROR, error});
-    }
-    const {payload} = data;
-    return dispatch({type: VERIFY_EMAIL_SUCCESS, payload});
-  };
-}
+// export function verifyEmail(verifiedEmailToken) {
+//   return async function (dispatch) {
+//     const query = `
+//     mutation {
+//        payload: verifyEmail
+//        ${userWithAuthToken}
+//     }`;
+//     const {error, data} = await fetchGraphQL({query, verifiedEmailToken});
+//     if (error) {
+//       return dispatch({type: VERIFY_EMAIL_ERROR, error});
+//     }
+//     const {payload} = data;
+//     return dispatch({type: VERIFY_EMAIL_SUCCESS, payload});
+//   };
+// }
 
-export function oauthLogin(providerEndpoint, redirect) {
-  redirect = redirect || '/';
-  return async function (dispatch) {
-    dispatch({type: LOGIN_USER_REQUEST});
-    const res = await fetch(hostUrl() + providerEndpoint, {
-      method: 'get',
-      mode: 'no-cors',
-      credentials: 'include'
-    });
-    const parsedRes = await parseJSON(res);
-    const {error, data} = parsedRes;
-    if (error) {
-      localStorage.removeItem(authTokenName);
-      dispatch({type: LOGIN_USER_ERROR, error});
-    } else {
-      const {payload} = data;
-      if (payload.authToken) {
-        localStorage.setItem(authTokenName, payload.authToken);
-        dispatch({type: LOGIN_USER_SUCCESS, payload});
-        dispatch(replace(redirect));
-      }
-    }
-  };
-}
+// export function oauthLogin(providerEndpoint, redirect) {
+//   redirect = redirect || '/';
+//   return async function (dispatch) {
+//     dispatch({type: LOGIN_USER_REQUEST});
+//     const res = await fetch(hostUrl() + providerEndpoint, {
+//       method: 'get',
+//       mode: 'no-cors',
+//       credentials: 'include'
+//     });
+//     const parsedRes = await parseJSON(res);
+//     const {error, data} = parsedRes;
+//     if (error) {
+//       localStorage.removeItem(authTokenName);
+//       dispatch({type: LOGIN_USER_ERROR, error});
+//     } else {
+//       const {payload} = data;
+//       if (payload.authToken) {
+//         localStorage.setItem(authTokenName, payload.authToken);
+//         dispatch({type: LOGIN_USER_SUCCESS, payload});
+//         dispatch(replace(redirect));
+//       }
+//     }
+//   };
+// }
 
 export function logoutAndRedirect() {
   localStorage.removeItem(authTokenName);
