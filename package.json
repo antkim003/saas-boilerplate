@@ -101,7 +101,7 @@
     "redux-promise": "0.5.3",
     "redux-socket-cluster": "0.5.1",
     "redux-thunk": "2.1.0",
-    "sequelize": "^3.24.1",
+    "sequelize": "3.24.1",
     "socketcluster": "4.6.1",
     "socketcluster-client": "4.3.17"
   }
