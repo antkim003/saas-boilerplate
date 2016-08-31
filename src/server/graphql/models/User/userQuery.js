@@ -28,9 +28,7 @@ export default {
       id: {type: new GraphQLNonNull(GraphQLID)}
     },
     async resolve(root, args) {
-      console.log('heres args: ', args, 'heres root: ', root);
       let user = await Db.models.user.findById(args.id);
-      console.log('user after await', user.dataValues);
       return user;
     }
   },
