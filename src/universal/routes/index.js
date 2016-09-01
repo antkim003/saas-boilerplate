@@ -9,7 +9,8 @@ export default store => {
       require('./landing'),
       require('./accounts')(store),
       require('./graphql'),
-      require('./notFound')
+      require('./notFound'),
+      require('./articles')
     ]
   };
 };
