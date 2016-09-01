@@ -22,7 +22,6 @@ const users = [
   }
 ]
 // overrides if tables exist
-console.log("db.permission: ", Db.models);
 Db.sync({force: true})
   .then(() => {
     return Db.models.permission.create({
@@ -36,6 +35,7 @@ Db.sync({force: true})
     console.log("Seed was successful");
     process.exit(0);
   })
-  .catch(() => {
+  .catch((err) => {
+    console.error(err);
     process.exit(1);
   });
