@@ -1,10 +1,11 @@
 import LandingContainer from 'universal/modules/landing/containers/Landing/LandingContainer';
+import Articles from 'universal/components/Articles/Articles'
 
 export default {
   path: 'articles',
   component: LandingContainer,
-  getIndexRoute: async (location, cb) => {
-    const component = await System.import('universal/components/Articles/Articles');
-    cb(null, {component});
-  }
+  indexRoute: {
+    component: Articles
+  },
+  childRoutes: []
 };
