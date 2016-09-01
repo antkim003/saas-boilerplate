@@ -1,7 +1,7 @@
 import Conn from '../_db'
 import Sequelize from 'sequelize'
 
-const User = Conn.define('user', {
+export const User = Conn.define('user', {
   username: {
     type: Sequelize.STRING,
     allowNull: false
@@ -22,11 +22,9 @@ const User = Conn.define('user', {
   }
 });
 
-const Permission = Conn.define('permission', {
+export const Permission = Conn.define('permission', {
   userType: {
     type: Sequelize.STRING,
     allowNull: false
   }
 });
-
-User.belongsTo(Permission);

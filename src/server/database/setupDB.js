@@ -1,4 +1,5 @@
-import Db from './_db'
-const User = require('./models/user');
+import Db from './_db';
+
+require ('./models')
 
 export default Db
