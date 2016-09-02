@@ -27,7 +27,8 @@ const initialState = iMap({
   user: iMap({
     id: null,
     email: null
-  })
+  }),
+  articles: []
 });
 
 export default function reducer(state = initialState, action = {}) {
