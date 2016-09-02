@@ -1,9 +1,9 @@
 import {fromJS, Map as iMap} from 'immutable';
 import {push, replace} from 'react-router-redux';
 import {ensureState} from 'redux-optimistic-ui';
-import fetch from 'isomorphic-fetch';
+// import fetch from 'isomorphic-fetch';
 
-import {parseJSON, hostUrl, fetchGraphQL} from '../../../utils/fetching';
+import {fetchGraphQL} from '../../../utils/fetching';
 import socketOptions from '../../../utils/socketOptions';
 import validateSecretToken from '../../../utils/validateSecretToken';
 

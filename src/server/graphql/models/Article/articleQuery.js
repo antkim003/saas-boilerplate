@@ -1,19 +1,11 @@
 import {
-  GraphQLObjectType,
-  GraphQLInt,
   GraphQLString,
-  GraphQLBoolean,
   GraphQLList,
-  GraphQLSchema,
   GraphQLID,
   GraphQLNonNull
 } from 'graphql';
 import Db from '../../../database/setupDB.js';
 import {Article} from './articleSchema.js';
-import {errorObj} from '../utils';
-import promisify from 'es6-promisify';
-import {isAdminOrSelf} from '../authorization';
-
 
 export default {
 
@@ -30,13 +22,22 @@ export default {
       return Db.models.article.findAll({where: args});
     }
   },
+  getAllArticles: {
+    type: new GraphQLList(Article),
+    args: {
+    },
+    resolve(root, args) {
+      console.log(args);
+      return Db.models.article.findAll({where: {}});
+    }
+  },
   getArticlesById: {
     type: Article,
-    args : {
+    args: {
       id: {type: new GraphQLNonNull(GraphQLID)}
     },
-     resolve(root, args) {
+    resolve(root, args) {
       return Db.models.article.findById(args.id);
     }
   }
-}
+};

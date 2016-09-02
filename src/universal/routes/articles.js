@@ -1,11 +1,11 @@
 import LandingContainer from 'universal/modules/landing/containers/Landing/LandingContainer';
-import Articles from 'universal/components/Articles/Articles'
+import ArticlesContainer from 'universal/modules/Articles/containers/ArticlesContainer.js';
 
 export default {
   path: 'articles',
   component: LandingContainer,
   indexRoute: {
-    component: Articles
+    component: ArticlesContainer
   },
   childRoutes: []
 };

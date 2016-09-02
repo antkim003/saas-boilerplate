@@ -54,6 +54,7 @@ export const fetchGraphQL = async graphParams => {
   const authToken = localStorage.getItem(socketOptions.authTokenName);
   const currentHostUrl = hostUrl();
   const graphQLUrl = `${currentHostUrl}/graphql`;
+  console.log('serializedParams', serializedParams);
   const res = await fetch(graphQLUrl, {
     method: 'post',
     headers: {

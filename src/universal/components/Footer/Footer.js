@@ -15,6 +15,9 @@ export default class Footer extends Component {
           <Link to="/" className={styles.link}>Privacy</Link>
           <span className={styles.spacer}>·</span>
           <Link to="/not-found" className={styles.link}>Not found</Link>
+          <span className={styles.spacer}>·</span>
+          <Link to="/articles" className={styles.link}>Articles, Yo...</Link>
+
         </div>
       </div>
     );
