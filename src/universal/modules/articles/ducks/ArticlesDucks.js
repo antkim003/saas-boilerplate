@@ -3,12 +3,6 @@ import {fetchGraphQL} from '../../../utils/fetching';
 export const getArticles = (dispatch, variables) => {
   // dispatch({type: LOGIN_USER_REQUEST});
   return new Promise(async (resolve, reject) => {
-    // const query = `
-    // query($email: Email!, $password: Password!){
-    //    payload: login(email: $email, password: $password)
-    //    ${userWithAuthToken}
-    // }`;
-
     const query = `
     query{getAllArticles{title}}`;
 
@@ -17,10 +11,11 @@ export const getArticles = (dispatch, variables) => {
       reject(error);
     } else {
       console.log('Wow data inside ducks', data);
+      return data;
       // const {payload} = data;
       // dispatch(loginUserSuccess(payload));
       // dispatch(push(redirect));
-      resolve();
+      // resolve();
     }
   });
 };
