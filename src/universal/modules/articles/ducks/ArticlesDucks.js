@@ -1,7 +1,7 @@
 import {fetchGraphQL} from '../../../utils/fetching';
-import {fromJS, Map as iMap} from 'immutable';
-import {ensureState} from 'redux-optimistic-ui';
-export const GET_ARTICLES = 'GET_ARTICLES';
+import {Map as iMap} from 'immutable';
+// import {ensureState} from 'redux-optimistic-ui';
+export const SET_ARTICLES = 'SET_ARTICLES';
 
 const initialState = iMap({
   articles: []
@@ -18,18 +18,24 @@ export const getArticles = (dispatch, variables) => {
       reject(error);
     } else {
       console.log('Wow data inside ducks', data);
-      return data;
-      // const {payload} = data;
-      // dispatch(loginUserSuccess(payload));
-      // dispatch(push(redirect));
-      // resolve();
+      // return data;
+      const {payload} = data;
+      dispatch(setArticles(payload));
+      resolve();
     }
   });
 };
 
+export function setArticles(payload) {
+  return {
+    type: SET_ARTICLES,
+    payload
+  };
+}
+
 export default function reducer(state = initialState, action = {}) {
   switch (action.type) {
-    case GET_ARTICLES:
+    case SET_ARTICLES:
       return state.merge({
         error: iMap(),
         articles: action.payload
