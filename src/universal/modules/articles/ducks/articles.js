@@ -1,55 +1,48 @@
 import {fromJS, Map as iMap, List as iList} from 'immutable';
-import {push, replace} from 'react-router-redux';
-import {ensureState} from 'redux-optimistic-ui';
-import fetch from 'isomorphic-fetch';
-
-import {parseJSON, hostUrl, fetchGraphQL} from '../../../utils/fetching';
-import socketOptions from '../../../utils/socketOptions';
-import validateSecretToken from '../../../utils/validateSecretToken';
-
-const {authTokenName} = socketOptions;
+import {fetchGraphQL} from '../../../utils/fetching';
 
 export const GET_ARTICLES = 'GET_ARTICLES';
+export const ARTICLES = 'articles';
 
 const initialState = iMap({
-  synced: false,
-  error: null,
   data: iList()
 });
 
-export default function reducer(state = initialState, action) {
+export function reducer(state = initialState, action) {
   switch (action.type) {
     case GET_ARTICLES:
-      const {doc: addDoc} = action.payload.variables;
+      console.log('action is here: ', action);
       return state.merge({
-        synced: action.meta && action.meta.synced || false,
-        data: state.get('data').push(fromJS(addDoc))
+        data: state.get('data').concat(fromJS(action.payload))
       });
     default:
       return state;
   }
 }
-
-const articleSchema = `
-  {
-    title
-    headline
-    body
-  }`;
-
-export const getArticles = (dispatch, variables, redirect) => {
-    return async(dispatch, getState) => {
-      const query = `
-          query {
-            getAllArticlesBy
-            ${articleSchema}
-          }`;
-      const {error, data} = await fetchGraphQL({query});
-      if (error) {
-        debugger;
-      } else {
-        const {payload} = data;
-
-      }
+export function getArticles() {
+  const articleSchema =
+  `
+    {
+      title,
+      headline,
+      body
     }
+  `;
+  return async(dispatch, getState) => {
+    console.log(getState);
+    const query = `
+        query {
+          getAllArticlesBy
+          ${articleSchema}
+        }`;
+    const {error, data} = await fetchGraphQL({query});
+    if (error) {
+      console.error(error);
+    } else {
+      dispatch({
+        type: GET_ARTICLES,
+        payload: data.getAllArticlesBy
+      });
+    }
+  };
 }
