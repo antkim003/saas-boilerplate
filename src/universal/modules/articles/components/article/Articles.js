@@ -1,4 +1,5 @@
 import React, {Component, PropTypes} from 'react';
+import styles from './Articles.css';
 
 export default class Articles extends Component {
   static propTypes = {
@@ -6,11 +7,17 @@ export default class Articles extends Component {
   }
   render() {
     let template = this.props.articles.map((article, idx) => {
-      return <div key={idx}>title: {article.title} header: {article.header} body: {article.body}</div>;
+      return (
+        <div key={idx}>
+          <h3>Title: {article.title} {idx}</h3>
+          <h4>Headline: {article.headline}</h4>
+          <p>{article.body}</p>
+        </div>
+    );
     });
     return (
-      <div>
-        <h1>Made it to articles.</h1>
+      <div className={styles._container}>
+        <h2>Made it to articles.</h2>
         {template}
       </div>
     );
