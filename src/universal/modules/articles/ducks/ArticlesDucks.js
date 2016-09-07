@@ -1,9 +1,10 @@
 import {fetchGraphQL} from '../../../utils/fetching';
 import {Map as iMap} from 'immutable';
-// import {ensureState} from 'redux-optimistic-ui';
+import {ensureState} from 'redux-optimistic-ui';
 export const SET_ARTICLES = 'SET_ARTICLES';
 
 const initialState = iMap({
+  error: iMap(),
   articles: []
 });
 

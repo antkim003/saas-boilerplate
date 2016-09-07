@@ -1,14 +1,10 @@
 import React, {Component} from 'react';
 import styles from './Articles.css';
 import {getArticles} from '../ducks/ArticlesDucks';
-// import {connect} from 'react-redux';
+import {connect} from 'react-redux';
 // import {ensureState} from 'redux-optimistic-ui';
 // @connect(mapStateToProps)
 export default class Articles extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {articles: []};
-  }
   render() {
     return (
       <div>
@@ -30,6 +26,8 @@ export default class Articles extends Component {
     });
   }
 }
+
+export default connect()(Articles);
   // function mapStateToProps(state, props) {
   //   state = ensureState(state);
   //   const articles = state.get('articles');
