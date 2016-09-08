@@ -26,10 +26,10 @@ export const User = Conn.define('user', {
     validate: {
       isEmail: true
     }
-  },
-  type: {
-    type: Sequelize.INTEGER
   }
+  // type: {
+  //   type: Sequelize.INTEGER
+  // }
 });
 
 const UsertypesPermissions = Conn.define('usertypes_permissions', {

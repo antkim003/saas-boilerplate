@@ -6,4 +6,7 @@ import {Article} from './article';
 // User.belongsTo(Permission);
 User.hasMany(Article);
 Article.belongsTo(User);
-Usertype.hasOne(User);
+// Usertype.hasOne(User);
+// User.hasOne(Usertype);
+Usertype.hasMany(User);
+// Usertype.belongsToMany(User);

@@ -50,21 +50,32 @@ for (let i = 0; i < 4; i++) {
 console.log('db.models ');
 Db.sync({force: true})
   .then(() => {
-    console.log('in here');
     return Db.models.permission.bulkCreate(Permissions);
   })
   .then(() => {
     return Db.models.usertype.bulkCreate(Usertypes);
   })
   .then(async () => {
-    const user = await Db.models.user.create(
+    const user = await Db.models.user.bulkCreate([
       {
         email: 'admin123@gmail.com',
         password: 'password'
-      }
+      },
+      {
+        email: 'admin1234@gmail.com',
+        password: 'password'
+
+      }]
     );
+    // console.log('user', user);
     const usertype = await Db.models.usertype.findAll();
-    return usertype[0].setUser(user);
+    const users = await Db.models.user.findAll();
+
+    // console.log('usertype[0].datavalues',usertype[0]);
+    users[0].usertypeid = 1;
+    return users[0].save;
+    // return users[1].setUsertypes(usertype[0]);
+    // return usertype[0].setUser(user);
   })
   // .then(createdUsers => {
   //   __articles.map(article => {
