@@ -1,14 +1,21 @@
-import Conn from '../_db'
-import Sequelize from 'sequelize'
+import Conn from '../_db';
+import Sequelize from 'sequelize';
 
-export const User = Conn.define('user', {
-  username: {
+export const Permission = Conn.define('permission', {
+  name: {
     type: Sequelize.STRING,
     allowNull: false
-  },
-  isVerified: {
-    type: Sequelize.BOOLEAN
-  },
+  }
+});
+
+export const Usertype = Conn.define('usertype', {
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  }
+});
+
+export const User = Conn.define('user', {
   password: {
     type: Sequelize.STRING,
     allowNull: false
@@ -19,12 +26,14 @@ export const User = Conn.define('user', {
     validate: {
       isEmail: true
     }
+  },
+  type: {
+    type: Sequelize.INTEGER
   }
 });
 
-export const Permission = Conn.define('permission', {
-  userType: {
-    type: Sequelize.STRING,
-    allowNull: false
-  }
+const UsertypesPermissions = Conn.define('usertypes_permissions', {
+  role: Sequelize.STRING
 });
+Usertype.belongsToMany(Permission, {through: UsertypesPermissions});
+Permission.belongsToMany(Usertype, {through: UsertypesPermissions});

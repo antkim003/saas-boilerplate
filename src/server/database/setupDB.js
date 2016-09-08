@@ -1,5 +1,5 @@
 import Db from './_db';
 
-require ('./models')
+require('./models');
 
-export default Db
+export default Db;

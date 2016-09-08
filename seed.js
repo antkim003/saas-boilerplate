@@ -1,27 +1,42 @@
-import Sequelize from 'sequelize'
-import _ from 'lodash'
-import Faker from 'faker'
-import Db from './src/server/database/setupDB.js'
+import Faker from 'faker';
+import Db from './src/server/database/setupDB.js';
+
+const Permissions = [
+  {name: 'read'},
+  {name: 'write'},
+  {name: 'delete'},
+  {name: 'modify'}
+];
+
+const Usertypes = [
+  {
+    name: 'developer'
+  },
+  {
+    name: 'admin'
+  },
+  {
+    name: 'consumer'
+  }
+];
 
 const users = [
   {
-    username: 'anthony',
     email: 'admin123@gmail.com',
     password: 'password'
   },
   {
-    username: 'admin',
     email: 'admin1234@gmail.com',
     password: 'password'
+
   },
   {
-    username: 'developer_admin',
     email: 'developer_admin@gmail.com',
     password: 'password'
   }
-]
-let __articles = []
-for (var i = 0; i < 4; i++) {
+];
+const __articles = [];
+for (let i = 0; i < 4; i++) {
   __articles.push(
     {
       title: Faker.lorem.words(),
@@ -29,29 +44,40 @@ for (var i = 0; i < 4; i++) {
       body: Faker.lorem.paragraphs(),
       userId: null
     }
-  )
+  );
 }
 // overrides if tables exist
-console.log("db.models: ", Db.models);
+console.log('db.models ');
 Db.sync({force: true})
   .then(() => {
-    return Db.models.permission.create({
-      userType: "admin"
-    })
+    console.log('in here');
+    return Db.models.permission.bulkCreate(Permissions);
   })
-  .then((permissions) => {
-      return Db.models.user.bulkCreate(users)
+  .then(() => {
+    return Db.models.usertype.bulkCreate(Usertypes);
   })
-  .then((createdUsers) => {
-      __articles.map(function(article){
-        article.userId = Math.floor((Math.random() * createdUsers.length) + 1)
-    })
-      return Db.models.article.bulkCreate(__articles)
+  .then(async () => {
+    const user = await Db.models.user.create(
+      {
+        email: 'admin123@gmail.com',
+        password: 'password'
+      }
+    );
+    const usertype = await Db.models.usertype.findAll();
+    return usertype[0].setUser(user);
   })
-  .then((createdArticles) => {
-    console.log("Seed was successful")
-    process.exit(0)
+  // .then(createdUsers => {
+  //   __articles.map(article => {
+  //     article.userId = Math.floor((Math.random() * createdUsers.length) + 1);
+  //     return article;
+  //   });
+  //   return Db.models.article.bulkCreate(__articles);
+  // })
+  .then(() => {
+    console.log("Seed was successful");
+    process.exit(0);
   })
-  .catch(() => {
-    process.exit(1)
+  .catch(error => {
+    console.error(error);
+    process.exit(1);
   });

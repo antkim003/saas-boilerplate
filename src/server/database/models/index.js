@@ -1,8 +1,9 @@
 // put all of our sequelize model schemas here
 
-import { User, Permission} from './user'
-import { Article } from './article'
+import {User, Usertype} from './user';
+import {Article} from './article';
 
-User.belongsTo(Permission)
-User.hasMany(Article)
-Article.belongsTo(User)
+// User.belongsTo(Permission);
+User.hasMany(Article);
+Article.belongsTo(User);
+Usertype.hasOne(User);
