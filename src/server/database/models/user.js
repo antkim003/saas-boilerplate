@@ -30,7 +30,17 @@ export const User = Conn.define('user', {
   // type: {
   //   type: Sequelize.INTEGER
   // }
-});
+},
+  {
+    instanceMethods: {
+      addUserType: function (id) {
+        this.set('usertypeId', id);
+        return this.save()
+      }
+    }
+  }
+
+);
 
 const UsertypesPermissions = Conn.define('usertypes_permissions', {
   role: Sequelize.STRING

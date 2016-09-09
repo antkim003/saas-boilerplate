@@ -55,8 +55,8 @@ Db.sync({force: true})
   .then(() => {
     return Db.models.usertype.bulkCreate(Usertypes);
   })
-  .then(async () => {
-    const user = await Db.models.user.bulkCreate([
+  .then(() => {
+    return Db.models.user.bulkCreate([
       {
         email: 'admin123@gmail.com',
         password: 'password'
@@ -67,15 +67,13 @@ Db.sync({force: true})
 
       }]
     );
-    // console.log('user', user);
-    const usertype = await Db.models.usertype.findAll();
-    const users = await Db.models.user.findAll();
-
-    // console.log('usertype[0].datavalues',usertype[0]);
-    users[0].usertypeid = 1;
-    return users[0].save;
-    // return users[1].setUsertypes(usertype[0]);
-    // return usertype[0].setUser(user);
+  })
+  .then(() => {
+    return Db.models.user.findAll();
+  })
+  .then(users => {
+    users[0].addUserType(2);
+    return users[0].save();
   })
   // .then(createdUsers => {
   //   __articles.map(article => {
