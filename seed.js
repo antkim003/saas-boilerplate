@@ -1,35 +1,7 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
-
-const Permissions = [
-  {name: 'read'}, {name: 'write'}, {name: 'delete'}, {name: 'modify'}
-];
-
-const Usertypes = [
-  {name: 'developer'}, {name: 'admin'}, {name: 'consumer'}
-];
-
-const users = [
-  {
-    email: 'admin123@gmail.com',
-    password: 'password'
-  },
-  {
-    email: 'admin@gmail.com',
-    password: 'password'
-  },
-  {
-    email: 'developer_admin@gmail.com',
-    password: 'password'
-  },
-  {
-    email: 'user@gmail.com',
-    password: 'password'
-  }
-];
-
-const userTypesAssignments = [2, 2, 1, 3];
+import {Permissions, Usertypes, users, userTypesAssignments} from './test/user_list';
 
 const __articles = [];
 
@@ -52,7 +24,7 @@ Db.sync({force: true})
     return Db.models.usertype.bulkCreate(Usertypes);
   })
   .then(() => {
-    let userPromises = [];
+    const userPromises = [];
     users.forEach(user => {
       userPromises.push(
         Db.models.user.create(user)
@@ -61,7 +33,7 @@ Db.sync({force: true})
     return promise.each(userPromises, () => {});
   })
   .then(users => {
-    let userPromises = [];
+    const userPromises = [];
     for (let i = 0; i < users.length; i++) {
       userPromises.push(
         users[i].addUserType(userTypesAssignments[i]));

@@ -4,7 +4,14 @@ const promise = require('bluebird');
 import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-// var crypto = require('crypto')
+const server = require('.././src/server/server');
+import os from 'os';
+const numCpus = os.cpus().length;
+console.log('numCpus', numCpus);
+
+// import bcrypt from 'bcrypt';
+// const compare = promisify(bcrypt.compare);
+// const hash = promisify(bcrypt.hash);
 
 const should = chai.should();// eslint-disable-line no-unused-vars
 
@@ -36,9 +43,6 @@ describe('User Db testing, before Hashing Passwords', () => {
         }
         return promise.each(userPromises, () => {});
       })
-      .then(() => {
-        return;
-      })
       .catch(error => {
         console.error(error);
       });
@@ -66,7 +70,7 @@ describe('User Db testing, before Hashing Passwords', () => {
         users[3].should.have.property('usertypeId');
         users[0].email.should.contain('gmail.com');
         users[0].password.should.equal('password');
-        users[0].usertypeId.should.equal(2);
+        // users[0].usertypeId.should.equal(2);
         done();
       }); // end then
     });

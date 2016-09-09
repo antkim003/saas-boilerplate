@@ -27,23 +27,16 @@ export const User = Conn.define('user', {
       isEmail: true
     }
   }
-  // type: {
-  //   type: Sequelize.INTEGER
-  // }
 },
   {
     instanceMethods: {
-      addUserType: function (id) {
+      addUserType: function (id) {// eslint-disable-line babel/object-shorthand
         this.set('usertypeId', id);
         return this.save();
       },
-      getUserType: function () {
+      getUserType: function () {// eslint-disable-line babel/object-shorthand
         const usertypeId = this.get('usertypeId');
         return Usertype.find({attributes: ['name']}, {where: {id: usertypeId}});
-        // .then(res => {
-        //   console.log('res', res.name);
-        //   return res;
-        // });
       }
     }
   }
