@@ -3,7 +3,6 @@ import Promise from 'bluebird';
 import {getDotenv} from '../../universal/utils/dotenv';
 getDotenv();
 
-// console.log('database: ', process.env.DATABASE_URL);
-const Db = new Sequelize(process.env.DATABASE_URL || 'postgres://localhost:5432/relay');
+const Db = new Sequelize(process.env.DATABASE_URL, {logging: false});
 
 export default Db;

@@ -1,6 +1,6 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
-import Promise from 'bluebird';
+import promise from 'bluebird';
 
 const Permissions = [
   {name: 'read'}, {name: 'write'}, {name: 'delete'}, {name: 'modify'}
@@ -44,7 +44,6 @@ for (let i = 0; i < 4; i++) {
   );
 }
 // overrides if tables exist
-console.log('db.models ');
 Db.sync({force: true})
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);
@@ -54,13 +53,12 @@ Db.sync({force: true})
   })
   .then(() => {
     let userPromises = [];
-
     users.forEach(user => {
       userPromises.push(
         Db.models.user.create(user)
       );
     });
-    return Promise.each(userPromises, () => {});
+    return promise.each(userPromises, () => {});
   })
   .then(users => {
     let userPromises = [];
@@ -68,7 +66,7 @@ Db.sync({force: true})
       userPromises.push(
         users[i].addUserType(userTypesAssignments[i]));
     }
-    return Promise.each(userPromises, () => {});
+    return promise.each(userPromises, () => {});
   })
   // .then(createdUsers => {
   //   __articles.map(article => {

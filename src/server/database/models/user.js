@@ -40,6 +40,10 @@ export const User = Conn.define('user', {
       getUserType: function () {
         const usertypeId = this.get('usertypeId');
         return Usertype.find({attributes: ['name']}, {where: {id: usertypeId}});
+        // .then(res => {
+        //   console.log('res', res.name);
+        //   return res;
+        // });
       }
     }
   }

@@ -1,5 +1,12 @@
-const DB
-const users = [
+export const Permissions = [
+  {name: 'read'}, {name: 'write'}, {name: 'delete'}, {name: 'modify'}
+];
+
+export const Usertypes = [
+  {name: 'developer'}, {name: 'admin'}, {name: 'consumer'}
+];
+
+export const users = [
   {
     email: 'admin123@gmail.com',
     password: 'password'
@@ -18,12 +25,4 @@ const users = [
   }
 ];
 
-let userPromises = [];
-
-users.forEach(user => {
-  userPromises.push(
-    Db.models.user.create(user)
-  )
-});
-
-return Promise.all(userPromises);
+export const userTypesAssignments = [2, 2, 1, 3];
