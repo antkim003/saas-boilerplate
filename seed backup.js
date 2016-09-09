@@ -1,6 +1,5 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
-import Promise from 'bluebird';
 
 const Permissions = [
   {name: 'read'}, {name: 'write'}, {name: 'delete'}, {name: 'modify'}
@@ -28,11 +27,7 @@ const users = [
     password: 'password'
   }
 ];
-
-const userTypesAssignments = [2, 2, 1, 3];
-
 const __articles = [];
-
 for (let i = 0; i < 4; i++) {
   __articles.push(
     {
@@ -53,22 +48,23 @@ Db.sync({force: true})
     return Db.models.usertype.bulkCreate(Usertypes);
   })
   .then(() => {
-    let userPromises = [];
-
-    users.forEach(user => {
-      userPromises.push(
-        Db.models.user.create(user)
-      );
-    });
-    return Promise.each(userPromises, () => {});
+    return Db.models.user.bulkCreate(users);
+  })
+  .then(() => {
+    return Db.models.user.findAll();
   })
   .then(users => {
-    let userPromises = [];
-    for (let i = 0; i < users.length; i++) {
-      userPromises.push(
-        users[i].addUserType(userTypesAssignments[i]));
-    }
-    return Promise.each(userPromises, () => {});
+    users.forEach(user => {
+      console.log('user.dataValues', user.dataValues);
+    });
+    users[0].addUserType(2);
+    return users[0].save();
+  })
+  .then(user => {
+    return user.getUserType();
+  })
+  .then(usertype => {
+    console.log('usertype.name', usertype.name);
   })
   // .then(createdUsers => {
   //   __articles.map(article => {
