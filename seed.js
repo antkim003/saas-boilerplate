@@ -75,6 +75,12 @@ Db.sync({force: true})
     users[0].addUserType(2);
     return users[0].save();
   })
+  .then(user => {
+    return user.getUserType();
+  })
+  .then(usertype => {
+    console.log('usertype.name', usertype.name);
+  })
   // .then(createdUsers => {
   //   __articles.map(article => {
   //     article.userId = Math.floor((Math.random() * createdUsers.length) + 1);

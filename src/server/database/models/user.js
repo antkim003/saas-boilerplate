@@ -35,7 +35,11 @@ export const User = Conn.define('user', {
     instanceMethods: {
       addUserType: function (id) {
         this.set('usertypeId', id);
-        return this.save()
+        return this.save();
+      },
+      getUserType: function () {
+        const usertypeId = this.get('usertypeId');
+        return Usertype.find({attributes: ['name']}, {where: {id: usertypeId}});
       }
     }
   }
