@@ -19,9 +19,6 @@ export default {
   createUser: {
     type: UserWithAuthToken,
     args: {
-      username: {
-        type: new GraphQLNonNull(GraphQLString)
-      },
       email: {
         type: new GraphQLNonNull(GraphQLString)
       },

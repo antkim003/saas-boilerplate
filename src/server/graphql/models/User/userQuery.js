@@ -1,15 +1,17 @@
 import {
-  GraphQLObjectType,
-  GraphQLInt,
+  // GraphQLObjectType,
+  // GraphQLInt,
   GraphQLString,
-  GraphQLBoolean,
+  // GraphQLBoolean,
   GraphQLList,
-  GraphQLSchema,
+  // GraphQLSchema,
   GraphQLID,
   GraphQLNonNull
 } from 'graphql';
 import Db from '../../../database/setupDB.js';
-import {User, Permission, UserWithAuthToken} from './userSchema.js';
+import {User, UserWithAuthToken} from './userSchema.js';
+import {Permission} from '../Permission/permissionSchema.js';
+console.log('Permission!!!', Permission);
 import {errorObj} from '../utils';
 import {GraphQLEmailType, GraphQLPasswordType} from '../types';
 import {getUserByEmail, signJwt, getAltLoginMessage} from './helpers';
@@ -25,7 +27,7 @@ export default {
     type: new GraphQLList(User),
     args: {
       id: {type: GraphQLID},
-      username: {type: GraphQLString}
+      email: {type: GraphQLString}
     },
     resolve(root, args) {
       return Db.models.user.findAll({where: args});
@@ -79,11 +81,5 @@ export default {
       }
       return user;
     }
-  },
-  permissions: {
-    type: new GraphQLList(Permission),
-    resolve(root,args) {
-      return Db.models.user.findAll({where:args});
-    }
   }
-}
+};
