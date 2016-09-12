@@ -2,7 +2,7 @@ import {
   // GraphQLObjectType,
   // GraphQLInt,
   GraphQLString,
-  // GraphQLBoolean,
+  GraphQLBoolean,
   GraphQLList,
   // GraphQLSchema,
   GraphQLID,
@@ -35,12 +35,21 @@ export default {
   },
   getUserById: {
     type: User,
-    args : {
+    args: {
       id: {type: new GraphQLNonNull(GraphQLID)}
     },
     async resolve(root, args) {
-      let user = await Db.models.user.findById(args.id);
+      const user = await Db.models.user.findById(args.id);
       return user;
+    }
+  },
+  getAllActiveUsers: {
+    type: new GraphQLList(User),
+    args: {},
+    async resolve(root, args) {
+      const users = await Db.models.user.findAllActiveUsers();
+      console.log('usersz', users);
+      return users;
     }
   },
   login: {

@@ -4,11 +4,7 @@ const promise = require('bluebird');
 import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-const server = require('.././src/server/server');
-import os from 'os';
-const numCpus = os.cpus().length;
-console.log('numCpus', numCpus);
-
+// const server = require('.././src/server/server');
 // import bcrypt from 'bcrypt';
 // const compare = promisify(bcrypt.compare);
 // const hash = promisify(bcrypt.hash);
@@ -51,7 +47,7 @@ describe('User Db testing, before Hashing Passwords', () => {
   describe('This is only a test', () => {
     it('I am a placeholder', done => {
       users.should.be.a('array');
-      users.length.should.equal(4);
+      users.length.should.equal(5);
       done();
     });
   });// end this is only a test
@@ -61,16 +57,27 @@ describe('User Db testing, before Hashing Passwords', () => {
       Db.models.user.findAll()
       .then(users => {
         users.should.be.a('array');
-        users.length.should.equal(4);
+        users.length.should.equal(5);
         users[0].should.have.property('id');
         users[0].should.have.property('email');
         users[0].should.have.property('password');
         users[1].should.have.property('createdAt');
         users[2].should.have.property('updatedAt');
         users[3].should.have.property('usertypeId');
+        users[3].should.have.property('active');
         users[0].email.should.contain('gmail.com');
         users[0].password.should.equal('password');
         // users[0].usertypeId.should.equal(2);
+        done();
+      }); // end then
+    });
+  });
+  describe('Get all active users', () => {
+    it('should get all active users', done => {
+      Db.models.user.findAllActiveUsers()
+      .then(users => {
+        users.should.be.a('array');
+        users.length.should.equal(4);
         done();
       }); // end then
     });

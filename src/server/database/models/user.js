@@ -26,6 +26,10 @@ export const User = Conn.define('user', {
     validate: {
       isEmail: true
     }
+  },
+  active: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
   }
 },
   {
@@ -38,9 +42,13 @@ export const User = Conn.define('user', {
         const usertypeId = this.get('usertypeId');
         return Usertype.find({attributes: ['name']}, {where: {id: usertypeId}});
       }
+    },
+    classMethods: {
+      findAllActiveUsers: function () {// eslint-disable-line babel/object-shorthand
+        return this.findAll({where: {active: true}});
+      }
     }
   }
-
 );
 
 const UsertypesPermissions = Conn.define('usertypes_permissions', {

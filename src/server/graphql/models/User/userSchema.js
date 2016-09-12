@@ -31,12 +31,19 @@ export const User = new GraphQLObjectType({
       },
       usertype: {
         type: GraphQLString,
-        descibe: "User type retrieved through helper function",
+        describe: "User type retrieved through helper function",
         resolve(user) {
           return user.getUserType()
           .then(usertype => {
             return usertype.dataValues.name;
           });
+        }
+      },
+      active: {
+        type: GraphQLBoolean,
+        describe: "User is active or not",
+        resolve(user) {
+          return user.active;
         }
       }
       // isVerified: {

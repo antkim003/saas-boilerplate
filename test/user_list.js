@@ -9,19 +9,28 @@ export const Usertypes = [
 export const users = [
   {
     email: 'admin123@gmail.com',
-    password: 'password'
+    password: 'password',
+    active: true
   },
   {
     email: 'admin@gmail.com',
-    password: 'password'
+    password: 'password',
+    active: true
   },
   {
     email: 'developer_admin@gmail.com',
-    password: 'password'
+    password: 'password',
+    active: true
   },
   {
     email: 'user@gmail.com',
-    password: 'password'
+    password: 'password',
+    active: true
+  },
+  {
+    email: 'inactiveDude@gmail.com',
+    password: 'password',
+    active: false
   }
 ];
 
