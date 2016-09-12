@@ -34,4 +34,4 @@ export const users = [
   }
 ];
 
-export const userTypesAssignments = [2, 2, 1, 3];
+export const userTypesAssignments = [2, 2, 1, 3, 1];

@@ -13,6 +13,9 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 
 chai.use(chaiHttp);
 
+let createdPermissions = [];
+let createdUsertypes = [];
+
 describe('User Db testing, before Hashing Passwords', () => {
   beforeEach(() => {
     return Db.sync({force: true})
@@ -20,7 +23,26 @@ describe('User Db testing, before Hashing Passwords', () => {
         return Db.models.permission.bulkCreate(Permissions);
       })
       .then(() => {
+        return Db.models.permission.findAll()
+        .then(permissions => {
+          createdPermissions = permissions;
+        });
+      })
+      .then(() => {
         return Db.models.usertype.bulkCreate(Usertypes);
+      })
+      .then(() => {
+        return Db.models.usertype.findAll()
+        .then(usertypes => {
+          createdUsertypes = usertypes;
+          const userTypePromises = [];
+          for (let i = 0; i < usertypes.length; i++) {
+            userTypePromises.push(
+            usertypes[i].setPermissions(createdPermissions));
+          }
+          return promise.each(userTypePromises, () => {
+          });
+        });
       })
       .then(() => {
         const userPromises = []; // eslint-disable-line prefer-const
@@ -80,6 +102,19 @@ describe('User Db testing, before Hashing Passwords', () => {
         users.length.should.equal(4);
         done();
       }); // end then
+    });
+  });
+  describe('Get User Permissions', () => {
+    it('should get the user permissions', done => {
+      Db.models.user.find({where: {id: 1}})
+      .then(user => {
+        return user.getPermissions();
+      })
+      .then(res => {
+        console.log(res);
+        res.should.be.a('array');
+        done();
+      });
     });
   });
   describe('Try out getUserType instance method', () => {

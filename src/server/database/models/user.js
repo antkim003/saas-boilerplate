@@ -41,6 +41,21 @@ export const User = Conn.define('user', {
       getUserType: function () {// eslint-disable-line babel/object-shorthand
         const usertypeId = this.get('usertypeId');
         return Usertype.find({attributes: ['name']}, {where: {id: usertypeId}});
+      },
+      getPermissions: function () {// eslint-disable-line babel/object-shorthand
+        const usertypeId = this.get('usertypeId');
+        return Usertype.find({where: {id: usertypeId}})
+        .then(function(usertype) {
+          return  usertype.getPermissions()
+        })
+        .then(function(permissions) {
+          const permissionArray = [];
+          permissions.forEach(permission => {
+            permissionArray.push(permission.dataValues.name)
+            // console.log('permission.dataValues.name', permission.dataValues.name);
+          });
+          return permissionArray;
+        });
       }
     },
     classMethods: {

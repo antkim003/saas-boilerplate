@@ -15,13 +15,36 @@ for (let i = 0; i < 4; i++) {
     }
   );
 }
+
+let createdPermissions = [];
+let createdUsertypes = [];
+
 // overrides if tables exist
 Db.sync({force: true})
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);
   })
   .then(() => {
+    return Db.models.permission.findAll()
+    .then(permissions => {
+      createdPermissions = permissions;
+    });
+  })
+  .then(() => {
     return Db.models.usertype.bulkCreate(Usertypes);
+  })
+  .then(() => {
+    return Db.models.usertype.findAll()
+    .then(usertypes => {
+      createdUsertypes = usertypes;
+      const userTypePromises = [];
+      for (let i = 0; i < usertypes.length; i++) {
+        userTypePromises.push(
+        usertypes[i].setPermissions(createdPermissions));
+      }
+      return promise.each(userTypePromises, () => {
+      });
+    });
   })
   .then(() => {
     const userPromises = [];

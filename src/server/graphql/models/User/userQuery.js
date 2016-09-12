@@ -48,7 +48,6 @@ export default {
     args: {},
     async resolve(root, args) {
       const users = await Db.models.user.findAllActiveUsers();
-      console.log('usersz', users);
       return users;
     }
   },
