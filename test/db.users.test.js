@@ -40,7 +40,7 @@ describe('User Db testing, before Hashing Passwords', () => {
             userTypePromises.push(
             usertypes[i].setPermissions(createdPermissions));
           }
-          return promise.each(userTypePromises, () => {
+          return promise.each(userTypePromises, () => {// eslint-disable-line max-nested-callbacks
           });
         });
       })
@@ -111,7 +111,6 @@ describe('User Db testing, before Hashing Passwords', () => {
         return user.getPermissions();
       })
       .then(res => {
-        console.log(res);
         res.should.be.a('array');
         done();
       });

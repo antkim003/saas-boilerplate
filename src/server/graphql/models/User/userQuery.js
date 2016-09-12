@@ -11,7 +11,6 @@ import {
 import Db from '../../../database/setupDB.js';
 import {User, UserWithAuthToken} from './userSchema.js';
 import {Permission} from '../Permission/permissionSchema.js';
-console.log('Permission!!!', Permission);
 import {errorObj} from '../utils';
 import {GraphQLEmailType, GraphQLPasswordType} from '../types';
 import {getUserByEmail, signJwt, getAltLoginMessage} from './helpers';

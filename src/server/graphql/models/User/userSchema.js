@@ -2,7 +2,8 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLList
 } from 'graphql';
 // import Db from '../../../database/setupDB.js'
 
@@ -36,6 +37,17 @@ export const User = new GraphQLObjectType({
           return user.getUserType()
           .then(usertype => {
             return usertype.dataValues.name;
+          });
+        }
+      },
+      permissions: {
+        type: new GraphQLList(GraphQLString),
+        describe: "Permissions retrieved through helper function",
+        resolve(user) {
+          return user.getPermissions()
+          .then(permissionsFound => {
+            console.log('permissionsFound', permissionsFound);
+            return permissionsFound;
           });
         }
       },
