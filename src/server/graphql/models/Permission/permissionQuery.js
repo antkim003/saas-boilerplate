@@ -1,7 +1,8 @@
 import {
   GraphQLString,
   GraphQLList,
-  GraphQLID
+  GraphQLID,
+  GraphQLNonNull
 } from 'graphql';
 
 import {Permission} from './permissionSchema.js';
@@ -18,6 +19,25 @@ export default {
     },
     resolve(root, args) {
       return Db.models.permission.findAll({where: args});
+    }
+  },
+  getPermissionById: {
+    type: Permission,
+    args: {
+      id: {type: new GraphQLNonNull(GraphQLID)}
+    },
+    async resolve(root, args) {
+      const permission = await Db.models.permission.findById(args.id);
+      return permission;
+    }
+  },
+  getAllPermissions: {
+    type: new GraphQLList(Permission),
+    args: {
+    },
+    async resolve(root, args) {
+      const permissions = await Db.models.permission.findAll();
+      return permissions;
     }
   }
 };

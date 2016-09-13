@@ -1,16 +1,6 @@
-import {GraphQLString, GraphQLNonNull, GraphQLBoolean, GraphQLList, GraphQLInt,  GraphQLInputObjectType} from 'graphql';
-import {GraphQLEmailType,GraphQLPasswordType} from '../types';
+import {GraphQLString, GraphQLNonNull, GraphQLList, GraphQLInt, GraphQLInputObjectType} from 'graphql';
 import {Usertype} from './userTypeSchema.js';
-
-// let permissionsName = new GraphQLInputObjectType(
-//   {
-//     name: "permissionsInputString",
-//     description: 'Used when inputting permissions',
-//     fields: () => ({
-//       name: {type: GraphQLString}
-//     })
-//   }
-// );
+import Promise from 'bluebird';
 
 let permissionsName = new GraphQLInputObjectType(
   {
@@ -36,68 +26,74 @@ export default {
       }
     },
     async resolve(source, args) {
-      let foundPermissions = [];
-      if (args.permissions !== undefined) {
-        args.permissions.forEach(async permission => {
-          const foundPermission = await Db.models.permission.find({where: {name: permission.name}});
-          foundPermissions.push(foundPermission);
-        });
-      }
-      const createdUserType = await Db.models.usertype.create({
+      let createdUserType = await Db.models.usertype.create({
         name: args.name.toLowerCase()
       });
-      const doneAddingPermissions = await createdUserType.setPermissions(foundPermissions);
+      if (args.permissions !== undefined) {
+        createdUserType = await setPermissions(args.permissions, createdUserType)
+      }
       return createdUserType;
     }
-  //   updateUserType: {
-  //     type: Usertype,
-  //     args: {
-  //       id: {
-  //         type: new GraphQLNonNull(GraphQLInt)
-  //       },
-  //       name: {
-  //         type: GraphQLString
-  //       }
-  //     },
-  //     async resolve(source, args) {
-  //       const userById = await Db.models.user.findById(args.id);
-  //       let userPreviousInfo = {
-  //       email: userById.email,
-  //       password: userById.password,
-  //       active: userById.active,
-  //       usertypeId: userById.usertypeId
-  //       };
-  //       if (args.email !== undefined) {
-  //       userPreviousInfo.email = args.email.toLowerCase();
-  //     }
-  //     if (args.password !== undefined) {
-  //       const newHashedPassword = await hash(args.password, 10);
-  //       userPreviousInfo.password = newHashedPassword;
-  //     }
-  //     if (args.active !== undefined) {
-  //       userPreviousInfo.active = args.active;
-  //     }
-  //     let updatedUser = await userById.update(userPreviousInfo);
-  //     if (args.usertype !== undefined) {
-  //       updatedUser = await updatedUser.addUserType(args.usertype);
-  //     }
-  //
-  //     if (updatedUser.error) console.error(updatedUser.error);
-  //     console.log('user was updated: ', updatedUser);
-  //     return updatedUser;
-  //   }
-  // }
-  // deleteUser: {
-  //   type: User,
-  //   args: {
-  //     id: {
-  //       type: new GraphQLNonNull(GraphQLInt)
-  //     }
-  //   },
-  //   async resolve(source, args) {
-  //     const userById = await Db.models.user.findById(args.id);
-  //     return userById.destroy();
-  //   }
-  // }
+  },
+  updateUserType: {
+    type: Usertype,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLInt)
+      },
+      name: {
+        type: GraphQLString
+      },
+      permissions: {
+        type: new GraphQLList(permissionsName)
+      }
+    },
+    async resolve(source, args) {
+      const usertypeById = await Db.models.usertype.findById(args.id);
+      let usertypePreviousInfo = {
+        name: usertypeById.name
+      };
+      if (args.name !== undefined) {
+        usertypePreviousInfo.name = args.name.toLowerCase();
+      }
+      let updatedUserType = await usertypeById.update(usertypePreviousInfo);
+      if (updatedUserType.error) console.error(updatedUserType.error);
+      console.log('usertype was updated');
+      // now add permissions
+      if (args.permissions !== undefined) {
+        updatedUserType = await setPermissions(args.permissions, updatedUserType)
+      }
+      return updatedUserType;
+    }
+  },
+  deleteUserType: {
+    type: Usertype,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLInt)
+      }
+    },
+    async resolve(source, args) {
+      const userTypeById = await Db.models.usertype.findById(args.id);
+      return userTypeById.destroy();
+    }
   }
 };
+
+async function setPermissions(argsPermissions, updatedUserType) {
+  let foundPermissions = [];
+  let promiseArray = [];
+  for (let i = 0; i < argsPermissions.length; i++) {
+    promiseArray.push(Db.models.permission.find({where: {name: argsPermissions[i].name}}))
+  }
+  foundPermissions = await Promise.each(promiseArray, () => {
+  });
+  await updatedUserType.setPermissions(foundPermissions);
+  const checkPermissions = await updatedUserType.getPermissions();
+  let permissionsNames = [];
+  checkPermissions.forEach(permission => {
+    permissionsNames.push(permission.name);
+  })
+  console.log('the updated user type now has permissions:', permissionsNames);
+  return updatedUserType;
+}

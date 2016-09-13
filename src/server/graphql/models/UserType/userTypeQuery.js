@@ -6,6 +6,9 @@ import {
 } from 'graphql';
 
 import {Usertype} from './userTypeSchema.js';
+import {Permission} from '../Permission/permissionSchema.js';
+
+
 
 import Db from '../../../database/setupDB.js';
 
@@ -37,5 +40,17 @@ export default {
     async resolve(root, args) {
       return Db.models.usertype.findById(args.id);
     }
+  },
+  getPermissionsListedOnUserTypebyId: {
+    type: new GraphQLList(Permission),
+    args: {
+      id: {type: new GraphQLNonNull(GraphQLID)}
+    },
+    async resolve(root, args) {
+      const foundUserType = await Db.models.usertype.findById(args.id);
+      return await foundUserType.getPermissions();
+      // return foundUserTypePermissions;
+    }
   }
-}
+};
+// getPermissions
