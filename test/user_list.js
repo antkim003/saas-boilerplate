@@ -33,5 +33,4 @@ export const users = [
     active: false
   }
 ];
-
 export const userTypesAssignments = [2, 2, 1, 3, 1];

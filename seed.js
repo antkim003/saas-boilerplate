@@ -2,6 +2,10 @@ import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
 import {Permissions, Usertypes, users, userTypesAssignments} from './test/user_list';
+import promisify from 'es6-promisify';
+import bcrypt from 'bcrypt';
+const hash = promisify(bcrypt.hash);
+
 
 const __articles = [];
 
@@ -39,12 +43,26 @@ Db.sync({force: true})
       createdUsertypes = usertypes;
       const userTypePromises = [];
       for (let i = 0; i < usertypes.length; i++) {
+        // decide on exact permission that go with each usertype, then change this
         userTypePromises.push(
         usertypes[i].setPermissions(createdPermissions));
       }
       return promise.each(userTypePromises, () => {
       });
     });
+  })
+  .then(() => {
+    const passwordPromises = [];
+    users.forEach(user => {
+      passwordPromises.push(
+        hash(user.password, 10)
+        .then(hashedPassword => {
+          user.password = hashedPassword;
+          return;
+        })
+      );
+    });
+    return promise.each(passwordPromises, () => {});
   })
   .then(() => {
     const userPromises = [];

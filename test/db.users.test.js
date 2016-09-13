@@ -4,10 +4,12 @@ const promise = require('bluebird');
 import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
+import promisify from 'es6-promisify';
+import bcrypt from 'bcrypt';
+const hash = promisify(bcrypt.hash);
+
 // const server = require('.././src/server/server');
-// import bcrypt from 'bcrypt';
 // const compare = promisify(bcrypt.compare);
-// const hash = promisify(bcrypt.hash);
 
 const should = chai.should();// eslint-disable-line no-unused-vars
 
@@ -43,6 +45,19 @@ describe('User Db testing, before Hashing Passwords', () => {
           return promise.each(userTypePromises, () => {// eslint-disable-line max-nested-callbacks
           });
         });
+      })
+      .then(() => {
+        const passwordPromises = [];
+        users.forEach(user => {
+          passwordPromises.push(
+            hash(user.password, 10)
+            .then(hashedPassword => {// eslint-disable-line max-nested-callbacks
+              user.password = hashedPassword;
+              return;
+            })
+          );
+        });
+        return promise.each(passwordPromises, () => {});
       })
       .then(() => {
         const userPromises = []; // eslint-disable-line prefer-const
@@ -88,7 +103,7 @@ describe('User Db testing, before Hashing Passwords', () => {
         users[3].should.have.property('usertypeId');
         users[3].should.have.property('active');
         users[0].email.should.contain('gmail.com');
-        users[0].password.should.equal('password');
+        users[0].password.should.be.a('string');
         // users[0].usertypeId.should.equal(2);
         done();
       }); // end then

@@ -1,8 +1,8 @@
-import {GraphQLString,GraphQLNonNull,GraphQLBoolean} from 'graphql';
+import {GraphQLString, GraphQLNonNull, GraphQLBoolean, GraphQLList, GraphQLInt} from 'graphql';
 import {GraphQLEmailType,GraphQLPasswordType} from '../types';
 
 import Db from '../../../database/setupDB.js';
-import {User, Permission, UserWithAuthToken} from './userSchema.js';
+import {User, UserWithAuthToken} from './userSchema.js';
 
 import {getUserByEmail, signJwt, getAltLoginMessage, makeSecretToken} from './helpers';
 import {errorObj} from '../utils';
@@ -64,5 +64,64 @@ export default {
       //   password: args.password
       // })
     }
+  },
+  updateUser: {
+    type: User,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLInt)
+      },
+      email: {
+        type: GraphQLString
+      },
+      password: {
+        type: GraphQLString
+      },
+      usertype: {
+        type: GraphQLInt
+      },
+      active: {
+        type: GraphQLBoolean
+      }
+    },
+    async resolve(source, args) {
+      const userById = await Db.models.user.findById(args.id);
+      let userPreviousInfo = {
+        email: userById.email,
+        password: userById.password,
+        active: userById.active,
+        usertypeId: userById.usertypeId
+      };
+      if (args.email !== undefined) {
+        userPreviousInfo.email = args.email.toLowerCase();
+      }
+      if (args.password !== undefined) {
+        const newHashedPassword = await hash(args.password, 10);
+        userPreviousInfo.password = newHashedPassword;
+      }
+      if (args.active !== undefined) {
+        userPreviousInfo.active = args.active;
+      }
+      let updatedUser = await userById.update(userPreviousInfo);
+      if (args.usertype !== undefined) {
+        updatedUser = await updatedUser.addUserType(args.usertype);
+      }
+
+      if (updatedUser.error) console.error(updatedUser.error);
+      console.log('user was updated: ', updatedUser);
+      return updatedUser;
+    }
+  },
+  deleteUser: {
+    type: User,
+    args: {
+      id: {
+        type: new GraphQLNonNull(GraphQLInt)
+      }
+    },
+    async resolve(source, args) {
+      const userById = await Db.models.user.findById(args.id);
+      return userById.destroy();
+    }
   }
-}
+};
