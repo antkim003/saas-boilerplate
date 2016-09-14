@@ -6,7 +6,7 @@
   "scripts": {
     "start": "NODE_ENV=development node ./src/server/server.babel.js",
     "test": "mocha --compilers js:babel-core/register",
-    "seed": "babel-node seed.js"
+    "seed": "babel-node runseed.js"
   },
   "author": "",
   "license": "ISC",

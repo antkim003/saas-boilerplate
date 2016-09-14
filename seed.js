@@ -23,8 +23,9 @@ for (let i = 0; i < 4; i++) {
 let createdPermissions = [];
 let createdUsertypes = [];
 
+function seed() {
 // overrides if tables exist
-Db.sync({force: true})
+  return Db.sync({force: true})
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);
   })
@@ -90,9 +91,15 @@ Db.sync({force: true})
   // })
   .then(() => {
     console.log("Seed was successful");
+    return Promise.resolve(null);
     process.exit(0);
   })
   .catch(error => {
     console.error(error);
     process.exit(1);
   });
+}
+
+module.exports = {
+  seed: seed
+};
