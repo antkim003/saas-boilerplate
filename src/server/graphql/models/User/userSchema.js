@@ -57,13 +57,13 @@ export const User = new GraphQLObjectType({
         resolve(user) {
           return user.active;
         }
+      },
+      isVerified: {
+        type: GraphQLBoolean,
+        resolve(user) {
+          return user.isVerified;
+        }
       }
-      // isVerified: {
-      //   type: GraphQLBoolean,
-      //   resolve(user) {
-      //     return user.isVerified;
-      //   }
-      // },
       // permission: {
       //   type: Permission,
       //   resolve(user) {

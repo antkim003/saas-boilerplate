@@ -30,6 +30,9 @@ export const User = Conn.define('user', {
   active: {
     type: Sequelize.BOOLEAN,
     allowNull: false
+  },
+  isVerified: {
+    type: Sequelize.BOOLEAN
   }
 },
   {
