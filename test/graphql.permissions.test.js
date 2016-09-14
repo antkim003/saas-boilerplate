@@ -8,9 +8,7 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 
 chai.use(chaiHttp);
 
-
-
-describe('Graphql route testing, permissions', () => {
+describe('Graphql Permissions route testing', () => {
   let authToken = '';
   before(done => {
     seed().then(() => {
@@ -97,6 +95,25 @@ describe('Graphql route testing, permissions', () => {
           res.should.have.status(200);
           // console.log('res.body.data.deletePermission', res.body.data.deletePermission);
           res.body.data.deletePermission.should.be.a('object');
+          if (err) console.log(err);
+          done();
+        });
+    });
+  });
+  describe('updatePermission', () => {
+    it('it should update a permission', done => {
+      chai.request('http://localhost:3000')
+        .post('/graphql')
+        .send({
+          query: 'mutation{updatePermission(id:3,name:"lube"){id,name}}'
+        })
+        .end((err, res) => {
+          res.should.have.status(200);
+          // console.log('res.body.data.updatePermission', res.body.data.updatePermission);
+          res.body.data.updatePermission.should.be.a('object');
+          res.body.data.updatePermission.name.should.equal('lube');
+          res.body.data.updatePermission.id.should.equal(3);
+
           if (err) console.log(err);
           done();
         });

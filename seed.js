@@ -90,7 +90,7 @@ function seed() {
   //   return Db.models.article.bulkCreate(__articles);
   // })
   .then(() => {
-    console.log("Seed was successful");
+    console.log("                Seed was successful");
     return Promise.resolve(null);
     process.exit(0);
   })
