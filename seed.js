@@ -25,7 +25,10 @@ let createdUsertypes = [];
 
 function seed() {
 // overrides if tables exist
-  return Db.sync({force: true})
+  return Db.drop()
+  .then(() => {
+    return Db.sync({force: true})
+  })
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);
   })

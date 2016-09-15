@@ -5,6 +5,7 @@ export default async (req, res) => {
   // Check for admin privileges
   console.log('req.user in server side ', req.user);
   const {query, variables, ...newContext} = req.body;
+  // console.log('query', query);
   const authToken = req.user || {};
   const context = {authToken, ...newContext};
   const result = await graphql(Schema, query, null, context, variables);

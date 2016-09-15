@@ -10,7 +10,7 @@ import {
 } from 'graphql';
 import Db from '../../../database/setupDB.js';
 import {User, UserWithAuthToken} from './userSchema.js';
-import {Permission} from '../Permission/permissionSchema.js';
+// import {Permission} from '../Permission/permissionSchema.js';
 import {errorObj} from '../utils';
 import {GraphQLEmailType, GraphQLPasswordType} from '../types';
 import {getUserByEmail, signJwt, getAltLoginMessage} from './helpers';
@@ -22,6 +22,15 @@ const compare = promisify(bcrypt.compare);
 
 export default {
 
+  getAllUsers: {
+    type: new GraphQLList(User),
+    args: {
+    },
+    async resolve(root, args) {
+      const users = await Db.models.user.findAll();
+      return users;
+    }
+  },
   getAllUsersBy: {
     type: new GraphQLList(User),
     args: {
@@ -32,6 +41,7 @@ export default {
       return Db.models.user.findAll({where: args});
     }
   },
+
   getUserById: {
     type: User,
     args: {
@@ -87,6 +97,14 @@ export default {
         throw errorObj({_error: "User not found"});
       }
       return user;
+    }
+  },
+  logout: {
+    type: User,
+    args: {
+    },
+    resolve(source, args) {
+      return {};
     }
   }
 };

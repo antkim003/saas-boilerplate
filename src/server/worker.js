@@ -53,10 +53,25 @@ export function run(worker) {
   // Oauth
   // app.get('/auth/google', (req, res) => res.redirect(googleAuthUrl));
   // app.get('/auth/google/callback', googleAuthCallback);
+  function routeCheck(req, res, next) {
+    let login = false;
+    let logout = false;
+    if(req.body.query){
+      login = req.body.query.includes('payload:login(email:$email, password:$password');
+      logout = req.body.query.includes('logout');
+    }
+    if (login) {
+      next();
+    } else if (logout) {
+      console.log('you made it to logout, sir');
+    } else {
+      // jwt({secret: process.env.JWT_SECRET, credentialsRequired: false})(req, res, next);
+      jwt({secret: process.env.JWT_SECRET})(req, res, next);
+    }
+  }
 
-  // HTTP GraphQL endpoint
-  app.post('/graphql', jwt({secret: process.env.JWT_SECRET, credentialsRequired: false}), httpGraphQLHandler);
-  // app.use(jwt({ secret: 'shhhhhhared-secret'}).unless({path: ['/token']}));
+  app.use('/graphql', routeCheck);
+  app.post('/graphql', httpGraphQLHandler);
 
   // server-side rendering
   app.get('*', createSSR);

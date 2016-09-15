@@ -14,7 +14,6 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 
 chai.use(chaiHttp);
 
-
 describe('User Db testing, before Hashing Passwords', () => {
   before(done => {
     seed().then(() => {
@@ -90,54 +89,3 @@ describe('User Db testing, before Hashing Passwords', () => {
   });
 }); // end Db testing, before Hashing Passwords test block
 //
-// describe('Db testing, After Hashed Passwords', function() {
-//
-//   beforeEach(function() {
-//   return User.sync({force: true})
-//     .then(function() {
-//       return User.bulkCreate(userList)
-//     })
-//     .then(function(){
-//       return User.findAll();
-//     })
-//     .then(function(users){
-//       var promiseArray = [];
-//       for (var i = 0; i < users.length; i++) {
-//         var plainPassword = users[i].password
-//         users[i].setPassword(plainPassword, null)
-//         promiseArray.push(
-//           users[i].save()
-//         )
-//       }//end for loop
-//         return promise.each(promiseArray, function(result){
-//         })
-//         .then(function(){
-//           return
-//         })// end then
-//     })//end then
-//   })
-//
-//
-//   describe('Get all users With Hashed Passwords', function() {
-//     it('should get all users with Hashed Passwords', function(done) {
-//       User.findAll()
-//       .then(function(users){
-//         users.should.be.a('array')
-//         users.length.should.equal(4)
-//         users[0].should.have.property('email')
-//         users[1].should.have.property('salt')
-//         users[2].should.have.property('password')
-//         users[3].should.have.property('user_name')
-//         // users[0].user_name.should.equal('obama')
-//         // users[1].email.should.equal('bellacat@gmail.com')
-//         users[1].password.should.not.equal('1234')
-//         users[2].salt.length.should.not.equal(0)
-//         users[0].admin.should.equal(1)
-//
-//         done()
-//         }) // end then
-//     });
-//   });
-//
-//
-// });//end Db testing,  Hashed Passwords test block

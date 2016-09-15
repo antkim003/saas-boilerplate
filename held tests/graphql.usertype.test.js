@@ -9,20 +9,34 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 chai.use(chaiHttp);
 
 describe('Graphql Usertype route testing', () => {
-  // let authToken = '';
+  let authToken = '';
   before(done => {
     seed().then(() => {
-      done();
-    })
+      chai.request('http://localhost:3000')
+        .post('/graphql')
+        .send({
+          query: "query($email:Email!,$password:Password!){payload:login(email:$email, password:$password){user{id,email,isVerified},authToken}}",
+          variables: {email: "admin123@gmail.com", password: "password"}
+        })
+        .end((err, res) => {
+          authToken = res.body.data.payload.authToken;
+          if (err) {
+            console.log('Error inside before each ', err);
+            done();
+          }
+          done();
+        });
+    })// end then
     .catch(err => {
       console.error(err);
-      done();
+      // done();
     });
   });
   describe('getAllUserTypes', () => {
     it('it should get all the usertypes', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
         .send({
           query: "{getAllUserTypes{id,name}}"
         })
@@ -42,6 +56,7 @@ describe('Graphql Usertype route testing', () => {
     it('it should get a usertype by id', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
         .send({
           query: "query{getUserTypeById(id:2){id,name}}"
         })
@@ -60,6 +75,7 @@ describe('Graphql Usertype route testing', () => {
     it('it should create a usertype', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
         .send({
           query: 'mutation{createUserType(name:"cat",permissions:[{name:"read"},{name:"write"}]){id,name}}'
         })
@@ -79,6 +95,7 @@ describe('Graphql Usertype route testing', () => {
     it('it should get a usertypes listed permissions by id', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
         .send({
           query: "query{getPermissionsListedOnUserTypebyId(id:2){id,name}}"
         })
@@ -97,6 +114,7 @@ describe('Graphql Usertype route testing', () => {
     it('it should delete a usertype', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
         .send({
           query: 'mutation{deleteUserType(id:1){id,name}}'
         })
@@ -112,6 +130,7 @@ describe('Graphql Usertype route testing', () => {
     it('it should update a usertype', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
         .send({
           query: 'mutation{updateUserType(id:2,name:"catWrangler",permissions:[{name:"read"},{name:"write"}]){id,name}}'
         })
