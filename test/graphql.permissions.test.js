@@ -126,7 +126,7 @@ describe('Graphql route testing', () => {
         });
     });
   });
-  xdescribe('JWT Auth: test logging in again', () => {
+  describe('JWT Auth: test logging in again', () => {
     it('it should log in again', done => {
       chai.request('http://localhost:3000')
       .post('/graphql')
@@ -136,6 +136,7 @@ describe('Graphql route testing', () => {
       })
         .end((err, res) => {
           res.should.have.status(200);
+          console.log('authToken: ',res.body.data.payload.authToken, res.body.data.payload.authToken === authToken);
           res.body.data.payload.authToken.should.be.a('string');
           // console.log('res.body.data.updatePermission', res.body.data.updatePermission);
           if (err) console.log(err);
@@ -178,7 +179,7 @@ describe('Graphql route testing', () => {
   });
   // users test block ///////////////////////////
   // /////////////////////////////
-    describe('getAllUsers', () => {
+  describe('getAllUsers', () => {
       it('it should get all the users', done => {
         chai.request('http://localhost:3000')
         .post('/graphql')
@@ -252,7 +253,7 @@ describe('Graphql route testing', () => {
     });
     });
   });
-  describe('createUser', () => {
+  xdescribe('createUser', () => {
     it('it should create a user', done => {
   chai.request('http://localhost:3000')
     .post('/graphql')
