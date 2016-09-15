@@ -1,12 +1,13 @@
 /* eslint-disable no-undef */
 const Db = require('../src/server/database/setupDB');
+const promise = require('bluebird');
 import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-import bcrypt from 'bcrypt';
 import promisify from 'es6-promisify';
+import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
-import {seed} from '../seed';
+
 // const server = require('.././src/server/server');
 // const compare = promisify(bcrypt.compare);
 
@@ -14,17 +15,71 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 
 chai.use(chaiHttp);
 
+let createdPermissions = [];
+let createdUsertypes = [];
 
 describe('User Db testing, before Hashing Passwords', () => {
-  before(done => {
-    seed().then(() => {
-      done();
-    })
-    .catch(err => {
-      console.error(err);
-      done();
-    });
-  });
+  beforeEach(() => {
+    return Db.sync({force: true})
+      .then(() => {
+        return Db.models.permission.bulkCreate(Permissions);
+      })
+      .then(() => {
+        return Db.models.permission.findAll()
+        .then(permissions => {
+          createdPermissions = permissions;
+        });
+      })
+      .then(() => {
+        return Db.models.usertype.bulkCreate(Usertypes);
+      })
+      .then(() => {
+        return Db.models.usertype.findAll()
+        .then(usertypes => {
+          createdUsertypes = usertypes;
+          const userTypePromises = [];
+          for (let i = 0; i < usertypes.length; i++) {
+            userTypePromises.push(
+            usertypes[i].setPermissions(createdPermissions));
+          }
+          return promise.each(userTypePromises, () => {// eslint-disable-line max-nested-callbacks
+          });
+        });
+      })
+      .then(() => {
+        const passwordPromises = [];
+        users.forEach(user => {
+          passwordPromises.push(
+            hash(user.password, 10)
+            .then(hashedPassword => {// eslint-disable-line max-nested-callbacks
+              user.password = hashedPassword;
+              return;
+            })
+          );
+        });
+        return promise.each(passwordPromises, () => {});
+      })
+      .then(() => {
+        const userPromises = []; // eslint-disable-line prefer-const
+        users.forEach(user => {
+          userPromises.push(
+            Db.models.user.create(user)
+          );
+        });
+        return promise.each(userPromises, () => {});
+      })
+      .then(users => {
+        const userPromises = [];
+        for (let i = 0; i < users.length; i++) {
+          userPromises.push(
+            users[i].addUserType(userTypesAssignments[i]));
+        }
+        return promise.each(userPromises, () => {});
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  });// end beforeEach
 
   describe('This is only a test', () => {
     it('I am a placeholder', done => {

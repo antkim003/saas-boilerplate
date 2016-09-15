@@ -56,6 +56,7 @@ export function run(worker) {
 
   // HTTP GraphQL endpoint
   app.post('/graphql', jwt({secret: process.env.JWT_SECRET, credentialsRequired: false}), httpGraphQLHandler);
+  // app.use(jwt({ secret: 'shhhhhhared-secret'}).unless({path: ['/token']}));
 
   // server-side rendering
   app.get('*', createSSR);

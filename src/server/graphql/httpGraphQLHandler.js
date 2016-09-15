@@ -3,6 +3,7 @@ import {graphql} from 'graphql';
 
 export default async (req, res) => {
   // Check for admin privileges
+  console.log('req.user in server side ', req.user);
   const {query, variables, ...newContext} = req.body;
   const authToken = req.user || {};
   const context = {authToken, ...newContext};

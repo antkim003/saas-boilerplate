@@ -26,17 +26,19 @@ describe('Graphql Permissions route testing', () => {
           }
           done();
         });
-    })
+    })//end then
     .catch(err => {
       console.error(err);
-      done();
+      // done();
     });
-  });
-  describe('getAllPermissions', () => {
+    });
+    describe('getAllPermissions', () => {
     it('it should get all the permissions', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
         .send({
+          // Authorization: `Bearer ${authToken}`,
           query: "{getAllPermissions{id,name}}"
         })
         .end((err, res) => {
