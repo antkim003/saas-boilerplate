@@ -26,6 +26,7 @@ function seed() {
   let createdUsertypes = [];
   let createdUsers = [];
   let createdcategories = [];
+  let createdProjects = [];
 
 // overrides if tables exist
   return Db.drop()
@@ -113,6 +114,14 @@ function seed() {
     });
     return promise.each(userIntoProjectPromises, () => {})
   })
+  // find and store projects for later use
+  .then(() => {
+    return Db.models.project.findAll()
+    .then(projects => {
+      createdProjects = projects;
+      return;
+    });
+  })
   // now create some categories
   .then(() => {
     const categoryPromises = [];
@@ -121,7 +130,21 @@ function seed() {
         Db.models.category.create(category)
       );
     });
-    return promise.each(categoryPromises, () => {})
+    promise.each(categoryPromises, () => {})
+    .then(categories => {
+      createdcategories = categories;
+      return;
+    })
+  })
+  // now add parent Project to the individual categories
+  .then(() => {
+    const categoryIntoProjectPromises = [];
+    projects.forEach(project => {
+      userIntoProjectPromises.push(
+        project.setUsers(createdUsers)
+      );
+    });
+    return promise.each(userIntoProjectPromises, () => {})
   })
   .then(() => {
     console.log("                Seed was successful");

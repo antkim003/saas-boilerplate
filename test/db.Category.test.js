@@ -1,15 +1,11 @@
 /* eslint-disable no-undef */
 const Db = require('../src/server/database/setupDB');
 const chai = require('chai');
-const chaiHttp = require('chai-http');
 import {seed} from '../seed';
 
 const should = chai.should();// eslint-disable-line no-unused-vars
 
-chai.use(chaiHttp);
-
 describe('Category Db testing', () => {
-
   before(done => {
     seed().then(() => {
       done();
@@ -31,7 +27,6 @@ describe('Category Db testing', () => {
         categories[0].should.have.property('id');
         categories[1].should.have.property('createdAt');
         categories[0].should.have.property('updatedAt');
-
         done();
       }); // end then
     });
@@ -54,21 +49,4 @@ describe('Category Db testing', () => {
       }); // end then
     });
   });
-  // describe('Add users to a project', () => {
-  //   it('should users to a project', done => {
-  //     Db.models.user.findAll()
-  //     .then(users => {
-  //       return createdProject.setUsers(users);
-  //     })
-  //     .then(() => {
-  //       return createdProject.getUsers();
-  //     })
-  //     .then(users => {
-  //       users.should.be.a('array');
-  //       users.length.should.equal(5);
-  //       users[1].email.should.be.a('string');
-  //       done();
-  //     });
-  //   });
-  // });
 }); // end projects test block

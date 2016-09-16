@@ -1,12 +1,9 @@
 /* eslint-disable no-undef */
 const Db = require('../src/server/database/setupDB');
 const chai = require('chai');
-const chaiHttp = require('chai-http');
 import {seed} from '../seed';
 
 const should = chai.should();// eslint-disable-line no-unused-vars
-
-chai.use(chaiHttp);
 
 describe('Project Db testing', () => {
   let createdProject = {};
