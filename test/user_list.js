@@ -45,3 +45,18 @@ export const projects = [
     description: 'Tenderloin landjaeger drumstick frankfurter doner. Meatloaf hamburger pork chop meatball fatback ball tip drumstick kevin tenderloin salami flank shoulder tail bacon. Prosciutto capicola bacon fatback beef ribs. Brisket alcatra pig spare ribs pastrami. Pork belly pork chop ball tip capicola pastrami, pancetta pig spare ribs ham shankle beef ribs porchetta venison.'
   }
 ];
+
+export const categories = [
+  {
+    name: 'Mini site',
+    visible: true
+  },
+  {
+    name: 'In and out',
+    visible: true
+  },
+  {
+    name: 'Co-branded site',
+    visible: false
+  }
+];
