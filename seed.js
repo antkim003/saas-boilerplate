@@ -31,6 +31,7 @@ function seed() {
   .then(() => {
     return Db.sync({force: true});
   })
+// create permissions
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);
   })
@@ -40,9 +41,11 @@ function seed() {
       createdPermissions = permissions;
     });
   })
+  // now create usertypes
   .then(() => {
     return Db.models.usertype.bulkCreate(Usertypes);
   })
+  // now set the Permissions on each usertype
   .then(() => {
     return Db.models.usertype.findAll()
     .then(usertypes => {
@@ -57,6 +60,7 @@ function seed() {
       });
     });
   })
+// hash passwords then create users
   .then(() => {
     const passwordPromises = [];
     users.forEach(user => {
@@ -70,6 +74,7 @@ function seed() {
     });
     return promise.each(passwordPromises, () => {});
   })
+  // now create users
   .then(() => {
     const userPromises = [];
     users.forEach(user => {
@@ -128,22 +133,26 @@ function seed() {
         Db.models.category.create(category)
       );
     });
-    promise.each(categoryPromises, () => {})
+    return promise.each(categoryPromises, () => {})
     .then(categories => {
       createdcategories = categories;
       return;
     });
   })
   // now add parent Project to the individual categories
-  // .then(() => {
-  //   const categoryIntoProjectPromises = [];
-  //   projects.forEach(project => {
-  //     userIntoProjectPromises.push(
-  //       project.setUsers(createdUsers)
-  //     );
-  //   });
-  //   return promise.each(userIntoProjectPromises, () => {})
-  // })
+  .then(() => {
+    const addCategoryToProjectPromises = [];
+    for (let i = 0; i < 5; i++) {
+      if (i < 2) {
+        createdcategories[i].projectId = 1;
+      } else {
+        createdcategories[i].projectId = 2
+      }
+      addCategoryToProjectPromises.push(
+        createdcategories[i].save()
+      );}
+    return promise.each(addCategoryToProjectPromises, () => {})
+  })
   .then(() => {
     console.log("                Seed was successful");
     return Promise.resolve(null);
