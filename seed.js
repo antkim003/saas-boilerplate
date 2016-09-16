@@ -137,15 +137,15 @@ function seed() {
     })
   })
   // now add parent Project to the individual categories
-  .then(() => {
-    const categoryIntoProjectPromises = [];
-    projects.forEach(project => {
-      userIntoProjectPromises.push(
-        project.setUsers(createdUsers)
-      );
-    });
-    return promise.each(userIntoProjectPromises, () => {})
-  })
+  // .then(() => {
+  //   const categoryIntoProjectPromises = [];
+  //   projects.forEach(project => {
+  //     userIntoProjectPromises.push(
+  //       project.setUsers(createdUsers)
+  //     );
+  //   });
+  //   return promise.each(userIntoProjectPromises, () => {})
+  // })
   .then(() => {
     console.log("                Seed was successful");
     return Promise.resolve(null);
