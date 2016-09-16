@@ -6,7 +6,6 @@ import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
 
-
 const __articles = [];
 
 for (let i = 0; i < 4; i++) {
@@ -20,7 +19,6 @@ for (let i = 0; i < 4; i++) {
   );
 }
 
-
 function seed() {
   let createdPermissions = [];
   let createdUsertypes = [];
@@ -31,7 +29,7 @@ function seed() {
 // overrides if tables exist
   return Db.drop()
   .then(() => {
-    return Db.sync({force: true})
+    return Db.sync({force: true});
   })
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);
@@ -134,7 +132,7 @@ function seed() {
     .then(categories => {
       createdcategories = categories;
       return;
-    })
+    });
   })
   // now add parent Project to the individual categories
   // .then(() => {
@@ -158,5 +156,5 @@ function seed() {
 }
 
 module.exports = {
-  seed: seed
+  seed
 };

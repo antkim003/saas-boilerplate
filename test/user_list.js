@@ -56,7 +56,15 @@ export const categories = [
     visible: true
   },
   {
-    name: 'Co-branded site',
+    name: 'Large site',
+    visible: true
+  },
+  {
+    name: 'Partner site',
+    visible: true
+  },
+  {
+    name: 'Mobile only site',
     visible: false
   }
 ];

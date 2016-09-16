@@ -108,7 +108,6 @@ export default {
       }
 
       if (updatedUser.error) console.error(updatedUser.error);
-      console.log('user was updated: ', updatedUser);
       return updatedUser;
     }
   },

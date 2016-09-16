@@ -6,22 +6,22 @@ import {seed} from '../seed';
 const should = chai.should();// eslint-disable-line no-unused-vars
 
 describe('Category Db testing', () => {
-  before(done => {
-    seed().then(() => {
-      done();
-    })
-    .catch(err => {
-      console.error(err);
-      done();
-    });
-  });
+  // before(done => {
+  //   seed().then(() => {
+  //     done();
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //     done();
+  //   });
+  // });
 
   describe('Get all categories', () => {
     it('should get all categories', done => {
       Db.models.category.findAll()
       .then(categories => {
         categories.should.be.a('array');
-        categories.length.should.equal(3);
+        categories.length.should.equal(5);
         categories[0].should.have.property('name');
         categories[1].should.have.property('visible');
         categories[0].should.have.property('id');

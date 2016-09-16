@@ -25,14 +25,6 @@ describe('User Db testing, before Hashing Passwords', () => {
     });
   });
 
-  describe('This is only a test', () => {
-    it('I am a placeholder', done => {
-      users.should.be.a('array');
-      users.length.should.equal(5);
-      done();
-    });
-  });// end this is only a test
-
   describe('Get all users', () => {
     it('should get all users', done => {
       Db.models.user.findAll()

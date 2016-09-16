@@ -7,12 +7,12 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 
 chai.use(chaiHttp);
 
-describe('Graphql Permissions route testing', () => {
+describe('Graphql Protected route testing', () => {
   // auth token cache this is working like localStorage would on our clientside
   let authToken = '';
-  before(done => {
-    seed().then(done, done);
-  });
+  // before(done => {
+  //   seed().then(done, done);
+  // });
   // logging in here for authentication
   beforeEach(done => {
     chai.request('http://localhost:3000')
@@ -22,7 +22,6 @@ describe('Graphql Permissions route testing', () => {
         variables: {email: "admin123@gmail.com", password: "password"}
       })
       .end((err, res) => {
-        console.log('response came back: ', res.body.payload, 'error: ', err);
         authToken = res.body.data.payload.authToken;
         if (err) {
           console.log('Error inside before each ', err);
@@ -36,7 +35,7 @@ describe('Graphql Permissions route testing', () => {
     authToken = '';
     done();
   });
-  describe('getAllPermissions', () => {
+  describe('With Token', () => {
     it('it should get all the permissions when passing JWT token', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
@@ -48,13 +47,13 @@ describe('Graphql Permissions route testing', () => {
           res.should.have.status(200);
           res.body.data.getAllPermissions.length.should.equal(4);
           res.body.data.getAllPermissions[1].name.should.equal('write');
-          res.body.data.getAllPermissions[2].id.should.equal(3);
+          res.body.data.getAllPermissions[2].id.should.equal(4);
           if (err) console.log(err);
           done();
         });
     });
   });
-  describe('getAllPermissions', () => {
+  describe('Without Token', () => {
     it('it should fail getting the permissions when not passing JWT token', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')

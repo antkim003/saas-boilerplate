@@ -1,5 +1,4 @@
 /* eslint-disable no-undef */
-import {seed} from '../seed';
 // import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -10,27 +9,26 @@ chai.use(chaiHttp);
 
 describe('Graphql Usertype route testing', () => {
   let authToken = '';
-  before(done => {
-    seed().then(() => {
-      chai.request('http://localhost:3000')
-        .post('/graphql')
-        .send({
-          query: "query($email:Email!,$password:Password!){payload:login(email:$email, password:$password){user{id,email,isVerified},authToken}}",
-          variables: {email: "admin123@gmail.com", password: "password"}
-        })
-        .end((err, res) => {
-          authToken = res.body.data.payload.authToken;
-          if (err) {
-            console.log('Error inside before each ', err);
-            done();
-          }
+  beforeEach(done => {
+    chai.request('http://localhost:3000')
+      .post('/graphql')
+      .send({
+        query: "query($email:Email!,$password:Password!){payload:login(email:$email, password:$password){user{id,email,isVerified},authToken}}",
+        variables: {email: "admin123@gmail.com", password: "password"}
+      })
+      .end((err, res) => {
+        authToken = res.body.data.payload.authToken;
+        if (err) {
+          console.log('Error inside before each ', err);
           done();
-        });
-    })// end then
-    .catch(err => {
-      console.error(err);
-      // done();
-    });
+        }
+        done();
+      });
+  });// end before
+  // logging out after each login.
+  afterEach(done => {
+    authToken = '';
+    done();
   });
   describe('getAllUserTypes', () => {
     it('it should get all the usertypes', done => {
@@ -71,26 +69,25 @@ describe('Graphql Usertype route testing', () => {
         });
     });
   });
-  // describe('createUserType', () => {
-  //   it('it should create a usertype', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       .send({
-  //         query: 'mutation{createUserType(name:"cat",permissions:[{name:"read"},{name:"write"}]){id,name}}'
-  //       })
-  //       // createUserType(name:"purr",permissions:[{name:"read"}])
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         // console.log('res.body.data.createUserType', res.body.data);
-  //         res.body.data.createUserType.name.should.equal('cat');
-  //         res.body.data.createUserType.id.should.equal(4);
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
-  // getPermissionsListedOnUserTypebyId
+  describe('createUserType', () => {
+    it('it should create a usertype', done => {
+      chai.request('http://localhost:3000')
+        .post('/graphql')
+        .set({Authorization: `Bearer ${authToken}`})
+        .send({
+          query: 'mutation{createUserType(name:"cat",permissions:[{name:"read"},{name:"write"}]){id,name}}'
+        })
+        // createUserType(name:"purr",permissions:[{name:"read"}])
+        .end((err, res) => {
+          res.should.have.status(200);
+          // console.log('res.body.data.createUserType', res.body.data);
+          res.body.data.createUserType.name.should.equal('cat');
+          res.body.data.createUserType.id.should.equal(4);
+          if (err) console.log(err);
+          done();
+        });
+    });
+  });
   describe('getPermissionsListedOnUserTypebyId', () => {
     it('it should get a usertypes listed permissions by id', done => {
       chai.request('http://localhost:3000')
