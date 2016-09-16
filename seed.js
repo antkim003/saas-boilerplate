@@ -1,7 +1,7 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
-import {Permissions, Usertypes, users, userTypesAssignments, projects, categories} from './test/user_list';
+import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes} from './test/user_list';
 import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
@@ -152,6 +152,10 @@ function seed() {
         createdcategories[i].save()
       );}
     return promise.each(addCategoryToProjectPromises, () => {})
+  })
+  // now create datatypes
+  .then(() => {
+    return Db.models.datatype.bulkCreate(datatypes);
   })
   .then(() => {
     console.log("                Seed was successful");

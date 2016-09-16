@@ -79,5 +79,54 @@ describe('User Db testing, before Hashing Passwords', () => {
       });
     });
   });
+  describe('Create a user', () => {
+    const newUser = {
+      email: 'jaspercat@gmail.com',
+      password: 'password',
+      active: true
+    };
+    it('should add a user', done => {
+      Db.models.user.create(newUser)
+      .then(user => {
+        user.should.have.property('id');
+        user.should.have.property('email');
+        user.should.have.property('password');
+        user.should.have.property('createdAt');
+        user.should.have.property('updatedAt');
+        user.should.have.property('usertypeId');
+        user.should.have.property('active');
+        user.email.should.equal('jaspercat@gmail.com');
+        done();
+      });
+    });
+  });
+  describe('Update a user', () => {
+      it('should update a user', done => {
+        Db.models.user.find({where: {id: 6}})
+        .then(user => {
+          return user.update({email: "algore@macys.com"});
+        })
+        .then(user => {
+          user.email.should.equal("algore@macys.com");
+          done();
+        });
+      });
+    });
+  describe('Delete a user', () => {
+    it('should delete a user', done => {
+      Db.models.user.find({where: {id: 6}})
+      .then(user => {
+        return user.destroy();
+      })
+      .then(() => {
+        return Db.models.user.findAll()
+      })
+      .then(users => {
+        users.length.should.equal(5);
+        done();
+      });
+    });
+  });
 }); // end Db testing, before Hashing Passwords test block
+
 //

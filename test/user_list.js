@@ -68,3 +68,20 @@ export const categories = [
     visible: false
   }
 ];
+
+export const datatypes = [
+  {
+    name: 'recipe',
+    description: 'how to cook things',
+    visible: true,
+    fields: {"recipe": "text", "code": "html", "photos": "high res"},
+    categoryId: 1
+  },
+  {
+    name: 'pattern',
+    description: 'how to make things',
+    visible: true,
+    fields: {"pattern": "text stuff", "code": "css", "expiration": "soon"},
+    categoryId: 2
+  }
+]
