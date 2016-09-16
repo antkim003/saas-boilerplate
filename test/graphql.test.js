@@ -136,7 +136,6 @@ describe('Graphql route testing', () => {
       })
         .end((err, res) => {
           res.should.have.status(200);
-          console.log('authToken: ',res.body.data.payload.authToken, res.body.data.payload.authToken === authToken);
           res.body.data.payload.authToken.should.be.a('string');
           // console.log('res.body.data.updatePermission', res.body.data.updatePermission);
           if (err) console.log(err);

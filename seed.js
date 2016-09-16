@@ -1,7 +1,7 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
-import {Permissions, Usertypes, users, userTypesAssignments} from './test/user_list';
+import {Permissions, Usertypes, users, userTypesAssignments, projects} from './test/user_list';
 import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
@@ -22,6 +22,7 @@ for (let i = 0; i < 4; i++) {
 
 let createdPermissions = [];
 let createdUsertypes = [];
+let createdUsers = [];
 
 function seed() {
 // overrides if tables exist
@@ -77,21 +78,39 @@ function seed() {
     });
     return promise.each(userPromises, () => {});
   })
+  // now add usertypes to each user with a setter
   .then(users => {
     const userPromises = [];
     for (let i = 0; i < users.length; i++) {
       userPromises.push(
         users[i].addUserType(userTypesAssignments[i]));
     }
-    return promise.each(userPromises, () => {});
+    return promise.each(userPromises, () => {})
+    .then(Users => {
+      createdUsers = Users;
+      return;
+    });
   })
-  // .then(createdUsers => {
-  //   __articles.map(article => {
-  //     article.userId = Math.floor((Math.random() * createdUsers.length) + 1);
-  //     return article;
-  //   });
-  //   return Db.models.article.bulkCreate(__articles);
-  // })
+  // now create projects
+  .then(() => {
+    const projectPromises = [];
+    projects.forEach(project => {
+      projectPromises.push(
+        Db.models.project.create(project)
+      );
+    });
+    return promise.each(projectPromises, () => {})
+  })
+  // now add users to projects via setter
+  .then(projects => {
+    const userIntoProjectPromises = [];
+    projects.forEach(project => {
+      userIntoProjectPromises.push(
+        project.setUsers(createdUsers)
+      );
+    });
+    return promise.each(userIntoProjectPromises, () => {})
+  })
   .then(() => {
     console.log("                Seed was successful");
     return Promise.resolve(null);
