@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 // import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
+// import {seed} from '../../seed';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
@@ -8,6 +9,15 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 chai.use(chaiHttp);
 
 describe('Graphql Users route testing', () => {
+  // before(done => {
+  //   seed().then(() => {
+  //     done();
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //     done();
+  //   });
+  // });
   let authToken = '';
   beforeEach(done => {
     chai.request('http://localhost:3000')
@@ -108,7 +118,7 @@ describe('Graphql Users route testing', () => {
     .post('/graphql')
     .set({Authorization: `Bearer ${authToken}`})
     .send({
-      query: 'mutation{createUser(email:"bellacat@gmail.com",password:"catnip"){id,email}}'
+      query: 'mutation{createUser(email:"bellacat@gmail.com",password:"catnip"){}}'
     })
     .end((err, res) => {
       console.log('res.body.data.createUser', res.body.data.createUser);
@@ -121,7 +131,7 @@ describe('Graphql Users route testing', () => {
     });
     });
   });
-  describe('updateUser', () => {
+   describe('updateUser', () => {
     it('it should update a user', done => {
       chai.request('http://localhost:3000')
     .post('/graphql')

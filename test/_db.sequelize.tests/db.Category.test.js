@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-const Db = require('../src/server/database/setupDB');
+const Db = require('../../src/server/database/setupDB');
 const chai = require('chai');
 
 const should = chai.should();// eslint-disable-line no-unused-vars

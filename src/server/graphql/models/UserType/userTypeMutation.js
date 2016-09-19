@@ -94,6 +94,5 @@ async function setPermissions(argsPermissions, updatedUserType) {
   checkPermissions.forEach(permission => {
     permissionsNames.push(permission.name);
   })
-  console.log('the updated user type now has permissions:', permissionsNames);
   return updatedUserType;
 }

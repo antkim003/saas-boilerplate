@@ -26,7 +26,8 @@ export default {
         type: new GraphQLNonNull(GraphQLString)
       }
     },
-    async resolve(source,{username, email, password}) {
+    async resolve(source, {username, email, password}) {
+      console.log('args!!!!', args);
       const user = await getUserByEmail(email);
       if (user) {
         console.log('user exists', user);
@@ -52,6 +53,7 @@ export default {
         };
 
         const newUser = await Db.models.user.create(userDoc);
+        console.log('newUser!!!!!!!', newUser);
         if (!newUser) {
           throw errorObj({_error: 'Could not create account, please try again'});
         }

@@ -1,12 +1,12 @@
 /* eslint-disable no-undef */
-const Db = require('../src/server/database/setupDB');
-import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
+const Db = require('../../src/server/database/setupDB');
+import {Permissions, Usertypes, users, userTypesAssignments} from './../user_list';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 import bcrypt from 'bcrypt';
 import promisify from 'es6-promisify';
 const hash = promisify(bcrypt.hash);
-import {seed} from '../seed';
+import {seed} from '../../seed';
 // const server = require('.././src/server/server');
 // const compare = promisify(bcrypt.compare);
 

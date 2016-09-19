@@ -1,5 +1,5 @@
 /* eslint-disable no-undef */
-import {seed} from '../seed';
+// import {seed} from '../seed';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
