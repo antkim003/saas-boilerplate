@@ -1,14 +1,11 @@
 // put all of our sequelize model schemas here
-
 import {User, Usertype} from './user';
 import {Article} from './article';
 import {Project} from './project';
 import {Category} from './category';
 import {Datatype} from './datatype';
+import {Field} from './field';
 
-
-
-// User.belongsTo(Permission);
 User.hasMany(Article);
 Article.belongsTo(User);
 User.belongsTo(Usertype);
@@ -20,3 +17,7 @@ Project.hasMany(Category);
 Datatype.belongsTo(Category);
 // Category.hasMany(Entry);
 // Category.hasOne(Datatype);
+Field.belongsToMany(Datatype, {through: 'FieldsToDatatypes'});
+Datatype.belongsToMany(Field, {through: 'FieldsToDatatypes'});
+// This will add methods getDatatype, setDatatype, addDatatype,addDatatype to Field, and getFields, setFields, addFields, and addField to Datatype.
+// This will create a new model called FieldsToDatatypes with the equivalent foreign keys datatypeId and fieldId.

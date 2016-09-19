@@ -1,7 +1,7 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
-import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes} from './test/user_list';
+import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields} from './test/user_list';
 import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
@@ -25,6 +25,8 @@ function seed() {
   let createdUsers = [];
   let createdcategories = [];
   let createdProjects = [];
+  let createdFields = [];
+  let createdDatatypes = [];
 
 // overrides if tables exist
   return Db.drop()
@@ -155,7 +157,39 @@ function seed() {
   })
   // now create datatypes
   .then(() => {
-    return Db.models.datatype.bulkCreate(datatypes);
+    return Db.models.datatype.bulkCreate(datatypes)
+    .then(() => {
+      return Db.models.datatype.findAll()
+      .then(datatypez => {
+        createdDatatypes = datatypez;
+        return
+      });
+    });
+  })
+  // now create fields and store them on createdFields
+  .then(() => {
+    return Db.models.field.bulkCreate(fields)
+    .then(() => {
+      return Db.models.field.findAll()
+      .then(fieldz => {
+        createdFields = fieldz;
+        return;
+      });
+    });
+  })
+  // now add fields to datatypes
+  .then(() => {
+    const datatypePromises = [];
+    createdDatatypes.forEach(datatype => {
+      datatypePromises.push(
+        datatype.setFields(createdFields)
+      );
+    });
+    return promise.each(datatypePromises, () => {})
+    .then(datatypes => {
+      createdDatatypes = datatypes;
+      return;
+    });
   })
   .then(() => {
     console.log("                Seed was successful");

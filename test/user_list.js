@@ -48,40 +48,48 @@ export const projects = [
 
 export const categories = [
   {
-    name: 'Mini site',
+    name: 'assets',
     visible: true
   },
   {
-    name: 'In and out',
+    name: 'banners',
     visible: true
   },
   {
-    name: 'Large site',
+    name: 'brands',
     visible: true
   },
   {
-    name: 'Partner site',
+    name: 'pages',
     visible: true
   },
   {
-    name: 'Mobile only site',
+    name: 'scripts',
     visible: false
   }
 ];
 
 export const datatypes = [
   {
-    name: 'recipe',
-    description: 'how to cook things',
+    name: 'asset',
+    description: 'asset',
     visible: true,
-    fields: {"recipe": "text", "code": "html", "photos": "high res"},
     categoryId: 1
   },
   {
-    name: 'pattern',
-    description: 'how to make things',
+    name: 'script',
+    description: 'some scripts',
     visible: true,
-    fields: {"pattern": "text stuff", "code": "css", "expiration": "soon"},
     categoryId: 2
   }
-]
+];
+export const fields = [
+  {
+    name: 'HTML Template',
+    description: 'some HTML'
+  },
+  {
+    name: 'CSS',
+    description: 'some CSS'
+  }
+];

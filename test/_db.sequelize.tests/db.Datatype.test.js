@@ -18,7 +18,6 @@ describe('Datatype Db testing', () => {
         datatype[1].should.have.property('createdAt');
         datatype[0].should.have.property('updatedAt');
         datatype[0].should.have.property('categoryId');
-        datatype[1].should.have.property('fields');
         done();
       }); // end then
     });
@@ -30,7 +29,6 @@ describe('Datatype Db testing', () => {
         name: 'recipez',
         description: 'how to cook things in the dark',
         visible: true,
-        fields: {"recipez": "text", "codez": "html", "photoz": "high res"},
         categoryId: 3
       };
       Db.models.datatype.create(newDatatype)
@@ -43,10 +41,21 @@ describe('Datatype Db testing', () => {
         datatype.should.have.property('createdAt');
         datatype.should.have.property('updatedAt');
         datatype.should.have.property('categoryId');
-        datatype.should.have.property('fields');
-        datatype.fields.photoz.should.equal('high res');
         done();
       }); // end then
+    });
+  });
+  describe('Get a datatypes fields', () => {
+    it('should create a datatype', done => {
+      Db.models.datatype.findById(1)
+      .then(datatype => {
+        return datatype.getFields();
+      })
+      .then(fields => {
+        fields.should.be.a('array');
+        fields.length.should.equal(2);
+        done();
+      });
     });
   });
   describe('Update a datatype', () => {
