@@ -8,8 +8,10 @@ export default {
     type: Project,
     args: {
       name: {
-        type: new GraphQLNonNull(GraphQLString),
-        description: new GraphQLNonNull(GraphQLString)
+        type: new GraphQLNonNull(GraphQLString)
+      },
+      description: {
+        type: GraphQLString
       }
     },
     async resolve(source, args) {
@@ -17,7 +19,6 @@ export default {
         name: args.name.toLowerCase(),
         description: args.description
       });
-      console.log('createdProject', createdProject);
       return createdProject;
     }
   },
@@ -29,6 +30,9 @@ export default {
       },
       name: {
         type: new GraphQLNonNull(GraphQLString)
+      },
+      description: {
+        type: GraphQLString
       }
     },
     async resolve(source, args) {

@@ -49,8 +49,8 @@ describe('Graphql Project route testing', () => {
           projects[0].should.have.property('id');
           projects[0].name.should.be.a('string');
           projects[1].description.should.be.a('string');
-          projects[1].name.should.contain('Promo');
-          projects[1].description.should.contain('ribs');
+          // projects[1].name.should.contain('Promo');
+          // projects[1].description.should.contain('ribs');
           if (err) console.log(err);
           done();
         });
@@ -99,55 +99,57 @@ describe('Graphql Project route testing', () => {
         });
     });
   });
-  xdescribe('createProject', () => {
+  describe('createProject', () => {
     it('it should create a project', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
         .set({Authorization: `Bearer ${authToken}`})
+        // query: 'mutation{createPermission(name:"burn"){id,name}}'
         .send({
-          query: 'mutation{createProject(name:"Toast on a stick",description:"A site that memorializes Larry Bud"){id,name,description}}'
+          query: 'mutation{createProject(name:"Toast on a stick",description:"Immortalize Larry Bud Melman"){id,name,description}}'
         })
         .end((err, res) => {
           res.should.have.status(200);
-          console.log('res.body.data.createProject', res.body.data.createProject);
-          res.body.data.createProject.name.should.equal('burn');
+          // console.log('res.body.data.createProject', res.body.data.createProject);
+          res.body.data.createProject.name.should.equal('toast on a stick');
+          res.body.data.createProject.description.should.equal('Immortalize Larry Bud Melman');
           // res.body.data.createProject.id.should.equal(5);
           if (err) console.log(err);
           done();
         });
     });
   });
-  xdescribe('deleteProject', () => {
-    it('it should delete a project', done => {
+  describe('updateProject', () => {
+    it('it should update a project', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
         .set({Authorization: `Bearer ${authToken}`})
         .send({
-          query: 'mutation{deleteProject(id:5){id,name}}'
+          query: 'mutation{updateProject(id:3,name:"grease the wheels"){id,name,description}}'
         })
         .end((err, res) => {
+          // console.log('res.body.data.updateProject', res.body.data.updateProject);
           res.should.have.status(200);
-          console.log('res.body.data.deleteProject', res.body.data.deleteProject);
-          res.body.data.deleteProject.should.be.a('object');
+          res.body.data.updateProject.should.be.a('object');
+          res.body.data.updateProject.name.should.equal('grease the wheels');
+          res.body.data.updateProject.description.should.equal('Flank ribeye sirloin, rump bresaola beef pancetta short ribs porchetta chuck frankfurter. Kevin ribeye meatball bresaola shank pork belly. Ham beef chicken ball tip, cow spare ribs biltong drumstick pork beef ribs.');
+          res.body.data.updateProject.id.should.equal(3);
           if (err) console.log(err);
           done();
         });
     });
   });
-  xdescribe('updateProject', () => {
-    it('it should update a permission', done => {
+  describe('deleteProject', () => {
+    it('it should delete a project', done => {
       chai.request('http://localhost:3000')
         .post('/graphql')
         .set({Authorization: `Bearer ${authToken}`})
         .send({
-          query: 'mutation{updatePermission(id:3,name:"lube"){id,name}}'
+          query: 'mutation{deleteProject(id:4){id,name}}'
         })
         .end((err, res) => {
           res.should.have.status(200);
-          // console.log('res.body.data.updatePermission', res.body.data.updatePermission);
-          res.body.data.updatePermission.should.be.a('object');
-          res.body.data.updatePermission.name.should.equal('lube');
-          res.body.data.updatePermission.id.should.equal(3);
+          res.body.data.deleteProject.should.be.a('object');
           if (err) console.log(err);
           done();
         });
