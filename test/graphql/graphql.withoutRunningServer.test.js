@@ -24,9 +24,9 @@ describe('Graphql Permissions route testing without using chai http', () => {
       }
     `;
     const authTokenResponse = await graphql(Schema, query);
-    console.log('it worked', authTokenResponse);
+    // console.log('it worked', authTokenResponse);
     authToken = authTokenResponse.data.user.authToken;
-    console.log('authToken', authTokenResponse.data.user.authToken, authToken);
+    // console.log('authToken', authTokenResponse.data.user.authToken, authToken);
     expect(authToken).to.exist;
   });
   // logging out after each login.
