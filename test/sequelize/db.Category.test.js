@@ -4,18 +4,6 @@ const chai = require('chai');
 
 const should = chai.should();// eslint-disable-line no-unused-vars
 
-import {seed} from '../../seed';
-
-// before(done => {
-//   seed().then(() => {
-//     done();
-//   })
-//   .catch(err => {
-//     console.error(err);
-//     done();
-//   });
-// });
-
 describe('Category Db testing', () => {
   describe('Get all categories', () => {
     it('should get all categories', done => {

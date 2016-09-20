@@ -15,15 +15,15 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 chai.use(chaiHttp);
 
 describe('User Db testing, before Hashing Passwords', () => {
-  before(done => {
-    seed().then(() => {
-      done();
-    })
-    .catch(err => {
-      console.error(err);
-      done();
-    });
-  });
+  // before(done => {
+  //   seed().then(() => {
+  //     done();
+  //   })
+  //   .catch(err => {
+  //     console.error(err);
+  //     done();
+  //   });
+  // });
 
   describe('Get all users', () => {
     it('should get all users', done => {
