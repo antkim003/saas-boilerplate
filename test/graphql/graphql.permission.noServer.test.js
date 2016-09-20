@@ -79,40 +79,37 @@ describe('Graphql Permission route testing', () => {
           // done();
         });
     });
-  });  // describe('deletePermission', () => {
-  //   it('it should delete a permission', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       .send({
-  //         query: 'mutation{deletePermission(id:5){id,name}}'
-  //       })
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         // console.log('res.body.data.deletePermission', res.body.data.deletePermission);
-  //         res.body.data.deletePermission.should.be.a('object');
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('updatePermission', () => {
-  //   it('it should update a permission', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       .send({
-  //         query: 'mutation{updatePermission(id:3,name:"lube"){id,name}}'
-  //       })
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         // console.log('res.body.data.updatePermission', res.body.data.updatePermission);
-  //         res.body.data.updatePermission.should.be.a('object');
-  //         res.body.data.updatePermission.name.should.equal('lube');
-  //         res.body.data.updatePermission.id.should.equal(3);
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
+  });
+  describe('updatePermission', () => {
+    it('it should update a permission', done => {
+      const query = 'mutation{updatePermission(id:3,name:"lube"){id,name}}';
+      graphql(Schema, query)
+        .then(res => {
+          const permission = res.data.updatePermission;
+          expect(permission).to.be.a('object');
+          expect(permission.name).to.equal('lube');
+          expect(permission.id).to.equal(3);
+          done();
+        })
+        .catch(err => {
+          console.log(error(err));
+          // done();
+        });
+    });
+  });
+  describe('deletePermission', () => {
+    it('it should delete a permission', done => {
+      const query = 'mutation{deletePermission(id:5){id,name}}';
+      graphql(Schema, query)
+        .then(res => {
+          const permission = res.data.deletePermission;
+          expect(permission).to.be.a('object');
+          done();
+        })
+        .catch(err => {
+          console.log(error(err));
+          // done();
+        });
+    });
+  });
 }); // end testing block
