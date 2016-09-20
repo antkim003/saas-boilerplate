@@ -1,6 +1,4 @@
 /* eslint-disable no-undef */
-// import {Permissions, Usertypes, users, userTypesAssignments} from './user_list';
-// import {seed} from '../../seed';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 
@@ -9,15 +7,6 @@ const should = chai.should();// eslint-disable-line no-unused-vars
 chai.use(chaiHttp);
 
 describe('Graphql Users route testing', () => {
-  // before(done => {
-  //   seed().then(() => {
-  //     done();
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //     done();
-  //   });
-  // });
   let authToken = '';
   beforeEach(done => {
     chai.request('http://localhost:3000')
