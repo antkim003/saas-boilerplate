@@ -1,10 +1,30 @@
 /* eslint-disable no-undef */
 const Db = require('../../src/server/database/setupDB');
 const chai = require('chai');
-
+import {seed} from '../../seed';
 const should = chai.should();// eslint-disable-line no-unused-vars
 
 describe('Category Db testing', () => {
+  before(done => {
+    seed().then(() => {
+      done();
+    })
+    .catch(err => {
+      console.error(err);
+      done();
+    });
+  });
+  after(done => {
+    // console.log('Db', Db);
+    Db.drop().then(() => {
+      done();
+    })
+    .catch(err => {
+      console.error(err);
+      done();
+    });
+  });
+
   describe('Get all categories', () => {
     it('should get all categories', done => {
       Db.models.category.findAll()

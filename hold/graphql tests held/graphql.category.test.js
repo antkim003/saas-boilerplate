@@ -1,13 +1,34 @@
 /* eslint-disable no-undef */
+const Db = require('../../src/server/database/setupDB');
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-
+import {seed} from '../../seed';
 const should = chai.should();// eslint-disable-line no-unused-vars
 
 chai.use(chaiHttp);
 
 describe('Graphql Category route testing', () => {
   let authToken = '';
+  before(done => {
+    seed().then(() => {
+      done();
+    })
+    .catch(err => {
+      console.error(err);
+      done();
+    });
+  });
+  after(done => {
+    // console.log('Db', Db);
+    Db.drop().then(() => {
+      done();
+    })
+    .catch(err => {
+      console.error(err);
+      done();
+    });
+  });
+
   beforeEach(done => {
     chai.request('http://localhost:3000')
       .post('/graphql')
@@ -23,7 +44,7 @@ describe('Graphql Category route testing', () => {
         }
         done();
       });
-  });// end before
+  });// end beforeEach
   // logging out after each login.
   afterEach(done => {
     authToken = '';
@@ -43,7 +64,7 @@ describe('Graphql Category route testing', () => {
           const categories = res.body.data.getAllCategories;
           res.should.have.status(200);
           categories.should.be.a('array');
-          categories.length.should.equal(6);
+          categories.length.should.equal(5);
           categories[0].should.have.property('name');
           categories[1].should.have.property('visible');
           categories[0].should.have.property('id');

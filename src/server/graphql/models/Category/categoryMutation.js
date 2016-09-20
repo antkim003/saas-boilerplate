@@ -48,7 +48,6 @@ export default {
       } else {
         categoryFoundEdits.visible = categoryFound.visible
       }
-      console.log('categoryFoundEdits', categoryFoundEdits);
       const updatedCategory = await categoryFound.update(categoryFoundEdits);
       if (updatedCategory.error) console.error(updatedCategory.error);
       return updatedCategory;

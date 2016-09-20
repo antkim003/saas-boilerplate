@@ -1,22 +1,31 @@
 /* eslint-disable no-undef */
 const Db = require('../../src/server/database/setupDB');
 const chai = require('chai');
-// import {seed} from '../seed';
+import {seed} from '../../seed';
 
 const should = chai.should();// eslint-disable-line no-unused-vars
 
 describe('Project Db testing', () => {
   let createdProject = {};
-  // before(done => {
-  //   seed().then(() => {
-  //     done();
-  //   })
-  //   .catch(err => {
-  //     console.error(err);
-  //     done();
-  //   });
-  // });
-
+  before(done => {
+    seed().then(() => {
+      done();
+    })
+    .catch(err => {
+      console.error(err);
+      done();
+    });
+  });
+  after(done => {
+    // console.log('Db', Db);
+    Db.drop().then(() => {
+      done();
+    })
+    .catch(err => {
+      console.error(err);
+      done();
+    });
+  });
   describe('Get all projects', () => {
     it('should get all projects', done => {
       Db.models.project.findAll()
