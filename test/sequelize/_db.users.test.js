@@ -1,15 +1,7 @@
 /* eslint-disable no-undef */
 const Db = require('../../src/server/database/setupDB');
-import {Permissions, Usertypes, users, userTypesAssignments} from './../user_list';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
-import bcrypt from 'bcrypt';
-import promisify from 'es6-promisify';
-const hash = promisify(bcrypt.hash);
-import {seed} from '../../seed';
-// const server = require('.././src/server/server');
-// const compare = promisify(bcrypt.compare);
-
 const should = chai.should();// eslint-disable-line no-unused-vars
 
 chai.use(chaiHttp);
@@ -34,7 +26,6 @@ describe('User Db testing, before Hashing Passwords', () => {
       done();
     });
   });
-
   describe('Get all users', () => {
     it('should get all users', done => {
       Db.models.user.findAll()
@@ -111,8 +102,8 @@ describe('User Db testing, before Hashing Passwords', () => {
     });
   });
   describe('Update a user', () => {
-      it('should update a user', done => {
-        Db.models.user.find({where: {id: 6}})
+    it('should update a user', done => {
+      Db.models.user.find({where: {id: 6}})
         .then(user => {
           return user.update({email: "algore@macys.com"});
         })
@@ -120,8 +111,8 @@ describe('User Db testing, before Hashing Passwords', () => {
           user.email.should.equal("algore@macys.com");
           done();
         });
-      });
     });
+  });
   describe('Delete a user', () => {
     it('should delete a user', done => {
       Db.models.user.find({where: {id: 6}})
@@ -129,7 +120,7 @@ describe('User Db testing, before Hashing Passwords', () => {
         return user.destroy();
       })
       .then(() => {
-        return Db.models.user.findAll()
+        return Db.models.user.findAll();
       })
       .then(users => {
         users.length.should.equal(5);

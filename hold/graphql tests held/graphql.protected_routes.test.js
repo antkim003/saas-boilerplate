@@ -10,9 +10,6 @@ chai.use(chaiHttp);
 describe('Graphql Protected route testing', () => {
   // auth token cache this is working like localStorage would on our clientside
   let authToken = '';
-  // before(done => {
-  //   seed().then(done, done);
-  // });
   // logging in here for authentication
   beforeEach(done => {
     chai.request('http://localhost:3000')
