@@ -28,6 +28,7 @@ export default {
     },
     async resolve(root, args) {
       const users = await Db.models.user.findAll();
+      console.log('this is failing: ', users);
       return users;
     }
   },

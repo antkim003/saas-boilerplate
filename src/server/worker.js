@@ -65,8 +65,8 @@ export function run(worker) {
     } else if (logout) {
       console.log('you made it to logout, sir');
     } else {
-      // jwt({secret: process.env.JWT_SECRET, credentialsRequired: false})(req, res, next);
-      jwt({secret: process.env.JWT_SECRET})(req, res, next);
+      jwt({secret: process.env.JWT_SECRET, credentialsRequired: false})(req, res, next);
+      // jwt({secret: process.env.JWT_SECRET})(req, res, next);
     }
   }
 

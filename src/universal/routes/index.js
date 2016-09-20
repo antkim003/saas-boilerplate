@@ -1,12 +1,12 @@
 import AppContainer from 'universal/containers/App/AppContainer';
  // ALL OF OR ROUTE FUNCTIONALITY GOES THROUGH HERE
 
-
 export default store => {
   return {
     component: AppContainer,
     childRoutes: [
       require('./articles')(store),
+      require('./users')(store),
       require('./landing'),
       require('./accounts')(store),
       require('./graphql'),
