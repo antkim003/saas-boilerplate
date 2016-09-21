@@ -1,5 +1,6 @@
 /* eslint-disable no-undef */
 const Db = require('../../src/server/database/setupDB');
+import {seed} from '../../seed';
 const chai = require('chai');
 const chaiHttp = require('chai-http');
 const should = chai.should();// eslint-disable-line no-unused-vars
@@ -34,6 +35,7 @@ describe('User Db testing, before Hashing Passwords', () => {
         users.length.should.equal(5);
         users[0].should.have.property('id');
         users[0].should.have.property('email');
+        users[0].should.have.property('name');
         users[0].should.have.property('password');
         users[1].should.have.property('createdAt');
         users[2].should.have.property('updatedAt');
@@ -83,6 +85,7 @@ describe('User Db testing, before Hashing Passwords', () => {
   describe('Create a user', () => {
     const newUser = {
       email: 'jaspercat@gmail.com',
+      name: 'Jasper The Cat',
       password: 'password',
       active: true
     };
@@ -97,6 +100,7 @@ describe('User Db testing, before Hashing Passwords', () => {
         user.should.have.property('usertypeId');
         user.should.have.property('active');
         user.email.should.equal('jaspercat@gmail.com');
+        user.name.should.equal('Jasper The Cat');
         done();
       });
     });

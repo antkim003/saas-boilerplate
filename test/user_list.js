@@ -9,26 +9,31 @@ export const Usertypes = [
 export const users = [
   {
     email: 'admin123@gmail.com',
+    name: 'Cool Dude',
     password: 'password',
     active: true
   },
   {
     email: 'admin@gmail.com',
+    name: 'Al Gore',
     password: 'password',
     active: true
   },
   {
     email: 'developer_admin@gmail.com',
+    name: 'Lulz Cat',
     password: 'password',
     active: true
   },
   {
     email: 'user@gmail.com',
+    name: 'Monarail Kitty',
     password: 'password',
     active: true
   },
   {
     email: 'inactiveDude@gmail.com',
+    name: 'Sloth Coder',
     password: 'password',
     active: false
   }
@@ -91,5 +96,22 @@ export const fields = [
   {
     name: 'CSS',
     description: 'some CSS'
+  }
+];
+export const assets = [
+  {
+    name: 'Lots of Macys Logos',
+    description: 'very useful logos',
+    url: 'http://www.macys.com'
+  },
+  {
+    name: 'Style Guide',
+    description: 'some style guides',
+    url: 'http://www.newstimes.com'
+  },
+  {
+    name: 'Partner links',
+    description: 'some HTML',
+    url: 'http://www.amazon.com'
   }
 ];

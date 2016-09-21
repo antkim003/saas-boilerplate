@@ -1,5 +1,6 @@
 @value layout: '../../styles/layout.css';
 @value maxWidth from layout;
+@import url('https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css');
 
 .app {
   height: 100vh;

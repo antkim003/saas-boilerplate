@@ -1,7 +1,7 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
-import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields} from './test/user_list';
+import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields, assets} from './test/user_list';
 import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
@@ -107,7 +107,7 @@ function seed() {
         Db.models.project.create(project)
       );
     });
-    return promise.each(projectPromises, () => {})
+    return promise.each(projectPromises, () => {});
   })
   // now add users to projects via setter
   .then(projects => {
@@ -117,7 +117,7 @@ function seed() {
         project.setUsers(createdUsers)
       );
     });
-    return promise.each(userIntoProjectPromises, () => {})
+    return promise.each(userIntoProjectPromises, () => {});
   })
   // find and store projects for later use
   .then(() => {
@@ -148,12 +148,12 @@ function seed() {
       if (i < 2) {
         createdcategories[i].projectId = 1;
       } else {
-        createdcategories[i].projectId = 2
+        createdcategories[i].projectId = 2;
       }
       addCategoryToProjectPromises.push(
         createdcategories[i].save()
       );}
-    return promise.each(addCategoryToProjectPromises, () => {})
+    return promise.each(addCategoryToProjectPromises, () => {});
   })
   // now create datatypes
   .then(() => {
@@ -162,7 +162,7 @@ function seed() {
       return Db.models.datatype.findAll()
       .then(datatypez => {
         createdDatatypes = datatypez;
-        return
+        return;
       });
     });
   })
@@ -190,6 +190,10 @@ function seed() {
       createdDatatypes = datatypes;
       return;
     });
+  })
+  // now create some assets
+  .then(() => {
+    return Db.models.asset.bulkCreate(assets);
   })
   .then(() => {
     console.log("                Seed was successful");

@@ -5,6 +5,7 @@ import {Project} from './project';
 import {Category} from './category';
 import {Datatype} from './datatype';
 import {Field} from './field';
+import {Asset} from './asset';
 
 User.hasMany(Article);
 Article.belongsTo(User);

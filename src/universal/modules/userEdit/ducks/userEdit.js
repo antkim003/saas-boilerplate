@@ -1,18 +1,18 @@
-import {fromJS, Map as iMap, List as iList} from 'immutable';
+import {fromJS, Map as iMap, List as iList, Record as iRecord} from 'immutable';
 import {fetchGraphQL} from '../../../utils/fetching';
 
-export const GET_USERS = 'GET_USERS';
-export const USERS = 'users';
+export const GET_USEREDIT = 'GET_USEREDIT';
+export const USEREDIT = 'userEdit';
 
 const initialState = iMap({
-  users: iList()
+  userEdit: iRecord()
 });
 
 export function reducer(state = initialState, action) {
   switch (action.type) {
-    case GET_USERS:
+    case GET_USEREDIT:
       return state.merge({
-        users: state.get('users').concat(fromJS(action.payload))
+        userEdit: state.get('userEdit').concat(fromJS(action.payload))
       });
     default:
       return state;

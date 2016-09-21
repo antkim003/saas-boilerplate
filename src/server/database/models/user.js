@@ -20,6 +20,10 @@ export const User = Conn.define('user', {
     type: Sequelize.STRING,
     allowNull: false
   },
+  name: {
+    type: Sequelize.STRING,
+    allowNull: false
+  },
   email: {
     type: Sequelize.STRING,
     allowNull: false,

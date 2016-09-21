@@ -28,7 +28,6 @@ export default {
     },
     async resolve(root, args) {
       const users = await Db.models.user.findAll();
-      console.log('this is failing: ', users);
       return users;
     }
   },
@@ -36,7 +35,8 @@ export default {
     type: new GraphQLList(User),
     args: {
       id: {type: GraphQLID},
-      email: {type: GraphQLString}
+      email: {type: GraphQLString},
+      name: {type: GraphQLString}
     },
     resolve(root, args) {
       return Db.models.user.findAll({where: args});

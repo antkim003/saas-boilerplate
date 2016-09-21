@@ -24,9 +24,12 @@ export default {
       },
       password: {
         type: new GraphQLNonNull(GraphQLString)
+      },
+      name: {
+        type: new GraphQLNonNull(GraphQLString)
       }
     },
-    async resolve(source, {username, email, password}) {
+    async resolve(source, {name, email, password}) {
       console.log('args!!!!', args);
       const user = await getUserByEmail(email);
       if (user) {
@@ -48,7 +51,7 @@ export default {
         const id = uuid.v4();
         const userDoc = {
           email: email,
-          username: username,
+          name: name,
           password: newHashedPassword
         };
 
@@ -84,6 +87,9 @@ export default {
       },
       active: {
         type: GraphQLBoolean
+      },
+      name: {
+        type: GraphQLString
       }
     },
     async resolve(source, args) {
@@ -92,10 +98,14 @@ export default {
         email: userById.email,
         password: userById.password,
         active: userById.active,
-        usertypeId: userById.usertypeId
+        usertypeId: userById.usertypeId,
+        name: userById.name
       };
       if (args.email !== undefined) {
         userPreviousInfo.email = args.email.toLowerCase();
+      }
+      if (args.name !== undefined) {
+        userPreviousInfo.name = args.name;
       }
       if (args.password !== undefined) {
         const newHashedPassword = await hash(args.password, 10);

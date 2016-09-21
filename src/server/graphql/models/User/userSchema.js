@@ -23,6 +23,13 @@ export const User = new GraphQLObjectType({
         describe: "Hashed password",
         resolve: () => null
       },
+      name: {
+        type: GraphQLString,
+        describe: "User Name",
+        resolve(user) {
+          return user.name;
+        }
+      },
       email: {
         type: GraphQLString,
         describe: "The email address",
@@ -82,24 +89,3 @@ export const UserWithAuthToken = new GraphQLObjectType({
     authToken: {type: GraphQLString, description: 'The auth token to allow for quick login'}
   })
 });
-
-// export const Permission = new GraphQLObjectType({
-//   name: 'Permission',
-//   description: "This is the permissions of a user",
-//   fields: () => {
-//     return {
-//       id: {
-//         type: GraphQLInt,
-//         resolve(user) {
-//           return user.id;
-//         }
-//       },
-//       userType: {
-//         type: GraphQLString,
-//         resolve(permission) {
-//           return permission.userType;
-//         }
-//       }
-//     };
-//   }
-// });
