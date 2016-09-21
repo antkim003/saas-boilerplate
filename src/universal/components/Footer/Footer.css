@@ -1,7 +1,9 @@
 @value maxWidth: '../../styles/layout.css';
+@value primary, secondary from 'universal/styles/colors.css';
+
 
 .Footer {
-  background: #333;
+  background: secondary;
   color: #fff;
 }
 

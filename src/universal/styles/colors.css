@@ -1,5 +1,5 @@
 @value primary: black;
-@value secondary: gray;
+@value secondary: rgba(127,127,127,0.5);
 
 
 .brandColor {
