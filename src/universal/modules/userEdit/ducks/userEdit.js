@@ -1,7 +1,7 @@
 import {fromJS, Map as iMap, List as iList, Record as iRecord} from 'immutable';
 import {fetchGraphQL} from '../../../utils/fetching';
 
-export const GET_USEREDIT = 'GET_USEREDIT';
+export const GET_USERTOEDIT = 'GET_USEREDIT';
 export const USEREDIT = 'userEdit';
 
 const initialState = iMap({
@@ -10,18 +10,18 @@ const initialState = iMap({
 
 export function reducer(state = initialState, action) {
   switch (action.type) {
-    case GET_USEREDIT:
+    case GET_USERTOEDIT:
       return state.merge({
-        userEdit: state.get('userEdit').concat(fromJS(action.payload))
+        userEdit: fromJS(action.payload)
       });
     default:
       return state;
   }
 }
-export function getUsers() {
+export function getUser(id) {
   const userSchema =
   `
-    {
+    (id:${id}){
       email,
       id,
       name,
@@ -31,10 +31,9 @@ export function getUsers() {
     }
   `;
   return async(dispatch, getState) => {
-    console.log(getState);
     const query = `
         query {
-          getAllUsers
+          getUserById
           ${userSchema}
         }`;
     const {error, data} = await fetchGraphQL({query});
@@ -42,8 +41,8 @@ export function getUsers() {
       console.error(error);
     } else {
       dispatch({
-        type: GET_USERS,
-        payload: data.getAllUsers
+        type: GET_USERTOEDIT,
+        payload: data.getUserById
       });
     }
   };

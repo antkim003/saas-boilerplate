@@ -1,12 +1,19 @@
 import React, {Component, PropTypes} from 'react';
 import styles from './Users.css';
 import {Row, Col, Grid, Table, Button} from 'react-bootstrap';
+import UserEditModal from './userEditModal.js';
 
 export default class Users extends Component {
   static propTypes = {
     users: PropTypes.array
   }
+  editHandler = (user, event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    console.log("handler clicked", event.currentTarget);
+  }
   render() {
+    const self = this;
     let template = this.props.users.map((user, idx) => {
       return (
         <tr key={idx}>
@@ -15,7 +22,9 @@ export default class Users extends Component {
           <td>{user.email}</td>
           <td>{processPermissions(user.permissions)}</td>
           <td>{user.usertype}</td>
-          <td><Button bsStyle="info" bsSize="xsmall">Deactivate</Button></td>
+          <td><Button bsStyle="info" bsSize="xsmall">Deactivate</Button>
+            <UserEditModal user={user}/>
+          </td>
         </tr>
     );
     });

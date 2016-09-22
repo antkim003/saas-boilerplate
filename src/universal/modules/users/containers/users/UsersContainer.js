@@ -27,7 +27,6 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   return {
-    getArticles: bindActionCreators({...getUsers}, dispatch),
     dispatch
   };
 }

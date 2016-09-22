@@ -12,3 +12,8 @@
   margin-top: 5px;
   margin-bottom: 5px
 }
+
+._Dialog {
+  color: red;
+  max-height: 1000px;
+}

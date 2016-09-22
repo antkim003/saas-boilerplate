@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import UserEdit from '../../components/userEdit/userEdit';
-// import {getUsers} from '../../ducks/users.js';
+import {getUser} from '../../ducks/userEdit.js';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -11,7 +11,7 @@ export default class UserEditContainer extends Component {
   constructor(props) {
     super(props);
     const {dispatch} = props;
-    // dispatch(getUsers());
+    dispatch(getUser(1));
   }
   render() {
     return <UserEdit {...this.props}/>;
@@ -21,13 +21,13 @@ export default class UserEditContainer extends Component {
 function mapStateToProps(state) {
   state = ensureState(state);
   return {
-    users: state.get('userEdit').toJS().user
+    userEdit: state.get('userEdit').toJS().userEdit
   };
 }
 
 function mapDispatchToProps(dispatch) {
   return {
-    getArticles: bindActionCreators({...getUsers}, dispatch),
+    getUser: bindActionCreators({...getUser}, dispatch),
     dispatch
   };
 }

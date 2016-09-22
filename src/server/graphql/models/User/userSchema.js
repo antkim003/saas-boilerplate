@@ -53,7 +53,6 @@ export const User = new GraphQLObjectType({
         resolve(user) {
           return user.getPermissions()
           .then(permissionsFound => {
-            console.log('permissionsFound', permissionsFound);
             return permissionsFound;
           });
         }
