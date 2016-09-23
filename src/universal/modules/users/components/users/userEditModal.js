@@ -1,8 +1,9 @@
 // import React from 'react';
 import React, {Component, PropTypes} from 'react';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
+import {Dialog, FlatButton, TextField} from 'material-ui';
+// import FlatButton from 'material-ui/FlatButton';
 const ReactDOM = require('react-dom');
+// import TextField from 'material-ui/TextField';
 // import RaisedButton from 'material-ui/RaisedButton';
 import {Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 /**
@@ -14,7 +15,15 @@ export default class UserEditModal extends Component {
   }
   state = {
     open: false,
-    user: this.props.user
+    name: this.props.user.name
+  };
+
+  handleChange = event => {
+    console.log('event.target.id', event.target.id)
+    this.setState({
+      name: event.target.value
+    });
+    console.log('this.state.name', this.state.name);
   };
 
   handleOpen = () => {
@@ -23,10 +32,8 @@ export default class UserEditModal extends Component {
 
   handleSubmit = () => {
     // for will be handled here.
-    // console.log('this.refs.name', this.refs.name.getInputDOMNode());
-    // console.log('this.refs.name', this.refs.name.getValue());
-    console.log('this.refs.name', this.refs.valueOf());
     this.setState({open: false});
+    console.log('this.state.name from submit', this.state.name);
   };
 
   handleClose = () => {
@@ -54,46 +61,11 @@ export default class UserEditModal extends Component {
           autoScrollBodyContent={false}
           contentStyle={{width: "100%", maxHeight: "none"}}
           actions={actions} open={this.state.open} >
-          <form>
-            <FormGroup>
-              <ControlLabel>Name</ControlLabel>
-              <FormControl
-                id="formName"
-                type="text"
-                label="Name"
-                ref="name"
-                placeholder={this.props.user.name}
-              />
-              <ControlLabel>Email</ControlLabel>
-              <FormControl
-                id="formEmail"
-                type="text"
-                label="Email"
-                placeholder={this.props.user.email}
-              />
-            <ControlLabel>Password</ControlLabel>
-              <FormControl
-                id="formPassword"
-                type="text"
-                label="Password"
-                placeholder="Enter new password"
-              />
-            <ControlLabel>User Type</ControlLabel>
-              <FormControl
-                id="formUserType"
-                type="text"
-                label="User Type"
-                placeholder={this.props.user.usertype}
-              />
-            </FormGroup>
-            <FormGroup controlId="formControlsSelect">
-              <ControlLabel>Select</ControlLabel>
-              <FormControl componentClass="select" placeholder="select">
-                <option value="select">Admin</option>
-                <option value="other">End User</option>
-              </FormControl>
-            </FormGroup>
-          </form>
+          <TextField
+            id="name"
+            value={this.state.name}
+            onChange={this.handleChange}
+        />
         </Dialog>
       </div>
     );
