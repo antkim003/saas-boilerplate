@@ -1,6 +1,7 @@
 // import React from 'react';
 import React, {Component, PropTypes} from 'react';
 import {Dialog, FlatButton, TextField, Divider, SelectField, MenuItem} from 'material-ui';
+import {updateUser} from '../../ducks/users.js';
 // import FlatButton from 'material-ui/FlatButton';
 // import TextField from 'material-ui/TextField';
 // import RaisedButton from 'material-ui/RaisedButton';
@@ -9,14 +10,17 @@ import {Button} from 'react-bootstrap';
  * A modal dialog can only be closed by selecting one of the actions.
  */
 export default class UserEditModal extends Component {
+
   static propTypes = {
     user: PropTypes.object
   }
   state = {
     open: false,
+    id: this.props.user.id,
     name: this.props.user.name,
     email: this.props.user.email,
     usertype: this.props.user.usertype,
+    active: this.props.user.active,
     password: '***********************',
     passwordCheck: '***********************',
     usertypes: ['admin', 'developer', 'consumer']
@@ -29,7 +33,8 @@ export default class UserEditModal extends Component {
     });
   };
 
-  handleChangez = (event, index, value) => this.setState({usertype: value});
+  handleChangeUserType = (event, index, value) => this.setState({usertype: value});
+  handleChangeActive = (event, index, value) => this.setState({active: value});
 
   handleOpen = () => {
     this.setState({open: true});
@@ -39,7 +44,7 @@ export default class UserEditModal extends Component {
     // for will be handled here.
     this.setState({open: false});
     console.log('this.state from submit', this.state);
-    // console.log('this.state.email from submit', this.state.email);
+    // this.props.dispatch(updateUser({name:this.state.name}));
   };
 
   handleClose = () => {
@@ -47,6 +52,13 @@ export default class UserEditModal extends Component {
   };
 
   render() {
+    // this maps the usertypes array to possible choices in pulldown
+    let userTypeItems = this.state.usertypes.map((usertype, idx) => {
+      let usertypeCapped = usertype.substr(0, 1).toUpperCase() + usertype.substr(1);
+      return (
+        <MenuItem key={idx} value={usertype} primaryText={usertypeCapped}/>
+      );
+    });
     const actions = [
       <FlatButton
         label="Cancel"
@@ -83,12 +95,15 @@ export default class UserEditModal extends Component {
               onChange={this.handleChange}
               />
             <Divider/>
-              <SelectField value={this.state.usertype} id="usertypeSel" onChange={this.handleChangez}>
-              <MenuItem value={'developer'} primaryText="Developer"/>
-              <MenuItem value={'admin'} primaryText="Admin"/>
-              <MenuItem value={'consumer'} primaryText="Consumer"/>
+            <SelectField value={this.state.usertype} id="usertypeSel" onChange={this.handleChangeUserType}>
+              {userTypeItems}
             </SelectField>
             <Divider/>
+            <SelectField value={this.state.active} id="activeSel" onChange={this.handleChangeActive}>
+              <MenuItem key={1} value={true} primaryText={'Active'}/>
+              <MenuItem key={2} value={false} primaryText={'Inactive'}/>
+            </SelectField>
+              <Divider/>
             <TextField
               floatingLabelText="Enter New Password"
               id="password"

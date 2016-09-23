@@ -13,7 +13,12 @@ export default class Users extends Component {
     console.log("handler clicked", event.currentTarget);
   }
   render() {
-    let template = this.props.users.map((user, idx) => {
+    // sort users by id
+    const users = this.props.users.sort((a, b) => {
+      return parseFloat(a.id) - parseFloat(b.id);
+    });
+    // templatize the users to be placed in Component
+    let template = users.map((user, idx) => {
       return (
         <tr key={idx}>
           <td>{user.id}</td>
