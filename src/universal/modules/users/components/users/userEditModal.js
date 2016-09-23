@@ -2,6 +2,7 @@
 import React, {Component, PropTypes} from 'react';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
+const ReactDOM = require('react-dom');
 // import RaisedButton from 'material-ui/RaisedButton';
 import {Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
 /**
@@ -22,6 +23,9 @@ export default class UserEditModal extends Component {
 
   handleSubmit = () => {
     // for will be handled here.
+    // console.log('this.refs.name', this.refs.name.getInputDOMNode());
+    // console.log('this.refs.name', this.refs.name.getValue());
+    console.log('this.refs.name', this.refs.valueOf());
     this.setState({open: false});
   };
 
@@ -57,6 +61,7 @@ export default class UserEditModal extends Component {
                 id="formName"
                 type="text"
                 label="Name"
+                ref="name"
                 placeholder={this.props.user.name}
               />
               <ControlLabel>Email</ControlLabel>
@@ -82,12 +87,12 @@ export default class UserEditModal extends Component {
               />
             </FormGroup>
             <FormGroup controlId="formControlsSelect">
-    <ControlLabel>Select</ControlLabel>
-    <FormControl componentClass="select" placeholder="select">
-      <option value="select">select</option>
-      <option value="other">...</option>
-    </FormControl>
-  </FormGroup>
+              <ControlLabel>Select</ControlLabel>
+              <FormControl componentClass="select" placeholder="select">
+                <option value="select">Admin</option>
+                <option value="other">End User</option>
+              </FormControl>
+            </FormGroup>
           </form>
         </Dialog>
       </div>
