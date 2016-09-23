@@ -1,11 +1,10 @@
 // import React from 'react';
 import React, {Component, PropTypes} from 'react';
-import {Dialog, FlatButton, TextField, Divider} from 'material-ui';
+import {Dialog, FlatButton, TextField, Divider, SelectField, MenuItem} from 'material-ui';
 // import FlatButton from 'material-ui/FlatButton';
-const ReactDOM = require('react-dom');
 // import TextField from 'material-ui/TextField';
 // import RaisedButton from 'material-ui/RaisedButton';
-import {Button, FormControl, FormGroup, ControlLabel} from 'react-bootstrap';
+import {Button} from 'react-bootstrap';
 /**
  * A modal dialog can only be closed by selecting one of the actions.
  */
@@ -28,8 +27,9 @@ export default class UserEditModal extends Component {
     this.setState({
       [lineKey]: event.target.value
     });
-    console.log('this.state.name', this.state.name);
   };
+
+  handleChangez = (event, index, value) => this.setState({usertype: value});
 
   handleOpen = () => {
     this.setState({open: true});
@@ -38,7 +38,7 @@ export default class UserEditModal extends Component {
   handleSubmit = () => {
     // for will be handled here.
     this.setState({open: false});
-    console.log('this.state.name from submit', this.state.name);
+    console.log('this.state from submit', this.state);
     // console.log('this.state.email from submit', this.state.email);
   };
 
@@ -83,12 +83,11 @@ export default class UserEditModal extends Component {
               onChange={this.handleChange}
               />
             <Divider/>
-            <TextField
-              floatingLabelText="User Type"
-              id="usertype"
-              value={this.state.usertype}
-              onChange={this.handleChange}
-              />
+              <SelectField value={this.state.usertype} id="usertypeSel" onChange={this.handleChangez}>
+              <MenuItem value={'developer'} primaryText="Developer"/>
+              <MenuItem value={'admin'} primaryText="Admin"/>
+              <MenuItem value={'consumer'} primaryText="Consumer"/>
+            </SelectField>
             <Divider/>
             <TextField
               floatingLabelText="Enter New Password"

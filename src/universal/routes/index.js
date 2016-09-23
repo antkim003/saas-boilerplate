@@ -7,7 +7,6 @@ export default store => {
     childRoutes: [
       require('./articles')(store),
       require('./users')(store),
-      require('./userEdit')(store),
       require('./landing'),
       require('./accounts')(store),
       require('./graphql'),

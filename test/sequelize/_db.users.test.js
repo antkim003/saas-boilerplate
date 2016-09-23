@@ -77,7 +77,7 @@ describe('User Db testing, before Hashing Passwords', () => {
         return user.getUserType();
       })
       .then(res => {
-        res.name.should.equal('developer');
+        res.name.should.equal('admin');
         done();
       });
     });

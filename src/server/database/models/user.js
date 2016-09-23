@@ -46,8 +46,11 @@ export const User = Conn.define('user', {
         return this.save();
       },
       getUserType: function () {// eslint-disable-line babel/object-shorthand
-        const usertypeId = this.get('usertypeId');
-        return Usertype.find({attributes: ['name']}, {where: {id: usertypeId}});
+        let usertypeId = this.get('usertypeId');
+        return Usertype.findById(usertypeId)
+        .then(foundUserType => {
+          return foundUserType;
+        });
       },
       getPermissions: function () {// eslint-disable-line babel/object-shorthand
         const usertypeId = this.get('usertypeId');

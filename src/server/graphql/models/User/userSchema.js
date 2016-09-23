@@ -43,6 +43,7 @@ export const User = new GraphQLObjectType({
         resolve(user) {
           return user.getUserType()
           .then(usertype => {
+            // console.log('usertype in here!', usertype);
             return usertype.dataValues.name;
           });
         }
