@@ -54,16 +54,6 @@ export const fetchGraphQL = async graphParams => {
   const authToken = localStorage.getItem(socketOptions.authTokenName);
   const currentHostUrl = hostUrl();
   const graphQLUrl = `${currentHostUrl}/graphql`;
-  console.log('graphQLUrl', graphQLUrl);
-  let builtStuff = {
-    method: 'post',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${authToken}`
-    },
-    body: serializedParams
-  };
-  console.log('built sent stuff', builtStuff);
   const res = await fetch(graphQLUrl, {
     method: 'post',
     headers: {
@@ -72,7 +62,6 @@ export const fetchGraphQL = async graphParams => {
     },
     body: serializedParams
   });
-  console.log('res', res);
   const resJSON = await res.json();
   const {data, errors} = resJSON;
   return {data, error: getClientError(errors)};

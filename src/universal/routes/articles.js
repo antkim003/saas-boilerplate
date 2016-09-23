@@ -14,7 +14,6 @@ export default function (store) {
       const component = ArticleContainer;
       const newReducer = makeReducer(asyncReducers, optimistic);
       store.replaceReducer(newReducer);
-      console.log('store here: ', store);
       cb(null, {component});
     }
   };

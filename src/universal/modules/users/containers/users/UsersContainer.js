@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import Users from '../../components/users/users';
-import {getUsers} from '../../ducks/users.js';
+import {getUsers, getAllUserTypes} from '../../ducks/users.js';
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
@@ -12,6 +12,7 @@ export default class UsersContainer extends Component {
     super(props);
     const {dispatch} = props;
     dispatch(getUsers());
+    dispatch(getAllUserTypes());
   }
   render() {
     return <Users {...this.props}/>;
@@ -21,7 +22,8 @@ export default class UsersContainer extends Component {
 function mapStateToProps(state) {
   state = ensureState(state);
   return {
-    users: state.get('users').toJS().users
+    users: state.get('users').toJS().users,
+    // usertypes: state.get('usertypes').toJS().usertypes
   };
 }
 
