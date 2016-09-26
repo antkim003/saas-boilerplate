@@ -94,11 +94,10 @@ export function updateUser(user) {
   `
   (
     id:${user.id},
-    name:${user.name},
+    name:"${user.name}",
     active:${user.active},
     usertype:${user.usertype},
-    email:${user.email},
-    password:${user.password}
+    email:"${user.email}"
   )
   `;
   const userSchema =

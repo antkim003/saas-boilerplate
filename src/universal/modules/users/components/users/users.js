@@ -5,7 +5,8 @@ import UserEditModal from './userEditModal.js';
 
 export default class Users extends Component {
   static propTypes = {
-    users: PropTypes.array
+    users: PropTypes.array,
+    usertypes: PropTypes.array
   }
   editHandler = (user, event) => {
     event.preventDefault();
@@ -14,6 +15,7 @@ export default class Users extends Component {
   }
   render() {
     // sort users by id
+    const self = this;
     const users = this.props.users.sort((a, b) => {
       return parseFloat(a.id) - parseFloat(b.id);
     });
@@ -26,7 +28,7 @@ export default class Users extends Component {
           <td>{user.email}</td>
           <td>{processPermissions(user.permissions)}</td>
           <td>{user.usertype}</td>
-          <td><UserEditModal user={user}/></td>
+          <td><UserEditModal user={user} usertypes={self.props.usertypes} dispatch={self.props.dispatch}/></td>
         </tr>
     );
     });

@@ -12,7 +12,9 @@ import {Button} from 'react-bootstrap';
 export default class UserEditModal extends Component {
 
   static propTypes = {
-    user: PropTypes.object
+    user: PropTypes.object,
+    usertypes: PropTypes.array,
+    dispatch: PropTypes.func
   }
   state = {
     open: false,
@@ -21,9 +23,9 @@ export default class UserEditModal extends Component {
     email: this.props.user.email,
     usertype: this.props.user.usertype,
     active: this.props.user.active,
-    password: '***********************',
-    passwordCheck: '***********************',
-    usertypes: ['admin', 'developer', 'consumer']
+    password: '',
+    passwordCheck: '',
+    usertypes: this.props.usertypes
   };
 
   handleChange = event => {
@@ -32,7 +34,6 @@ export default class UserEditModal extends Component {
       [lineKey]: event.target.value
     });
   };
-
   handleChangeUserType = (event, index, value) => this.setState({usertype: value});
   handleChangeActive = (event, index, value) => this.setState({active: value});
 
@@ -41,10 +42,26 @@ export default class UserEditModal extends Component {
   };
 
   handleSubmit = () => {
-    // for will be handled here.
     this.setState({open: false});
     console.log('this.state from submit', this.state);
-    // this.props.dispatch(updateUser({name:this.state.name}));
+    // this maps the string for usertype back to an integer for Id
+    let usertypeId = 0;
+    for (var i = 0; i < this.props.usertypes.length; i++) {
+      if(this.state.usertype === this.props.usertypes[i].name){
+        usertypeId = this.props.usertypes[i].id;
+      }
+    }
+    let newUserInfo = {
+      id: this.state.id,
+      name: this.state.name,
+      email: this.state.email,
+      usertype: usertypeId,
+      active: this.state.active
+    };
+    if (this.state.password !== '' && (this.state.password === this.state.passwordCheck)) {
+      newUserInfo.password = this.state.password;
+    }
+    this.props.dispatch(updateUser(newUserInfo));
   };
 
   handleClose = () => {
@@ -54,9 +71,9 @@ export default class UserEditModal extends Component {
   render() {
     // this maps the usertypes array to possible choices in pulldown
     let userTypeItems = this.state.usertypes.map((usertype, idx) => {
-      let usertypeCapped = usertype.substr(0, 1).toUpperCase() + usertype.substr(1);
+      let usertypeCapped = usertype.name.substr(0, 1).toUpperCase() + usertype.name.substr(1);
       return (
-        <MenuItem key={idx} value={usertype} primaryText={usertypeCapped}/>
+        <MenuItem key={idx} value={usertype.name} primaryText={usertypeCapped}/>
       );
     });
     const actions = [

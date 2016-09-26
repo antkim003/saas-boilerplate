@@ -15,15 +15,14 @@ export default class UsersContainer extends Component {
     dispatch(getAllUserTypes());
   }
   render() {
-    return <Users {...this.props}/>;
+    return <Users {...this.props} {...this.props.data}/>;
   }
 }
 
 function mapStateToProps(state) {
   state = ensureState(state);
   return {
-    users: state.get('users').toJS().users,
-    // usertypes: state.get('usertypes').toJS().usertypes
+    data: state.get('users').toJS()
   };
 }
 
