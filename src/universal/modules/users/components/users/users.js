@@ -3,16 +3,21 @@ import styles from './Users.css';
 import {Table, Button} from 'react-bootstrap';
 import UserEditModal from './userEditModal.js';
 import UserCreateModal from './userCreateModal.js';
+import {deleteUser} from '../../ducks/users.js';
 
 export default class Users extends Component {
   static propTypes = {
     users: PropTypes.array,
-    usertypes: PropTypes.array
+    usertypes: PropTypes.array,
+    dispatch: PropTypes.func
   }
-  editHandler = (user, event) => {
-    event.preventDefault();
-    event.stopPropagation();
-  }
+  // editHandler = (user, event) => {
+  //   event.preventDefault();
+  //   event.stopPropagation();
+  // }
+  handleDelete = (id) => {
+    this.props.dispatch(deleteUser(id));
+  };
   render() {
     // sort users by id
     const self = this;
@@ -29,6 +34,9 @@ export default class Users extends Component {
           <td>{processPermissions(user.permissions)}</td>
           <td>{user.usertype}</td>
           <td><UserEditModal user={user} usertypes={self.props.usertypes} dispatch={self.props.dispatch}/></td>
+          <td>
+            <Button bsStyle="danger" bsSize="xsmall" onClick={self.handleDelete.bind(self, user.id)}>Delete</Button>
+          </td>
         </tr>
     );
     });
@@ -44,7 +52,8 @@ export default class Users extends Component {
               <th>Email</th>
               <th>Permissions</th>
               <th>Type</th>
-              <th>Action</th>
+              <th></th>
+              <th></th>
             </tr>
           </thead>
           <tbody>

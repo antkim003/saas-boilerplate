@@ -5,6 +5,7 @@ export const GET_USERS = 'GET_USERS';
 export const GET_USERTYPES = 'GET_USERTYPES';
 export const UPDATE_USER = 'UPDATE_USER';
 export const CREATE_USER = 'CREATE_USER';
+export const DELETE_USER = 'DELETE_USER';
 
 export const USERS = 'users';
 
@@ -32,7 +33,10 @@ export function reducer(state = initialState, action) {
       return state.merge({
         user: fromJS(action.payload)
       });
-
+    case DELETE_USER:
+      return state.merge({
+        user: fromJS(action.payload)
+      });
     default:
       return state;
   }
@@ -40,7 +44,6 @@ export function reducer(state = initialState, action) {
 // get all users
 //
 export function getUsers() {
-  console.log('getUsers fires');
   const userSchema =
   `
     {
@@ -53,7 +56,6 @@ export function getUsers() {
     }
   `;
   return async(dispatch, getState) => {
-    console.log('this fires for the second time:', getState);
     const query = `
         query {
           getAllUsers
@@ -81,7 +83,6 @@ export function getAllUserTypes() {
     }
   `;
   return async(dispatch, getState) => {
-    console.log(getState);
     const query = `
         query {
           getAllUserTypes
@@ -174,6 +175,28 @@ export function updateUser(user) {
       await dispatch({
         type: UPDATE_USER,
         payload: data.updateUser
+      });
+      await dispatch(getUsers());
+    }
+  };
+};
+// delete a User
+//
+export function deleteUser(id) {
+  const userMutation =
+  `(id:${id})`;
+  const userSchema =
+  `{id}`;
+  return async(dispatch, getState) => {
+    const query = `
+        mutation {deleteUser${userMutation}${userSchema}}`;
+    const {error, data} = await fetchGraphQL({query});
+    if (error) {
+      console.error(error);
+    } else {
+      await dispatch({
+        type: DELETE_USER,
+        payload: data.deleteUser
       });
       await dispatch(getUsers());
     }

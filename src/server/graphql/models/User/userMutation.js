@@ -134,7 +134,8 @@ export default {
     },
     async resolve(source, args) {
       const userById = await Db.models.user.findById(args.id);
-      return userById.destroy();
+      userById.destroy();
+      return userById;
     }
   }
 };
