@@ -6,6 +6,21 @@ import UserCreateModal from './userCreateModal.js';
 import {deleteUser} from '../../ducks/users.js';
 import ToggleDisplay from 'react-toggle-display';
 
+let DeleteButton = React.createClass({
+  propTypes: {
+    onItemClick: PropTypes.func,
+    user: PropTypes.object
+  },
+  render() {
+    return (
+      <Button bsStyle="danger" bsSize="xsmall" onClick={this._onClick}>Delete</Button>
+    );
+  },
+  _onClick() {
+    this.props.onItemClick(this.props.user.id);
+  }
+});
+
 export default class Users extends Component {
   static propTypes = {
     users: PropTypes.array,
@@ -13,16 +28,15 @@ export default class Users extends Component {
     dispatch: PropTypes.func,
     auth: PropTypes.object
   }
-  // editHandler = (user, event) => {
-  //   event.preventDefault();
-  //   event.stopPropagation();
-  // }
+
   state = {
     isAuthorized: false
   }
+
   handleDelete = id => {
     this.props.dispatch(deleteUser(id));
   }
+
   checkPermissions = permissions => {
     if (!permissions) return false;
     if (permissions.indexOf('write') > -1) {
@@ -30,6 +44,7 @@ export default class Users extends Component {
     }
     return false;
   }
+
   componentWillUpdate(nextProps) {
     const self = this;
     if (nextProps.auth.user.permissions !== self.props.auth.user.permissions) {
@@ -59,11 +74,12 @@ export default class Users extends Component {
             <UserEditModal user={user} usertypes={self.props.usertypes} dispatch={self.props.dispatch}/>
           </ToggleDisplay>
           <ToggleDisplay show={self.state.isAuthorized} tag="td">
-            <Button bsStyle="danger" bsSize="xsmall" onClick={self.handleDelete.bind(self, user.id)}>Delete</Button>
+            <DeleteButton user={user} onItemClick={self.handleDelete}></DeleteButton>
           </ToggleDisplay>
         </tr>
     );
     });
+
     const usertypes = self.props.usertypes;
     return (
       <div className={styles._container}>
