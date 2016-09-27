@@ -33,11 +33,15 @@ export default class UserCreateModal extends Component {
     this.setState({
       [lineKey]: event.target.value
     });
-
   };
+
   handleChangeUserType = (event, index, value) => this.setState({usertype: value});
   handleChangeActive = (event, index, value) => this.setState({active: value});
-
+  handleKeyPress = event => {
+    if (event.key === 'Enter') {
+      console.log('enter press here! ');
+    }
+  };
   handleOpen = () => {
     this.setState({open: true});
   };
@@ -94,6 +98,7 @@ export default class UserCreateModal extends Component {
           autoDetectWindowHeight={false}
           autoScrollBodyContent={false}
           contentStyle={{width: "100%", maxHeight: "none"}}
+          onKeyDown={this.handleKeyPress}
           actions={actions} open={this.state.open} >
           <div>
             <TextField
@@ -136,6 +141,7 @@ export default class UserCreateModal extends Component {
               value={this.state.passwordCheck}
               onChange={this.handleChange}
               errorText={this.state.errorText}
+              onKeyDown={this.handleKeyPress}
             />
           </div>
         </Dialog>
