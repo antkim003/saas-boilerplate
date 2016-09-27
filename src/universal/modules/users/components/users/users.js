@@ -2,6 +2,7 @@ import React, {Component, PropTypes} from 'react';
 import styles from './Users.css';
 import {Table, Button} from 'react-bootstrap';
 import UserEditModal from './userEditModal.js';
+import UserCreateModal from './userCreateModal.js';
 
 export default class Users extends Component {
   static propTypes = {
@@ -11,7 +12,6 @@ export default class Users extends Component {
   editHandler = (user, event) => {
     event.preventDefault();
     event.stopPropagation();
-    console.log("handler clicked", event.currentTarget);
   }
   render() {
     // sort users by id
@@ -32,9 +32,10 @@ export default class Users extends Component {
         </tr>
     );
     });
+    const usertypes = self.props.usertypes;
     return (
       <div className={styles._container}>
-        <Button bsStyle="info">Add User</Button>
+        <UserCreateModal usertypes={usertypes} dispatch={self.props.dispatch}/>
         <Table striped bordered condensed hover>
           <thead>
             <tr>

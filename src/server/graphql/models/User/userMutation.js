@@ -27,10 +27,15 @@ export default {
       },
       name: {
         type: new GraphQLNonNull(GraphQLString)
+      },
+      active: {
+        type: new GraphQLNonNull(GraphQLBoolean)
+      },
+      usertype: {
+        type: new GraphQLNonNull(GraphQLInt)
       }
     },
-    async resolve(source, {name, email, password}) {
-      console.log('args!!!!', args);
+    async resolve(source, {name, email, password, active, usertype}) {
       const user = await getUserByEmail(email);
       if (user) {
         console.log('user exists', user);
@@ -52,22 +57,18 @@ export default {
         const userDoc = {
           email: email,
           name: name,
-          password: newHashedPassword
+          password: newHashedPassword,
+          active: active
         };
 
         const newUser = await Db.models.user.create(userDoc);
-        console.log('newUser!!!!!!!', newUser);
+        const userWithUserType = await newUser.addUserType(usertype);
         if (!newUser) {
           throw errorObj({_error: 'Could not create account, please try again'});
         }
         const authToken = signJwt({id});
-        return {user: userDoc}
+        return {user: userWithUserType, authToken: authToken};
       }
-      // return Db.models.person.create({
-      //   username: args.username,
-      //   email: args.email.toLowerCase(),
-      //   password: args.password
-      // })
     }
   },
   updateUser: {
@@ -93,6 +94,7 @@ export default {
       }
     },
     async resolve(source, args) {
+      console.log('args.name', args.name);
       const userById = await Db.models.user.findById(args.id);
       let userPreviousInfo = {
         email: userById.email,

@@ -45,7 +45,8 @@ export const getClientError = errors => {
 
 export const prepareGraphQLParams = graphParams => {
   // compress
-  graphParams.query = graphParams.query.replace(/\s/g, '');
+  // the following was turned on before, stripped spaces
+  // graphParams.query = graphParams.query.replace(/\s/g, '');
   return JSON.stringify(graphParams);
 };
 

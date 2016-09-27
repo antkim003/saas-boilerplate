@@ -56,17 +56,16 @@ export function run(worker) {
   function routeCheck(req, res, next) {
     let login = false;
     let logout = false;
-    if(req.body.query){
-      login = req.body.query.includes('payload:login(email:$email, password:$password');
+    if (req.body.query) {
+      login = req.body.query.includes('login');
       logout = req.body.query.includes('logout');
     }
     if (login) {
-      next();
+      jwt({secret: process.env.JWT_SECRET, credentialsRequired: false})(req, res, next);
     } else if (logout) {
       console.log('you made it to logout, sir');
     } else {
       jwt({secret: process.env.JWT_SECRET, credentialsRequired: false})(req, res, next);
-      // jwt({secret: process.env.JWT_SECRET})(req, res, next);
     }
   }
 

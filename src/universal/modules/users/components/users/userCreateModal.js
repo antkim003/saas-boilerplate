@@ -1,11 +1,9 @@
 import React, {Component, PropTypes} from 'react';
 import {Dialog, FlatButton, TextField, Divider, SelectField, MenuItem} from 'material-ui';
-import {updateUser} from '../../ducks/users.js';
+import {createUser} from '../../ducks/users.js';
 import {Button} from 'react-bootstrap';
-/**
- * A modal dialog can only be closed by selecting one of the actions.
- */
-export default class UserEditModal extends Component {
+
+export default class UserCreateModal extends Component {
 
   static propTypes = {
     user: PropTypes.object,
@@ -14,11 +12,11 @@ export default class UserEditModal extends Component {
   }
   state = {
     open: false,
-    id: this.props.user.id,
-    name: this.props.user.name,
-    email: this.props.user.email,
-    usertype: this.props.user.usertype,
-    active: this.props.user.active,
+    // id: null,
+    name: '',
+    email: '',
+    usertype: 'admin',
+    active: true,
     password: '',
     passwordCheck: '',
     usertypes: this.props.usertypes,
@@ -43,10 +41,9 @@ export default class UserEditModal extends Component {
   handleOpen = () => {
     this.setState({open: true});
   };
-
+// this block sends the new information out on submit
   handleSubmit = () => {
     this.setState({open: false});
-    console.log('this.state from submit', this.state);
     // this maps the string for usertype back to an integer for Id
     let usertypeId = 0;
     for (var i = 0; i < this.props.usertypes.length; i++) {
@@ -55,7 +52,6 @@ export default class UserEditModal extends Component {
       }
     }
     let newUserInfo = {
-      id: this.state.id,
       name: this.state.name,
       email: this.state.email,
       usertype: usertypeId,
@@ -64,7 +60,7 @@ export default class UserEditModal extends Component {
     if (this.state.password !== '' && (this.state.password === this.state.passwordCheck)) {
       newUserInfo.password = this.state.password;
     }
-    this.props.dispatch(updateUser(newUserInfo));
+    this.props.dispatch(createUser(newUserInfo));
   };
 
   handleClose = () => {
@@ -73,7 +69,7 @@ export default class UserEditModal extends Component {
 
   render() {
     // this maps the usertypes array to possible choices in pulldown
-    let userTypeItems = this.state.usertypes.map((usertype, idx) => {
+    let userTypeItems = this.props.usertypes.map((usertype, idx) => {
       let usertypeCapped = usertype.name.substr(0, 1).toUpperCase() + usertype.name.substr(1);
       return (
         <MenuItem key={idx} value={usertype.name} primaryText={usertypeCapped}/>
@@ -92,9 +88,9 @@ export default class UserEditModal extends Component {
 
     return (
       <div>
-        <Button bsStyle="info" bsSize="xsmall" onTouchTap={this.handleOpen}>Edit</Button>
+        <Button bsStyle="info" bsSize="xsmall" onTouchTap={this.handleOpen}>New User</Button>
         <Dialog
-          title="Edit User"
+          title="Create a New User"
           autoDetectWindowHeight={false}
           autoScrollBodyContent={false}
           contentStyle={{width: "100%", maxHeight: "none"}}
@@ -119,7 +115,10 @@ export default class UserEditModal extends Component {
               {userTypeItems}
             </SelectField>
             <Divider/>
-            <SelectField value={this.state.active} id="activeSel" onChange={this.handleChangeActive} floatingLabelText="Active Status">
+            <SelectField value={this.state.active}
+              id="activeSel"
+              onChange={this.handleChangeActive}
+              floatingLabelText="Active Status">
               <MenuItem key={1} value={true} primaryText={'Active'}/>
               <MenuItem key={2} value={false} primaryText={'Inactive'}/>
             </SelectField>

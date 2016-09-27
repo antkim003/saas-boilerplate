@@ -88,6 +88,7 @@ export default {
   loginAuthToken: {
     type: User,
     async resolve(source, args, {authToken}) {
+      console.log('authToken in graphQl', authToken);
       const {id} = authToken;
       console.log(id);
       if (!id) {
