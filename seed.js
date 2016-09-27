@@ -1,7 +1,7 @@
 import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
-import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields, assets} from './test/user_list';
+import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields, assets, UsertypeToPermissionMap} from './test/user_list';
 import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
@@ -53,10 +53,17 @@ function seed() {
     .then(usertypes => {
       createdUsertypes = usertypes;
       const userTypePromises = [];
+      let exactPermissions = [];
+      let permListName = '';
       for (let i = 0; i < usertypes.length; i++) {
-        // decide on exact permission that go with each usertype, then change this
+        // this code below reads the map of which permissions to to each usertype
+        permListName = usertypes[i].name;
+        exactPermissions = UsertypeToPermissionMap[permListName];
+        const chosenPerms = createdPermissions.filter(perm => {
+          return exactPermissions.indexOf(perm.name) > -1;
+        });
         userTypePromises.push(
-        usertypes[i].setPermissions(createdPermissions));
+                   usertypes[i].setPermissions(chosenPerms));
       }
       return promise.each(userTypePromises, () => {
       });

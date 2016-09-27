@@ -79,7 +79,9 @@ export default {
       }
       const isCorrectPass = await compare(password, hashedPassword);
       if (isCorrectPass) {
-        const authToken = signJwt({id: user.id});
+        const authToken = signJwt(
+          {id: user.id, usertype: user.usertypeId}
+        );
         return {authToken, user};
       }
       throw errorObj({_error: 'Login Failed', password: 'Incorrect password'})
@@ -88,9 +90,7 @@ export default {
   loginAuthToken: {
     type: User,
     async resolve(source, args, {authToken}) {
-      console.log('authToken in graphQl', authToken);
       const {id} = authToken;
-      console.log(id);
       if (!id) {
         throw errorObj({_error: 'Invalid authentication token'});
       }

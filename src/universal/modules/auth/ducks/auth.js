@@ -17,6 +17,7 @@ export const SIGNUP_USER_SUCCESS = 'SIGNUP_USER_SUCCESS';
 export const LOGOUT_USER = 'LOGOUT_USER';
 export const VERIFY_EMAIL_ERROR = 'VERIFY_EMAIL_ERROR';
 export const VERIFY_EMAIL_SUCCESS = 'VERIFY_EMAIL_SUCCESS';
+export const LOGIN_TOKEN_SUCCESS = 'LOGIN_TOKEN_SUCCESS';
 
 const initialState = iMap({
   error: iMap(),
@@ -25,7 +26,10 @@ const initialState = iMap({
   authToken: null,
   user: iMap({
     id: null,
-    email: null
+    email: null,
+    name: null,
+    usertype: null,
+    active: null
   })
 });
 
@@ -38,6 +42,20 @@ export default function reducer(state = initialState, action = {}) {
         isAuthenticating: true
       });
     case LOGIN_USER_SUCCESS:
+      return state.merge({
+        error: iMap(),
+        isAuthenticating: false,
+        isAuthenticated: true,
+        authToken: action.payload.authToken,
+        user: fromJS(action.payload.user)
+      });
+      case LOGIN_TOKEN_SUCCESS:
+        return state.merge({
+          error: iMap(),
+          isAuthenticating: false,
+          isAuthenticated: true,
+          user: fromJS(action.payload.user)
+        });
     case SIGNUP_USER_SUCCESS:
       return state.merge({
         error: iMap(),
@@ -80,6 +98,12 @@ export function loginUserSuccess(payload) {
     payload
   };
 }
+export function loginTokenSuccess(payload) {
+  return {
+    type: LOGIN_TOKEN_SUCCESS,
+    payload
+  };
+}
 
 export function loginUserError(error) {
   return {
@@ -106,7 +130,11 @@ const user = `
 {
   id,
   email,
-  isVerified
+  isVerified,
+  name,
+  usertype,
+  active,
+  permissions
 }`;
 
 const userWithAuthToken = `
@@ -151,7 +179,7 @@ export function loginToken() {
       dispatch(loginUserError(error));
     } else {
       const {payload} = data;
-      dispatch(loginUserSuccess({user: payload}));
+      dispatch(loginTokenSuccess({user: payload}));
       const routingState = ensureState(getState()).get('routing');
       const next = routingState && routingState.location && routingState.location.query && routingState.location.query.next;
       if (next) {

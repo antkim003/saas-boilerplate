@@ -8,8 +8,6 @@ import {
 import {Usertype} from './userTypeSchema.js';
 import {Permission} from '../Permission/permissionSchema.js';
 
-
-
 import Db from '../../../database/setupDB.js';
 
 export default {

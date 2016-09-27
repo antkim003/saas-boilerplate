@@ -6,6 +6,13 @@ export const Usertypes = [
   {name: 'developer'}, {name: 'admin'}, {name: 'consumer'}
 ];
 
+export const UsertypeToPermissionMap =
+  {
+    developer: ['read', 'write', 'delete', 'modify'],
+    admin: ['read', 'write', 'delete', 'modify'],
+    consumer: ['read']
+  };
+
 export const users = [
   {
     email: 'admin123@gmail.com',

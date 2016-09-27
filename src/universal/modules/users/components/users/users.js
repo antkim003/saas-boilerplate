@@ -4,22 +4,44 @@ import {Table, Button} from 'react-bootstrap';
 import UserEditModal from './userEditModal.js';
 import UserCreateModal from './userCreateModal.js';
 import {deleteUser} from '../../ducks/users.js';
+import ToggleDisplay from 'react-toggle-display';
 
 export default class Users extends Component {
   static propTypes = {
     users: PropTypes.array,
     usertypes: PropTypes.array,
-    dispatch: PropTypes.func
+    dispatch: PropTypes.func,
+    auth: PropTypes.object
   }
   // editHandler = (user, event) => {
   //   event.preventDefault();
   //   event.stopPropagation();
   // }
-  handleDelete = (id) => {
+  state = {
+    isAuthorized: false
+  }
+  handleDelete = id => {
     this.props.dispatch(deleteUser(id));
-  };
+  }
+  checkPermissions = permissions => {
+    if (!permissions) return false;
+    if (permissions.indexOf('write') > -1) {
+      return true;
+    }
+    return false;
+  }
+  componentWillUpdate(nextProps) {
+    const self = this;
+    if (nextProps.auth.user.permissions !== self.props.auth.user.permissions) {
+      this.setState({
+        isAuthorized: self.checkPermissions(self.props.auth.user.permissions)
+      });
+    }
+  }
+
   render() {
     // sort users by id
+    // this.checkPermissions(this.props.auth.user.permissions);
     const self = this;
     const users = this.props.users.sort((a, b) => {
       return parseFloat(a.id) - parseFloat(b.id);
@@ -33,17 +55,21 @@ export default class Users extends Component {
           <td>{user.email}</td>
           <td>{processPermissions(user.permissions)}</td>
           <td>{user.usertype}</td>
-          <td><UserEditModal user={user} usertypes={self.props.usertypes} dispatch={self.props.dispatch}/></td>
-          <td>
+          <ToggleDisplay show={self.state.isAuthorized} tag="td">
+            <UserEditModal user={user} usertypes={self.props.usertypes} dispatch={self.props.dispatch}/>
+          </ToggleDisplay>
+          <ToggleDisplay show={self.state.isAuthorized} tag="td">
             <Button bsStyle="danger" bsSize="xsmall" onClick={self.handleDelete.bind(self, user.id)}>Delete</Button>
-          </td>
+          </ToggleDisplay>
         </tr>
     );
     });
     const usertypes = self.props.usertypes;
     return (
       <div className={styles._container}>
-        <UserCreateModal usertypes={usertypes} dispatch={self.props.dispatch}/>
+        <ToggleDisplay show={self.state.isAuthorized} tag="div">
+          <UserCreateModal usertypes={usertypes} dispatch={self.props.dispatch}/>
+        </ToggleDisplay>
         <Table striped bordered condensed hover>
           <thead>
             <tr>
@@ -52,8 +78,10 @@ export default class Users extends Component {
               <th>Email</th>
               <th>Permissions</th>
               <th>Type</th>
-              <th></th>
-              <th></th>
+              <ToggleDisplay show={self.state.isAuthorized} tag="th">
+              </ToggleDisplay>
+              <ToggleDisplay show={self.state.isAuthorized} tag="th">
+              </ToggleDisplay>
             </tr>
           </thead>
           <tbody>
