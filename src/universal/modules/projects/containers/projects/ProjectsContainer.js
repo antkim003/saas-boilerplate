@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
+import React, {Component, PropTypes} from 'react';
 import Projects from '../../components/projects/projects';
-import {getAllProjects} from '../../ducks/projects.js';
+import {getAllProjects, getUsersProjectsById} from '../../ducks/projects.js';
 import {loginToken} from '../../../auth/ducks/auth.js'
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
@@ -9,11 +9,20 @@ import {ensureState} from 'redux-optimistic-ui';
 
 @connect(mapStateToProps, mapDispatchToProps)
 export default class ProjectsContainer extends Component {
+  static propTypes = {
+    auth: PropTypes.object,
+    dispatch: PropTypes.func,
+    data: PropTypes.object
+  }
+
   constructor(props) {
     super(props);
     const {dispatch} = props;
-    dispatch(getAllProjects());
+    // dispatch(getAllProjects());
+    dispatch(loginToken());
+    dispatch(getUsersProjectsById(props.auth.user.id));
   }
+
   render() {
     return <Projects {...this.props} {...this.props.data} {...this.props.auth}/>;
   }

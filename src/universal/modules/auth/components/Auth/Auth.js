@@ -84,7 +84,7 @@ export default class Auth extends Component {
   onSubmit = (data, dispatch) => {
     // gotta get that redirect from props
     // redirect after successful login
-    const redirectRoute = this.props.location.query.next || '/users';
+    const redirectRoute = this.props.location.query.next || '/';
     const authFunc = this.props.isLogin ? loginUser : signupUser;
     return authFunc(dispatch, data, redirectRoute);
   };

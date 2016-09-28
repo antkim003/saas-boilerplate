@@ -37,15 +37,33 @@ describe('Graphql Project route testing, no server', () => {
         .then(res => {
           const projects = res.data.getAllProjects;
           expect(projects).to.be.a('array');
+          expect(projects.length).to.equal(10);
+          expect(projects[0]).to.have.property('name');
+          expect(projects[1]).to.have.property('description');
+          expect(projects[0]).to.have.property('id');
+          expect(projects[1].name).to.be.a('string');
+          expect(projects[0].description).to.be.a('string');
+          done();
+        })
+        .catch(err => {
+          console.log(error(err));
+          // done();
+        });
+    });
+  });
+  describe('getUsersProjectsById', () => {
+    it('it should get a users projects', done => {
+        const query = "{getUsersProjectsById(id:1){id,name,description}}";
+        graphql(Schema, query)
+        .then(res => {
+          const projects = res.data.getUsersProjectsById;
+          expect(projects).to.be.a('array');
           expect(projects.length).to.equal(2);
           expect(projects[0]).to.have.property('name');
           expect(projects[1]).to.have.property('description');
           expect(projects[0]).to.have.property('id');
           expect(projects[1].name).to.be.a('string');
           expect(projects[0].description).to.be.a('string');
-          expect(projects[1].name).to.contain('Promo');
-          expect(projects[1].description).to.equal('Tenderloin landjaeger drumstick frankfurter doner. Meatloaf hamburger pork chop meatball fatback ball tip drumstick kevin tenderloin salami flank shoulder tail bacon. Prosciutto capicola bacon fatback beef ribs. Brisket alcatra pig spare ribs pastrami. Pork belly pork chop ball tip capicola pastrami, pancetta pig spare ribs ham shankle beef ribs porchetta venison.');
-          // projects[1].description.should.contain('ribs');
           done();
         })
         .catch(err => {

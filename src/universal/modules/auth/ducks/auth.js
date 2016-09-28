@@ -74,6 +74,7 @@ export default function reducer(state = initialState, action = {}) {
         user: iMap()
       });
     case LOGOUT_USER:
+      console.log('logout action');
       return initialState;
     case VERIFY_EMAIL_ERROR:
       return state.merge({

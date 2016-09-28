@@ -52,5 +52,17 @@ export default {
       const users = await project.getUsers();
       return users;
     }
+  },
+  getUsersProjectsById: {
+    type: new GraphQLList(Project),
+    args: {
+      id: {type: GraphQLID}
+    },
+    async resolve(root, args) {
+      console.log('args id is coming in as null', args.id);
+      const foundUser = await Db.models.user.findById(args.id);
+      const foundProjects = await foundUser.getProjects();
+      return foundProjects;
+    }
   }
 };

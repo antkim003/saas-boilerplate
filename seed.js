@@ -21,7 +21,7 @@ function seed() {
   // })
   // overrides if tables exist
 
-  Db.sync({force: true})
+  return Db.sync({force: true})
 // create permissions
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);
@@ -107,13 +107,12 @@ function seed() {
   })
   // now add users to projects via setter
   .then(projects => {
-    const userIntoProjectPromises = [];
-    projects.forEach(project => {
-      userIntoProjectPromises.push(
-        project.setUsers(createdUsers)
-      );
-    });
-    return promise.each(userIntoProjectPromises, () => {});
+    const promisedArr = [];
+    for (let i = 0; i < projects.length; i++) {
+      const j = Math.floor(i / 2);
+      promisedArr.push(projects[i].setUsers(createdUsers[j]));
+    }
+    return Promise.all(promisedArr);
   })
   // find and store projects for later use
   .then(() => {

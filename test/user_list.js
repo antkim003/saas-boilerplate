@@ -50,11 +50,43 @@ export const userTypesAssignments = [2, 2, 1, 3, 1];
 export const projects = [
   {
     name: 'Polo Shirts Christmas Promo',
-    description: 'Doner pork loin sirloin tri-tip sausage flank cupim, shankle jowl short ribs. Strip steak filet mignon ball tip spare ribs, meatball hamburger chuck. Shankle ground round shank andouille shoulder tenderloin chicken kevin bacon meatball. Meatloaf tenderloin cow pastrami alcatra biltong.'
+    description: 'Doner pork loin sirloin tri-tip sausage flank cupim.'
   },
   {
     name: 'Jeggings Promo Site',
-    description: 'Tenderloin landjaeger drumstick frankfurter doner. Meatloaf hamburger pork chop meatball fatback ball tip drumstick kevin tenderloin salami flank shoulder tail bacon. Prosciutto capicola bacon fatback beef ribs. Brisket alcatra pig spare ribs pastrami. Pork belly pork chop ball tip capicola pastrami, pancetta pig spare ribs ham shankle beef ribs porchetta venison.'
+    description: 'Tenderloin landjaeger drumstick frankfurter doner.'
+  },
+  {
+    name: 'Hat Sale',
+    description: 'Kinfolk jean shorts magna echo park blue bottle health goth, paleo try-hard church-key selfies yuccie sed asymmetrical narwhal. Pour-over velit aliquip, twee narwhal farm-to-table raclette.'
+  },
+  {
+    name: 'Parade Collectables',
+    description: 'Prosciutto capicola bacon fatback beef ribs. Brisket alcatra pig spare ribs pastrami.'
+  },
+  {
+    name: 'Christmas Sweaters',
+    description: 'Brisket alcatra pig spare ribs pastrami.'
+  },
+  {
+    name: 'Rugged Wear Specials Promo',
+    description: 'Unicorn hoodie kinfolk, occupy taxidermy photo booth disrupt viral hella knausgaard letterpress normcore brunch scenester vaporware.'
+  },
+  {
+    name: 'Cat Costumes',
+    description: 'Flexitarian leggings raclette, wolf tbh lomo waistcoat keytar chicharrones sriracha tacos blog trust fund pickled.'
+  },
+  {
+    name: 'Scarf Blowout',
+    description: 'Four loko venmo 3 wolf moon, pug subway tile raclette flannel drinking vinegar stumptown hoodie.'
+  },
+  {
+    name: 'Cool Hats',
+    description: 'Bushwick keffiyeh vice pour-over kale chips, skateboard four dollar toast yuccie crucifix you probably havent heard of them pork belly bicycle rights forage four loko.'
+  },
+  {
+    name: 'Hipster Wear',
+    description: 'Pitchfork echo park skateboard, DIY umami bespoke cronut taxidermy gastropub tousled sriracha jianbing XOXO. '
   }
 ];
 
