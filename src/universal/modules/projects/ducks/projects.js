@@ -1,47 +1,47 @@
 import {fromJS, Map as iMap, List as iList} from 'immutable';
 import {fetchGraphQL} from '../../../utils/fetching';
 
-export const GET_ARTICLES = 'GET_ARTICLES';
-export const ARTICLES = 'articles';
+export const GET_PROJECTS = 'GET_PROJECTS';
+
+export const PROJECTS = 'projects';
 
 const initialState = iMap({
-  data: iList()
+  projects: iList()
 });
 
 export function reducer(state = initialState, action) {
   switch (action.type) {
-    case GET_ARTICLES:
-      console.log('action is here: ', action);
+    case GET_PROJECTS:
       return state.merge({
-        data: state.get('data').concat(fromJS(action.payload))
+        projects: fromJS(action.payload)
       });
     default:
       return state;
   }
 }
-export function getArticles() {
-  const articleSchema =
-  `
-    {
-      title,
-      headline,
-      body
+// get all users
+//
+export function getAllProjects() {
+  const projectSchema =
+  `{
+      id,
+      name,
+      description
     }
   `;
   return async(dispatch, getState) => {
-    console.log(getState);
     const query = `
         query {
-          getAllArticlesBy
-          ${articleSchema}
+          getAllProjects
+          ${projectSchema}
         }`;
     const {error, data} = await fetchGraphQL({query});
     if (error) {
       console.error(error);
     } else {
       dispatch({
-        type: GET_ARTICLES,
-        payload: data.getAllArticlesBy
+        type: GET_PROJECTS,
+        payload: data.getAllProjects
       });
     }
   };

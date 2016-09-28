@@ -1,23 +1,9 @@
-import Faker from 'faker';
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
 import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields, assets, UsertypeToPermissionMap} from './test/user_list';
 import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
-
-const __articles = [];
-
-for (let i = 0; i < 4; i++) {
-  __articles.push(
-    {
-      title: Faker.lorem.words(),
-      headline: Faker.lorem.sentence(),
-      body: Faker.lorem.paragraphs(),
-      userId: null
-    }
-  );
-}
 
 function seed() {
   let createdPermissions = [];
@@ -29,10 +15,13 @@ function seed() {
   let createdDatatypes = [];
 
 // overrides if tables exist
-  return Db.drop()
-  .then(() => {
-    return Db.sync({force: true});
-  })
+  // return Db.drop()
+  // .then(() => {
+  //   return Db.sync({force: true});
+  // })
+  // overrides if tables exist
+
+  Db.sync({force: true})
 // create permissions
   .then(() => {
     return Db.models.permission.bulkCreate(Permissions);

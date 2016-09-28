@@ -19,8 +19,8 @@ export default class Navigation extends Component {
           <span> CMS</span>
         </Link>
         <div className={styles.menuButtons}>
-          <Link className={styles.buttonBuffer} to="/cms">
-            <FlatButton className={styles.menuButton} label="CMS"/>
+          <Link className={styles.buttonBuffer} to="/">
+            <FlatButton className={styles.menuButton} label="Home"/>
           </Link>
 
           <span className="spacer"> | </span>

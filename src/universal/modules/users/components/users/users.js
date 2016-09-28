@@ -56,7 +56,6 @@ export default class Users extends Component {
 
   render() {
     // sort users by id
-    // this.checkPermissions(this.props.auth.user.permissions);
     const self = this;
     const users = this.props.users.sort((a, b) => {
       return parseFloat(a.id) - parseFloat(b.id);
@@ -83,6 +82,7 @@ export default class Users extends Component {
     const usertypes = self.props.usertypes;
     return (
       <div className={styles._container}>
+        <h1>Users</h1>
         <ToggleDisplay show={self.state.isAuthorized} tag="div">
           <UserCreateModal usertypes={usertypes} dispatch={self.props.dispatch}/>
         </ToggleDisplay>
