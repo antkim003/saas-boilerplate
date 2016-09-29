@@ -39,9 +39,9 @@ describe('Graphql Project route testing, no server', () => {
           expect(projects).to.be.a('array');
           expect(projects.length).to.equal(10);
           expect(projects[0]).to.have.property('name');
-          expect(projects[1]).to.have.property('description');
+          expect(projects[0]).to.have.property('description');
           expect(projects[0]).to.have.property('id');
-          expect(projects[1].name).to.be.a('string');
+          expect(projects[0].name).to.be.a('string');
           expect(projects[0].description).to.be.a('string');
           done();
         })
@@ -53,17 +53,18 @@ describe('Graphql Project route testing, no server', () => {
   });
   describe('getUsersProjectsById', () => {
     it('it should get a users projects', done => {
-        const query = "{getUsersProjectsById(id:1){id,name,description}}";
+        const query = "{getUsersProjectsById(id:1){id,name,description,categories}}";
         graphql(Schema, query)
         .then(res => {
           const projects = res.data.getUsersProjectsById;
           expect(projects).to.be.a('array');
           expect(projects.length).to.equal(2);
           expect(projects[0]).to.have.property('name');
-          expect(projects[1]).to.have.property('description');
+          expect(projects[0]).to.have.property('description');
           expect(projects[0]).to.have.property('id');
-          expect(projects[1].name).to.be.a('string');
+          expect(projects[0].name).to.be.a('string');
           expect(projects[0].description).to.be.a('string');
+          console.log('projects[0]!!!', projects[0]);
           done();
         })
         .catch(err => {

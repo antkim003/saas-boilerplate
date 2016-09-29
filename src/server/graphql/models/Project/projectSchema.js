@@ -1,8 +1,11 @@
 import {
   GraphQLObjectType,
   GraphQLInt,
-  GraphQLString
+  GraphQLString,
+  GraphQLList
 } from 'graphql';
+
+import {Category} from '../Category/categorySchema';
 
 export const Project = new GraphQLObjectType({
   name: 'Project',
@@ -25,6 +28,12 @@ export const Project = new GraphQLObjectType({
         type: GraphQLString,
         resolve(project) {
           return project.description;
+        }
+      },
+      categories: {
+        type: new GraphQLList(Category),
+        resolve(project) {
+          return project.getCategories();
         }
       }
     };

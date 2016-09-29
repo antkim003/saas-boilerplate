@@ -4,9 +4,10 @@ import usertype from './models/UserType/userTypeMutation';
 import permission from './models/Permission/permissionMutation';
 import project from './models/Project/projectMutation';
 import category from './models/Category/categoryMutation';
+import datatype from './models/Datatype/datatypeMutation';
 import asset from './models/Asset/assetMutation';
 
-const rootFields = Object.assign(user, usertype, permission, project, category, asset);
+const rootFields = Object.assign(user, usertype, permission, project, category, asset, datatype);
 
 export default new GraphQLObjectType({
   name: 'Mutation',

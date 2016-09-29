@@ -7,7 +7,7 @@ import {
 
 import {Project} from './projectSchema.js';
 import {User} from '../User/userSchema.js';
-
+// import {Category} from '../Category/categorySchema.js';
 import Db from '../../../database/setupDB.js';
 
 export default {
@@ -59,9 +59,9 @@ export default {
       id: {type: GraphQLID}
     },
     async resolve(root, args) {
-      console.log('args id is coming in as null', args.id);
       const foundUser = await Db.models.user.findById(args.id);
       const foundProjects = await foundUser.getProjects();
+      console.log('foundProjects!!!', foundProjects);
       return foundProjects;
     }
   }

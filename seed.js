@@ -140,11 +140,7 @@ function seed() {
   .then(() => {
     const addCategoryToProjectPromises = [];
     for (let i = 0; i < 5; i++) {
-      if (i < 2) {
-        createdcategories[i].projectId = 1;
-      } else {
-        createdcategories[i].projectId = 2;
-      }
+      createdcategories[i].projectId = (i + 1);
       addCategoryToProjectPromises.push(
         createdcategories[i].save()
       );}

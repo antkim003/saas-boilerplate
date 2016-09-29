@@ -55,18 +55,31 @@ describe('Graphql Category route testing, no server', () => {
     });
   });
   describe('getCategoryById', () => {
+    let _category;
+    let _datatype;
+    beforeEach(async () => {
+      _category = await Db.models.category.create({name: 'blah', visible: true});
+      _datatype = await Db.models.datatype.create({name: 'datatype', description: 'this is a test', visible: true});
+      _datatype.categoryId = _category.id;
+      const save = await _datatype.save();
+      return save;
+    });
     it('it should get a category by id', done => {
-      const query = "query{getCategoryById(id:1){id,name,visible}}";
+      const query = `query{
+        getCategoryById(id:${_category.id}){
+          id,name,visible,datatype {
+            name, id, description
+          }
+        }
+      }`;
       graphql(Schema, query)
       .then(res => {
+        console.log('res is coming: ', res);
         const category = res.data.getCategoryById;
-        expect(category).to.have.property('name');
-        expect(category).to.have.property('visible');
-        expect(category).to.have.property('id');
-        expect(category.name).to.equal('assets');
-        expect(category).to.have.property('id');
-        expect(category.name).to.be.a('string');
+        expect(category.name).to.equal('blah');
         expect(category.visible).to.be.a('boolean');
+        // expect(category.datatype).to.exist();
+        expect(category.datatype.name).to.equal('datatype');
         done();
       })
       .catch(err => {

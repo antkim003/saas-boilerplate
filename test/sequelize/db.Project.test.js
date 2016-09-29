@@ -39,6 +39,11 @@ describe('Project Db testing', () => {
         projects[1].should.have.property('updatedAt');
         projects[0].name.should.be.a('string');
         projects[1].description.should.be.a('string');
+        projects[2].getCategories()
+        .then(categories => {
+          // console.log('categories in test', categories);
+          categories.should.be.a('array');
+        });
         // projects[1].name.should.contain('Promo');
         // projects[1].description.should.contain('ribs');
         done();

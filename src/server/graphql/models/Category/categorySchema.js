@@ -5,6 +5,8 @@ import {
   GraphQLBoolean
 } from 'graphql';
 
+import {Datatype} from '../Datatype/datatypeSchema';
+
 export const Category = new GraphQLObjectType({
   name: 'Category',
   description: "This is a category",
@@ -25,7 +27,13 @@ export const Category = new GraphQLObjectType({
       visible: {
         type: GraphQLBoolean,
         resolve(category) {
-          return category.visible
+          return category.visible;
+        }
+      },
+      datatype: {
+        type: Datatype,
+        resolve(category) {
+          return category.getDatatype();
         }
       }
     };

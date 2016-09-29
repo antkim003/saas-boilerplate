@@ -37,7 +37,11 @@ describe('Category Db testing', () => {
         categories[1].should.have.property('createdAt');
         categories[0].should.have.property('updatedAt');
         categories[0].should.have.property('projectId');
-        // categories[1].projectId.should.equal(2);
+        // categories[1].getDatatype()
+        // .then(datatype => {
+        //   console.log('datatype.dataValues!!!', datatype.dataValues);
+        // })
+        // // categories[1].projectId.should.equal(2);
         done();
       }); // end then
     });
