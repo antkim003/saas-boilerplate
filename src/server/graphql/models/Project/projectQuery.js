@@ -55,6 +55,7 @@ export default {
   },
   getUsersProjectsById: {
     type: new GraphQLList(Project),
+    description: "Get all projects for a user by entering user id",
     args: {
       id: {type: GraphQLID}
     },

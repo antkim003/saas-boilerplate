@@ -2,6 +2,7 @@ import {GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLBoolean} from 'graphql
 import {Category} from './categorySchema.js';
 
 import Db from '../../../database/setupDB.js';
+import {Datatype} from '../Datatype/datatypeSchema';
 
 export default {
   createCategory: {
@@ -33,23 +34,32 @@ export default {
       },
       visible: {
         type: GraphQLBoolean
+      },
+      datatype: {
+        type: GraphQLInt
       }
     },
     async resolve(source, args) {
       const categoryFound = await Db.models.category.findById(args.id);
       let categoryFoundEdits = {};
-      if (args.name) {
-        categoryFoundEdits.name = args.name
+      if (args.name !== undefined) {
+        categoryFoundEdits.name = args.name;
       } else {
-        categoryFoundEdits.name = categoryFound.name
+        categoryFoundEdits.name = categoryFound.name;
       }
       if (args.visible !== undefined) {
-        categoryFoundEdits.visible = args.visible
+        categoryFoundEdits.visible = args.visible;
       } else {
-        categoryFoundEdits.visible = categoryFound.visible
+        categoryFoundEdits.visible = categoryFound.visible;
       }
-      const updatedCategory = await categoryFound.update(categoryFoundEdits);
+      let updatedCategory = await categoryFound.update(categoryFoundEdits);
       if (updatedCategory.error) console.error(updatedCategory.error);
+      if (args.datatype !== undefined) {
+        let datatypeFound = await Db.models.datatype.findById(args.datatype);
+        let categoryWithDatatype = await updatedCategory.setDatatype(datatypeFound);
+        let savedCategory = await updatedCategory.save();
+        return savedCategory;
+      }
       return updatedCategory;
     }
   },

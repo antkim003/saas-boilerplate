@@ -168,6 +168,16 @@ function seed() {
       });
     });
   })
+  // // now fill catagories with datatypes
+  // .then(() => {
+  //   const categoryPromises = [];
+  //   createdcategories.forEach(category => {
+  //     categoryPromises.push(
+  //       category.setDatatype(createdDatatypes[0])
+  //     )
+  //   });
+  // return promise.each(categoryPromises, () => {});
+  // })
   // now add fields to datatypes
   .then(() => {
     const datatypePromises = [];

@@ -33,6 +33,7 @@ export default {
   },
   getCategoryProject: {
     type: Project,
+    description: "Gets the Project associated with a Category, takes the Category Id",
     args: {
       id: {type: new GraphQLNonNull(GraphQLID)}
     },

@@ -32,20 +32,20 @@ describe('Graphql Category route testing, no server', () => {
 
   describe('getAllCategories', () => {
     it('it should get all the categories', done => {
-      const query = "query{getAllCategories{id,name,visible}}";
+      const query = "query{getAllCategories{id,name,visible,datatype{name}}}";
       graphql(Schema, query)
       .then(res => {
         const categories = res.data.getAllCategories;
+        // console.log('categories[0]', categories[0]);
         categories.should.be.a('array');
         categories.length.should.equal(5);
         expect(categories[0]).to.have.property('name');
         expect(categories[1]).to.have.property('visible');
         expect(categories[1]).to.have.property('id');
-        expect(categories[0].name).to.equal('assets');
         expect(categories[0]).to.have.property('id');
         expect(categories[0].name).to.be.a('string');
         expect(categories[0].visible).to.be.a('boolean');
-        categories[3].visible.should.equal(true);
+        categories[1].visible.should.equal(true);
         done();
       })
       .catch(err => {
@@ -74,7 +74,6 @@ describe('Graphql Category route testing, no server', () => {
       }`;
       graphql(Schema, query)
       .then(res => {
-        console.log('res is coming: ', res);
         const category = res.data.getCategoryById;
         expect(category.name).to.equal('blah');
         expect(category.visible).to.be.a('boolean');
@@ -106,10 +105,9 @@ describe('Graphql Category route testing, no server', () => {
       });
     });
   });
-  // describe('createCategory', () => {
   describe('updateCategory', () => {
     it('it should update a category', done => {
-      const query = 'mutation{updateCategory(id:4,name:"grease the wheels",visible:false){id,name,visible}}';
+      const query = 'mutation{updateCategory(id:4,name:"grease the wheels",visible:false,datatype:2){id,name,visible}}';
       graphql(Schema, query)
       .then(res => {
         const category = res.data.updateCategory;
@@ -139,4 +137,5 @@ describe('Graphql Category route testing, no server', () => {
         // done();
       });
     });
-  });}); // end testing block
+  });
+}); // end testing block

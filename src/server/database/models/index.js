@@ -20,12 +20,3 @@ Datatype.belongsToMany(Field, {through: 'FieldsToDatatypes'});
 // This will add methods getDatatype, setDatatype, addDatatype,addDatatype to Field, and getFields, setFields, addFields, and addField to Datatype.
 // This will create a new model called FieldsToDatatypes with the equivalent foreign keys datatypeId and fieldId.
 // console.log('Category.prototype!!', Category.prototype);
-// Category.prototype.getDatatype = function () {
-//   const Id = this.get('id');
-//   // console.log('models', models);
-//   return models.Datatype.find({where: {categoryId: Id}})
-//   .then(datatype => {
-//     console.log('datatype in instanceMethods', datatype);
-//     return datatype;
-//   });
-// };

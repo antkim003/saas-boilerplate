@@ -6,8 +6,9 @@ import project from './models/Project/projectQuery';
 import category from './models/Category/categoryQuery';
 import datatype from './models/Datatype/datatypeQuery';
 import asset from './models/Asset/assetQuery';
+import field from './models/Field/fieldQuery';
 
-const rootFields = Object.assign(user, asset, usertype, permission, project, category, datatype);
+const rootFields = Object.assign(user, asset, usertype, permission, project, category, datatype, field);
 export default new GraphQLObjectType({
   name: 'RootQuery',
   fields: () => rootFields

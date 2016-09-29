@@ -122,9 +122,27 @@ export const datatypes = [
   },
   {
     name: 'script',
-    description: 'some scripts',
+    description: 'some scripts 2',
     visible: true,
     categoryId: 2
+  },
+  {
+    name: 'script',
+    description: 'some scripts 3',
+    visible: true,
+    categoryId: 3
+  },
+  {
+    name: 'script',
+    description: 'some scripts 4',
+    visible: true,
+    categoryId: 4
+  },
+  {
+    name: 'script',
+    description: 'some scripts 5',
+    visible: true,
+    categoryId: 5
   }
 ];
 export const fields = [
