@@ -5,7 +5,8 @@ import {
   GraphQLBoolean,
   GraphQLList
 } from 'graphql';
-// import Db from '../../../database/setupDB.js'
+
+import {Project} from '../Project/projectSchema';
 
 export const User = new GraphQLObjectType({
   name: "User",
@@ -70,13 +71,14 @@ export const User = new GraphQLObjectType({
         resolve(user) {
           return user.isVerified;
         }
+      },
+      projects: {
+        type: new GraphQLList(Project),
+        describe: "The user's projects",
+        resolve(user) {
+          return user.getProjects();
+        }
       }
-      // permission: {
-      //   type: Permission,
-      //   resolve(user) {
-      //     return user.getPermission();
-        // }
-      // }
     };
   }
 });
