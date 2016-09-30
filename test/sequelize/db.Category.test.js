@@ -27,8 +27,10 @@ describe('Category Db testing', () => {
 
   describe('Get all categories', () => {
     it('should get all categories', done => {
+      let _categories = [];
       Db.models.category.findAll()
       .then(categories => {
+        _categories = categories;
         categories.should.be.a('array');
         categories.length.should.equal(5);
         categories[0].should.have.property('name');
@@ -37,10 +39,19 @@ describe('Category Db testing', () => {
         categories[1].should.have.property('createdAt');
         categories[0].should.have.property('updatedAt');
         categories[0].should.have.property('projectId');
-        categories[0].should.have.property('datatypeId');
         categories[0].getDatatype()
-        .then(datatype => {
+        .then((datatype) => {
           datatype.should.have.property('name');
+          return;
+        })
+        .then(() => {
+          return _categories[0].getEntries()
+        })
+        .then(entries => {
+          entries[0].should.have.property('data');
+          entries.length.should.equal(2);
+
+          return
         })
         done();
       }); // end then

@@ -2,8 +2,11 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLList
 } from 'graphql';
+
+import {Field} from '../Field/fieldSchema.js'
 
 export const Datatype = new GraphQLObjectType({
   name: 'Datatype',
@@ -32,6 +35,12 @@ export const Datatype = new GraphQLObjectType({
         type: GraphQLBoolean,
         resolve(datatype) {
           return datatype.visible;
+        }
+      },
+      fields: {
+        type: new GraphQLList(Field),
+        resolve(datatype) {
+          return datatype.getFields();
         }
       }
     };

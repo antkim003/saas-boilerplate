@@ -15,13 +15,19 @@ export const Category = Conn.define('category', {
     instanceMethods: {
       getDatatype: function () {// eslint-disable-line babel/object-shorthand
         const Id = this.get('id');
-        console.log('models', models);
         return models.Datatype.find({where: {categoryId: Id}})
         .then(datatype => {
-          console.log('datatype in instanceMethods', datatype);
           return datatype;
+        });
+      },
+      getEntries: function () {// eslint-disable-line babel/object-shorthand
+        const Id = this.get('id');
+        return models.Entry.find({where: {categoryId: Id}})
+        .then(entries => {
+          console.log('entries in instanceMethods', entries);
+          return entries;
         });
       }
     }
   }
-)
+);

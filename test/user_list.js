@@ -172,3 +172,54 @@ export const assets = [
     url: 'http://www.amazon.com'
   }
 ];
+
+export const entries = [
+  {
+    title: 'Some Web Stuff',
+    projectId: 1,
+    datatypeId: 1,
+    visible: true,
+    categoryId: 1,
+    data: {
+  "some_stuff": "Oyoba",
+  "entry": "Multi-channelled",
+  "entryTwo": "Synergistic encompassing circuit"
+    }
+  },
+  {
+    title: 'Some Web Stuff Two',
+    projectId: 1,
+    datatypeId: 2,
+    visible: true,
+    categoryId: 1,
+      data: {
+    "some_stuff": "Rhyzio",
+    "entry": "Organic",
+    "entryTwo": "Self-enabling incremental local area network"
+    }
+  },
+  {
+    title: 'Yet Web Stuff',
+    projectId: 2,
+    datatypeId: 1,
+    visible: true,
+    categoryId: 2,
+    data: {
+  "some_stuff": "Oyoba",
+  "entry": "Multi-channelled",
+  "entryTwo": "Synergistic encompassing circuit"
+    }
+  },
+  {
+    title: 'Yet Web Stuff Two Dude',
+    projectId: 2,
+    datatypeId: 2,
+    visible: true,
+    categoryId: 2,
+    data: {
+  "some_stuff": "Rhyzio",
+  "entry": "Organic",
+  "entryTwo": "Self-enabling incremental local area network"
+  }
+}
+]

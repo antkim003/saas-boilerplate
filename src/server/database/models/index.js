@@ -1,6 +1,7 @@
 // put all of our sequelize model schemas here
 import {User, Usertype} from './user';
 import {Project} from './project';
+import {Entry} from './entry';
 import {Category} from './category';
 import {Datatype} from './datatype';
 import {Field} from './field';
@@ -20,3 +21,4 @@ Datatype.belongsToMany(Field, {through: 'FieldsToDatatypes'});
 // This will add methods getDatatype, setDatatype, addDatatype,addDatatype to Field, and getFields, setFields, addFields, and addField to Datatype.
 // This will create a new model called FieldsToDatatypes with the equivalent foreign keys datatypeId and fieldId.
 // console.log('Category.prototype!!', Category.prototype);
+Category.hasMany(Entry);

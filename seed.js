@@ -1,6 +1,6 @@
 import Db from './src/server/database/setupDB.js';
 import promise from 'bluebird';
-import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields, assets, UsertypeToPermissionMap} from './test/user_list';
+import {Permissions, Usertypes, users, userTypesAssignments, projects, categories, datatypes, fields, assets, UsertypeToPermissionMap, entries} from './test/user_list';
 import promisify from 'es6-promisify';
 import bcrypt from 'bcrypt';
 const hash = promisify(bcrypt.hash);
@@ -13,7 +13,7 @@ function seed() {
   let createdProjects = [];
   let createdFields = [];
   let createdDatatypes = [];
-
+  let createdEntries = [];
 // overrides if tables exist
   // return Db.drop()
   // .then(() => {
@@ -195,6 +195,10 @@ function seed() {
   // now create some assets
   .then(() => {
     return Db.models.asset.bulkCreate(assets);
+  })
+  // now create for entries
+  .then(() => {
+    return Db.models.entry.bulkCreate(entries);
   })
   .then(() => {
     console.log("                Seed was successful");

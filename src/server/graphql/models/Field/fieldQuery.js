@@ -24,6 +24,7 @@ export default {
   },
   getFieldById: {
     type: Field,
+    description: "get a field by its id",
     args: {
       id: {type: new GraphQLNonNull(GraphQLID)}
     },
