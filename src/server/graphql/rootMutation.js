@@ -7,9 +7,9 @@ import category from './models/Category/categoryMutation';
 import datatype from './models/Datatype/datatypeMutation';
 import asset from './models/Asset/assetMutation';
 import field from './models/Field/fieldMutation';
+import entry from './models/Entry/entryMutation';
 
-
-const rootFields = Object.assign(user, usertype, permission, project, category, asset, datatype, field);
+const rootFields = Object.assign(user, usertype, permission, project, category, asset, datatype, field, entry);
 
 export default new GraphQLObjectType({
   name: 'Mutation',

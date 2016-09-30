@@ -2,7 +2,6 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
-  GraphQLInteger,
   GraphQLBoolean
 } from 'graphql';
 import GraphQLJSON from 'graphql-type-json';
@@ -25,13 +24,13 @@ export const Entry = new GraphQLObjectType({
         }
       },
       projectId: {
-        type: GraphQLInteger,
+        type: GraphQLInt,
         resolve(entry) {
           return entry.projectId;
         }
       },
       datatypeId: {
-        type: GraphQLInteger,
+        type: GraphQLInt,
         resolve(entry) {
           return entry.datatypeId;
         }
@@ -46,6 +45,12 @@ export const Entry = new GraphQLObjectType({
         type: GraphQLJSON,
         resolve(entry) {
           return entry.data;
+        }
+      },
+      categoryId: {
+        type: GraphQLInt,
+        resolve(entry) {
+          return entry.categoryId;
         }
       }
     };
