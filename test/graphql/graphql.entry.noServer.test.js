@@ -55,7 +55,7 @@ describe('Graphql Entry route testing, no server', () => {
   });
   describe('getEntryById', () => {
     it('it should get an entry by its id', done => {
-      const query = "query{getEntryById(id:1){id,title,projectId,datatypeId,visible,data}}";
+      const query = "query{getEntryById(id:1){id,title,projectId,datatypeId,visible,data,categoryId}}";
       graphql(Schema, query)
       .then(res => {
         const entry = res.data.getEntryById;
@@ -65,6 +65,7 @@ describe('Graphql Entry route testing, no server', () => {
         expect(entry).to.have.property('datatypeId');
         expect(entry).to.have.property('visible');
         expect(entry).to.have.property('data');
+        expect(entry).to.have.property('categoryId');
         expect(entry.title).to.be.a('string');
         expect(entry.visible).to.be.a('boolean');
         done();
@@ -76,28 +77,27 @@ describe('Graphql Entry route testing, no server', () => {
     });
   });
 
-
   describe('createEntry', () => {
     it('it should create an entry', done => {
-      // const query = 'mutation{createEntry(title:"Yet Web Stuff Two Dudez",projectId:1,datatypeId:2,visible:true,categoryId:2){id}';
-      // console.log('query', query);
       const query = `
-        mutation{
-          createEntry(title:"Yet Web Stuff Two Dudez",projectId:1,datatypeId:2,visible:true,categoryId:2){id}
-        }
-      `;
+      mutation{
+          createEntry(title:"Yet Web Stuff TwoDudez",
+            projectId:1,
+            datatypeId:2,
+            visible:true,
+            categoryId:2,
+            data:{stuff:"stuff",mosttuff:"yet mo stuff"})
+  {id,title,projectId,datatypeId,visible,data,categoryId}}`;
       graphql(Schema, query)
       .then(res => {
-        console.log('res', res);
+        // console.log('res', res);
         const entry = res.data.createEntry;
         expect(entry).to.have.property('id');
-        // expect(entry).to.have.property('title');
-        // expect(entry).to.have.property('projectId');
-        // expect(entry).to.have.property('datatypeId');
-        // expect(entry).to.have.property('visible');
-        // expect(entry).to.have.property('data');
-        // expect(entry.title).to.be.a('string');
-        // expect(entry.visible).to.be.a('boolean');
+        expect(entry.title).to.equal('Yet Web Stuff TwoDudez');
+        expect(entry.datatypeId).to.equal(2);
+        expect(entry.visible).to.equal(true);
+        expect(entry.categoryId).to.equal(2);
+        expect(entry.data.stuff).to.equal('stuff');
         done();
       })
       .catch(err => {
@@ -105,19 +105,52 @@ describe('Graphql Entry route testing, no server', () => {
         // done();
       });
     });
-  });  // describe('deleteEntry', () => {
-  //   it('it should delete a category', done => {
-  //     const query = 'mutation{deleteEntry(id:4){id,name}}';
-  //     graphql(Schema, query)
-  //     .then(res => {
-  //       const category = res.data.deleteEntry;
-  //       expect(category).to.be.a('object');
-  //       done();
-  //     })
-  //     .catch(err => {
-  //       console.log(error(err));
-  //       // done();
-  //     });
-  //   });
-  // });
+  });
+  describe('updateEntry', () => {
+    it('it should update an entry', done => {
+      const query = `
+      mutation{
+          updateEntry(
+            id:4,
+            title:"Wowsa",
+            projectId:2,
+            datatypeId:1,
+            visible:false,
+            categoryId:1,
+            data:{stuff:"stuff changed",mosttuff:"yet mo stuff changed"})
+  {id,title,projectId,datatypeId,visible,data,categoryId}}`;
+      graphql(Schema, query)
+      .then(res => {
+        console.log('res', res);
+        const entry = res.data.updateEntry;
+        expect(entry).to.have.property('id');
+        expect(entry.id).to.equal(4);
+        expect(entry.title).to.equal('Wowsa');
+        expect(entry.datatypeId).to.equal(1);
+        expect(entry.visible).to.equal(false);
+        expect(entry.categoryId).to.equal(1);
+        expect(entry.data.stuff).to.equal('stuff changed');
+        done();
+      })
+      .catch(err => {
+        console.log(error(err));
+        // done();
+      });
+    });
+  });
+  describe('deleteEntry', () => {
+    it('it should delete an entry', done => {
+      const query = 'mutation{deleteEntry(id:4){id}}';
+      graphql(Schema, query)
+      .then(res => {
+        const category = res.data.deleteEntry;
+        expect(category).to.be.a('object');
+        done();
+      })
+      .catch(err => {
+        console.log(error(err));
+        // done();
+      });
+    });
+  });
 }); // end testing block
