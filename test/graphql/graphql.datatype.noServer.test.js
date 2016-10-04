@@ -30,14 +30,14 @@ describe('Graphql Datatype route testing, no server', () => {
     });
   });
 
-  describe('getAllDatatypes', () => {
+  xdescribe('getAllDatatypes', () => {
     it('it should get all the datatypes', done => {
-      const query = "{getAllDatatypes{id,name,description,visible}}";
+      const query = "{getAllDatatypes{id,name,description,visible,fields{id,name,description}}}";
       graphql(Schema, query)
       .then(res => {
         const datatypes = res.data.getAllDatatypes;
         expect(datatypes).to.be.a('array');
-        expect(datatypes.length).to.equal(2);
+        expect(datatypes.length).to.equal(5);
         expect(datatypes[0]).to.have.property('name');
         expect(datatypes[0]).to.have.property('description');
         expect(datatypes[0]).to.have.property('id');
@@ -45,6 +45,9 @@ describe('Graphql Datatype route testing, no server', () => {
         expect(datatypes[0].name).to.be.a('string');
         expect(datatypes[0].description).to.be.a('string');
         expect(datatypes[0].visible).to.be.a('boolean');
+        expect(datatypes[0].fields).to.be.a('array');
+        expect(datatypes[0].fields[0].name).to.equal('HTML Template');
+
         done();
       })
       .catch(err => {
@@ -74,61 +77,71 @@ describe('Graphql Datatype route testing, no server', () => {
       });
     });
   });
-  // describe('createDatatype', () => {
-  //   it('it should create a datatype', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       // query: 'mutation{createPermission(name:"burn"){id,name}}'
-  //       .send({
-  //         query: 'mutation{createDatatype(name:"Toast on a stick",description:"Immortalize Larry Bud Melman",visible:true){id,name,description,visible}}'
-  //       })
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         // console.log('res.body.data.createDatatype', res.body.data.createDatatype);
-  //         res.body.data.createDatatype.name.should.equal('toast on a stick');
-  //         res.body.data.createDatatype.description.should.equal('Immortalize Larry Bud Melman');
-  //         res.body.data.createDatatype.visible.should.equal(true);
-  //         // res.body.data.createDatatype.id.should.equal(5);
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('updateDatatype', () => {
-  //   it('it should update a datatype', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       .send({
-  //         query: 'mutation{updateDatatype(id:3,name:"grease the wheels",visible:false){id,name,description,visible}}'
-  //       })
-  //       .end((err, res) => {
-  //         // console.log('res.body.data.updateDatatype', res.body.data.updateDatatype);
-  //         res.should.have.status(200);
-  //         res.body.data.updateDatatype.should.be.a('object');
-  //         res.body.data.updateDatatype.name.should.equal('grease the wheels');
-  //         res.body.data.updateDatatype.visible.should.equal(false);
-  //         res.body.data.updateDatatype.id.should.equal(3);
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('deleteDatatype', () => {
-  //   it('it should delete a datatype', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       .send({
-  //         query: 'mutation{deleteDatatype(id:4){id,name}}'
-  //       })
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         res.body.data.deleteDatatype.should.be.a('object');
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
+  describe('createDatatype', () => {
+    it('it should create an datatype', done => {
+      const query = `
+      mutation{
+          createDatatype(name:"Cat Grooming",
+            description:"Proper Cat Grooming",
+            visible:true,fields:[1,2]){id,name,description,visible,fields{id,name,description}}}`;
+      graphql(Schema, query)
+      .then(res => {
+        const datatype = res.data.createDatatype;
+        expect(datatype).to.have.property('id');
+        expect(datatype.name).to.equal('Cat Grooming');
+        expect(datatype.id).to.equal(6);
+        expect(datatype.description).to.equal('Proper Cat Grooming');
+        expect(datatype.visible).to.equal(true);
+        expect(datatype.fields).to.be.a('array');
+        expect(datatype.fields.length).to.equal(2);
+        expect(datatype.fields[0].name).to.equal('HTML Template');
+        done();
+      })
+      .catch(err => {
+        console.log(error(err));
+        // done();
+      });
+    });
+  });
+  describe('updateDatatype', () => {
+    it('it should update an datatype', done => {
+      const query = `
+      mutation{
+          updateDatatype(id:6,name:"Cat Grooming Tips from pros",
+            description:"Proper Cat Grooming in NYC",
+            visible:false,fields:[2]){id,name,description,visible,fields{id,name,description}}}`;
+      graphql(Schema, query)
+      .then(res => {
+        const datatype = res.data.updateDatatype;
+        expect(datatype).to.have.property('id');
+        expect(datatype.name).to.equal('Cat Grooming Tips from pros');
+        expect(datatype.description).to.equal('Proper Cat Grooming in NYC');
+        expect(datatype.visible).to.equal(false);
+        expect(datatype.fields).to.be.a('array');
+        expect(datatype.fields.length).to.equal(1);
+        expect(datatype.fields[0].name).to.equal('CSS');
+        done();
+      })
+      .catch(err => {
+        console.log(error(err));
+        // done();
+      });
+    });
+  });
+  describe('deleteDatatype', () => {
+    it('it should delete a datatype, finding it by id', done => {
+      const query = 'mutation{deleteDatatype(id:6){id,name}}';
+      graphql(Schema, query)
+      .then(res => {
+        const datatype = res.data.deleteDatatype;
+        expect(datatype).to.be.a('object');
+        expect(datatype.name).to.equal(null);
+        done();
+      })
+      .catch(err => {
+        console.log(error(err));
+        // done();
+      });
+    });
+  });
 }); // end testing block

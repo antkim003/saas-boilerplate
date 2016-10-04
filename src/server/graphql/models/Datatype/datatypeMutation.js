@@ -1,5 +1,6 @@
-import {GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLBoolean} from 'graphql';
+import {GraphQLString, GraphQLNonNull, GraphQLInt, GraphQLBoolean, GraphQLList} from 'graphql';
 import {Datatype} from './datatypeSchema.js';
+import promise from 'bluebird';
 
 import Db from '../../../database/setupDB.js';
 
@@ -15,14 +16,16 @@ export default {
       },
       description: {
         type: GraphQLString
+      },
+      fields: {
+        type: new GraphQLList(GraphQLInt)
       }
     },
     async resolve(source, args) {
-      const createdDatatype = await Db.models.datatype.create({
-        name: args.name.toLowerCase(),
-        visible: args.visible,
-        description: args.description
-      });
+      const createdDatatype = await Db.models.datatype.create(args);
+      if (args.fields !== undefined){
+        return fieldSetter(createdDatatype, args.fields);
+      }
       return createdDatatype;
     }
   },
@@ -40,19 +43,26 @@ export default {
       },
       description: {
         type: GraphQLString
+      },
+      fields: {
+        type: new GraphQLList(GraphQLInt)
       }
     },
     async resolve(source, args) {
-      const {err, datatypeFound} = await Db.models.datatype.findById(args.id);
-      if (err) {
-        console.error(err);
-        return datatypeFound;
+      const datatypeFound = await Db.models.datatype.findById(args.id);
+      let toUpdateDatatype = {};
+      const keysArray = Object.keys(args);
+      keysArray.forEach(key => {
+        if ( (args[key] !== undefined) && key !== 'id' && key !== 'fields') {
+          toUpdateDatatype[key] = args[key];
+        }
+      });
+      const updatedField = await datatypeFound.update(toUpdateDatatype);
+      if (updatedField.error) console.error(updatedField.error);
+      if (args.fields !== undefined) {
+        return fieldSetter(updatedField, args.fields);
       }
-      const {_err, updatedDatatype} = await datatypeFound.update(args);
-      if (_err) {
-        console.error(err);
-      }
-      return updatedDatatype;
+      return updatedField;
     }
   },
   deleteDatatype: {
@@ -68,3 +78,17 @@ export default {
     }
   }
 };
+// utility function for setting datatypes
+const fieldSetter = ((updatedDatatype, argsFields) => {
+  const datatypePromises = [];
+  for (let i = 0; i < argsFields.length; i++) {
+    datatypePromises.push(Db.models.field.findById(argsFields[i]));
+  }
+  return promise.each(datatypePromises, () => {})
+  .then(_foundDatatypes => {
+    return updatedDatatype.setFields(_foundDatatypes);
+  })
+  .then(() => {
+    return updatedDatatype.save();
+  });
+});
