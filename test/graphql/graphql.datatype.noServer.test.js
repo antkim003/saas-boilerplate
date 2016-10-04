@@ -30,7 +30,7 @@ describe('Graphql Datatype route testing, no server', () => {
     });
   });
 
-  xdescribe('getAllDatatypes', () => {
+  describe('getAllDatatypes', () => {
     it('it should get all the datatypes', done => {
       const query = "{getAllDatatypes{id,name,description,visible,fields{id,name,description}}}";
       graphql(Schema, query)

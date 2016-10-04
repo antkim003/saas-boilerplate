@@ -62,6 +62,7 @@ export default {
         };
 
         const newUser = await Db.models.user.create(userDoc);
+        // const foundUserType = await DB.models.usertype.findById(usertype)
         const userWithUserType = await newUser.addUserType(usertype);
         if (!newUser) {
           throw errorObj({_error: 'Could not create account, please try again'});

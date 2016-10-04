@@ -115,20 +115,22 @@ describe('Graphql Users route testing, no server', () => {
         .catch(done);
     });
   });
-  xdescribe('createUser', () => {
+  describe('createUser', () => {
     it('it should create a user', done => {
-      const query = `
-        mutation{
-          createUser(email:"bellacat@gmail.com",password:"catnip"){
-
-          }
-        }
-      `;
+      const query = `mutation{createUser(email:"bellacatmew@gmail.com",
+            password:"catnip",
+            name:"Bella The Cat",
+            active:true,
+            usertype:1){user {id,name,email,usertype,active}}}`;
       graphql(Schema, query)
         .then(res => {
-          const createdUser = res.data.createdUser;
-          expect(createdUser).to.be.an('object');
-          expect(createdUser.email).should.contain('bellacat@gmail.com');
+          const createdUser = res.data.createUser;
+          expect(createdUser.user).to.be.an('object');
+          expect(createdUser.user.email).to.equal('bellacatmew@gmail.com');
+          expect(createdUser.user.name).to.equal('Bella The Cat');
+          expect(createdUser.user.active).to.equal(true);
+          expect(createdUser.user.usertype).to.equal('developer');
+          expect(createdUser.user.id).to.equal(7);
           done();
         })
         .catch(done);
@@ -137,15 +139,31 @@ describe('Graphql Users route testing, no server', () => {
   describe('updateUser', () => {
     it('it should update a user', done => {
       const query = `
-        mutation{updateUser(id:3,email:"bellacat@gmail.com",password:"catnip",active:true){id,email,active}}
-      `;
+        mutation{updateUser(id:7,email:"bellacatmew@gmail.com",password:"catnip",active:false,name:"Jasper",usertype:2){id,email,active,usertype,name}}`;
       graphql(Schema, query)
         .then(res => {
           const {updateUser} = res.data;
           expect(updateUser).to.be.an('object');
-          expect(updateUser.email).to.equal('bellacat@gmail.com');
-          expect(updateUser.id).to.equal(3);
-          expect(updateUser.active).to.equal(true);
+          expect(updateUser.email).to.equal('bellacatmew@gmail.com');
+          expect(updateUser.name).to.equal('Jasper');
+          expect(updateUser.id).to.equal(7);
+          expect(updateUser.active).to.equal(false);
+          expect(updateUser.usertype).to.equal('admin');
+          done();
+        })
+        .catch(done);
+    });
+  });
+  describe('deleteUser', () => {
+    it('it should delete a user', done => {
+      const query = `
+        mutation{deleteUser(id:7){id}}`;
+      graphql(Schema, query)
+        .then(res => {
+          console.log(res);
+          const {deleteUser} = res.data;
+          expect(deleteUser).to.be.an('object');
+          expect(deleteUser.id).to.equal(7);
           done();
         })
         .catch(done);
