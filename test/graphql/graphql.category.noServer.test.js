@@ -32,11 +32,10 @@ describe('Graphql Category route testing, no server', () => {
 
   describe('getAllCategories', () => {
     it('it should get all the categories', done => {
-      const query = "query{getAllCategories{id,name,visible,datatype{name}}}";
+      const query = "query{getAllCategories{id,name,visible,datatype{name},entries{id,title}}}";
       graphql(Schema, query)
       .then(res => {
         const categories = res.data.getAllCategories;
-        // console.log('categories[0]', categories[0]);
         categories.should.be.a('array');
         categories.length.should.equal(5);
         expect(categories[0]).to.have.property('name');
@@ -77,7 +76,6 @@ describe('Graphql Category route testing, no server', () => {
         const category = res.data.getCategoryById;
         expect(category.name).to.equal('blah');
         expect(category.visible).to.be.a('boolean');
-        // expect(category.datatype).to.exist();
         expect(category.datatype.name).to.equal('datatype');
         done();
       })
@@ -97,6 +95,24 @@ describe('Graphql Category route testing, no server', () => {
         expect(project).to.have.property('name');
         expect(project).to.have.property('id');
         expect(project.name).to.be.a('string');
+        done();
+      })
+      .catch(err => {
+        console.log(error(err));
+        // done();
+      });
+    });
+  });
+  describe('createCategory', () => {
+    it('it should create a category', done => {
+      const query = 'mutation{createCategory(name:"Cat Shows",visible:false,datatype:1){id,name,visible,datatype{id,name,description,visible}}}';
+      graphql(Schema, query)
+      .then(res => {
+        const category = res.data.createCategory;
+        expect(category).to.be.a('object');
+        expect(category.name).to.equal('cat shows');
+        expect(category.visible).to.equal(false);
+        expect(category.id).to.equal(7);
         done();
       })
       .catch(err => {

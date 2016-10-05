@@ -13,6 +13,9 @@ export default {
       },
       visible: {
         type: GraphQLBoolean
+      },
+      datatype: {
+        type: GraphQLInt
       }
     },
     async resolve(source, args) {
@@ -20,6 +23,12 @@ export default {
         name: args.name.toLowerCase(),
         visible: args.visible
       });
+      if (args.datatype !== undefined) {
+        let datatypeFound = await Db.models.datatype.findById(args.datatype);
+        let categoryWithDatatype = await createdCategory.setDatatype(datatypeFound);
+        let savedCategory = await createdCategory.save();
+        return savedCategory;
+      }
       return createdCategory;
     }
   },

@@ -2,10 +2,12 @@ import {
   GraphQLObjectType,
   GraphQLInt,
   GraphQLString,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLList
 } from 'graphql';
 
 import {Datatype} from '../Datatype/datatypeSchema';
+import {Entry} from '../Entry/entrySchema';
 
 export const Category = new GraphQLObjectType({
   name: 'Category',
@@ -34,6 +36,12 @@ export const Category = new GraphQLObjectType({
         type: Datatype,
         resolve(category) {
           return category.getDatatype();
+        }
+      },
+      entries: {
+        type: new GraphQLList(Entry),
+        resolve(category) {
+          return category.getEntriesMethod();
         }
       }
     };

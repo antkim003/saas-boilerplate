@@ -58,7 +58,6 @@ export default {
       }
       let updatedUserType = await usertypeById.update(usertypePreviousInfo);
       if (updatedUserType.error) console.error(updatedUserType.error);
-      console.log('usertype was updated');
       // now add permissions
       if (args.permissions !== undefined) {
         updatedUserType = await setPermissions(args.permissions, updatedUserType)

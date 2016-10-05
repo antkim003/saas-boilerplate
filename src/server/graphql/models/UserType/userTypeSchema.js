@@ -1,8 +1,11 @@
 import {
   GraphQLObjectType,
   GraphQLInt,
-  GraphQLString
+  GraphQLString,
+  GraphQLList
 } from 'graphql';
+
+import {Permission} from '../Permission/permissionSchema.js'
 
 export const Usertype = new GraphQLObjectType({
   name: "Usertype",
@@ -17,9 +20,16 @@ export const Usertype = new GraphQLObjectType({
       },
       name: {
         type: GraphQLString,
-        describe: "Hashed password",
+        describe: "The usertype name",
         resolve(usertype) {
           return usertype.name;
+        }
+      },
+      permissions: {
+        type: new GraphQLList(Permission),
+        describe: "The permissions on the usertype",
+        resolve(usertype) {
+          return usertype.getPermissions();
         }
       }
     };

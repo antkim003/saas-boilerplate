@@ -160,7 +160,6 @@ describe('Graphql Users route testing, no server', () => {
         mutation{deleteUser(id:7){id}}`;
       graphql(Schema, query)
         .then(res => {
-          console.log(res);
           const {deleteUser} = res.data;
           expect(deleteUser).to.be.an('object');
           expect(deleteUser.id).to.equal(7);

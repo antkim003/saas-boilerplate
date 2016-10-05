@@ -56,7 +56,7 @@ export const User = Conn.define('user', {
         const usertypeId = this.get('usertypeId');
         return Usertype.find({where: {id: usertypeId}})
         .then(function(usertype) {
-          return  usertype.getPermissions()
+          return usertype.getPermissions()
         })
         .then(function(permissions) {
           const permissionArray = [];

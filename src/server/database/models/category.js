@@ -1,5 +1,7 @@
 import Conn from '../_db';
 import Sequelize from 'sequelize';
+import {Entry} from './entry.js';
+import {Datatype} from './datatype.js';
 
 export const Category = Conn.define('category', {
   name: {
@@ -15,18 +17,23 @@ export const Category = Conn.define('category', {
     instanceMethods: {
       getDatatype: function () {// eslint-disable-line babel/object-shorthand
         const Id = this.get('id');
-        return models.Datatype.find({where: {categoryId: Id}})
-        .then(datatype => {
-          return datatype;
+        console.log('Id in first one', Id);
+        return Datatype.findAll({where: {categoryId: Id}})
+        .then(function(datatype) {
+          return datatype[0];
         });
       },
-      getEntries: function () {// eslint-disable-line babel/object-shorthand
+      getEntriesMethod: function () {// eslint-disable-line babel/object-shorthand
         const Id = this.get('id');
-        return models.Entry.find({where: {categoryId: Id}})
-        .then(entries => {
-          console.log('entries in instanceMethods', entries);
+        return Entry.findAll({where: {categoryId: Id}})
+        .then(function (entries){
           return entries;
-        });
+        })
+        // .then(entries => {
+        //   console.log('in here!');
+        //   console.log('entries in instanceMethods', entries);
+        //   return entries;
+        // });
       }
     }
   }

@@ -36,7 +36,7 @@ describe('Graphql Entry route testing, no server', () => {
       graphql(Schema, query)
       .then(res => {
         const entries = res.data.getAllEntries;
-        expect(entries.length).to.equal(4);
+        expect(entries.length).to.equal(12);
         expect(entries[1]).to.have.property('id');
         expect(entries[0]).to.have.property('title');
         expect(entries[0]).to.have.property('projectId');
@@ -121,7 +121,6 @@ describe('Graphql Entry route testing, no server', () => {
   {id,title,projectId,datatypeId,visible,data,categoryId}}`;
       graphql(Schema, query)
       .then(res => {
-        console.log('res', res);
         const entry = res.data.updateEntry;
         expect(entry).to.have.property('id');
         expect(entry.id).to.equal(4);

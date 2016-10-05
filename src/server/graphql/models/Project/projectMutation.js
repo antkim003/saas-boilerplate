@@ -16,7 +16,7 @@ export default {
     },
     async resolve(source, args) {
       const createdProject = await Db.models.project.create({
-        name: args.name.toLowerCase(),
+        name: args.name,
         description: args.description
       });
       return createdProject;
@@ -37,7 +37,7 @@ export default {
     },
     async resolve(source, args) {
       const projectFound = await Db.models.project.findById(args.id);
-      const updatedProject = await projectFound.update({name: args.name.toLowerCase()});
+      const updatedProject = await projectFound.update({name: args.name});
       if (updatedProject.error) console.error(updatedProject.error);
       return updatedProject;
     }

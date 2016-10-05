@@ -53,7 +53,7 @@ describe('Graphql Project route testing, no server', () => {
   });
   describe('getUsersProjectsById', () => {
     it('it should get a users projects', done => {
-        const query = "{getUsersProjectsById(id:1){id,name,description,categories}}";
+        const query = "{getUsersProjectsById(id:1){id,name,description,categories{id,name}}}";
         graphql(Schema, query)
         .then(res => {
           const projects = res.data.getUsersProjectsById;
@@ -64,7 +64,6 @@ describe('Graphql Project route testing, no server', () => {
           expect(projects[0]).to.have.property('id');
           expect(projects[0].name).to.be.a('string');
           expect(projects[0].description).to.be.a('string');
-          console.log('projects[0]!!!', projects[0]);
           done();
         })
         .catch(err => {
@@ -73,30 +72,47 @@ describe('Graphql Project route testing, no server', () => {
         });
     });
   });
-  // describe('getProjectById', () => {
-  //   it('it should get a project by id', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       .send({
-  //         query: "query{getProjectById(id:1){id,name,description}}"
-  //       })
-  //       .end((err, res) => {
-  //         const project = res.body.data.getProjectById;
-  //         res.should.have.status(200);
-  //         project.should.be.a('object');
-  //         project.should.have.property('name');
-  //         project.should.have.property('description');
-  //         project.should.have.property('id');
-  //         project.name.should.be.a('string');
-  //         project.description.should.be.a('string');
-  //         project.name.should.contain('Promo');
-  //         project.description.should.contain('ribs');
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
+  describe('getProjectById', () => {
+    it('it should get a project by Id', done => {
+        const query = "{getProjectById(id:1){id,name,description,categories{id,name}}}";
+        graphql(Schema, query)
+        .then(res => {
+          const project = res.data.getProjectById;
+          expect(project).to.have.property('name');
+          expect(project).to.have.property('description');
+          expect(project).to.have.property('id');
+          expect(project.name).to.be.a('string');
+          expect(project.description).to.be.a('string');
+          done();
+        })
+        .catch(err => {
+          console.log(error(err));
+          // done();
+        });
+    });
+  });
+  describe('createProject', () => {
+    it('it should create a project', done => {
+        const query = 'mutation{createProject(name:"Toast on a stick",description:"Immortalize Larry Bud Melman"){id,name,description}}';
+        graphql(Schema, query)
+        .then(res => {
+          const project = res.data.createProject;
+          console.log('project!!', project);
+          expect(project).to.have.property('name');
+          expect(project).to.have.property('description');
+          expect(project).to.have.property('id');
+          expect(project.name).to.be.a('string');
+          expect(project.name).to.equal('Toast on a stick');
+          expect(project.description).to.equal('Immortalize Larry Bud Melman');
+          expect(project.description).to.be.a('string');
+          done();
+        })
+        .catch(err => {
+          console.log(error(err));
+          // done();
+        });
+    });
+  });
   // describe('getProjectsUsersByProjectId', () => {
   //   it('it should get a projects users by the project id', done => {
   //     chai.request('http://localhost:3000')
@@ -111,26 +127,6 @@ describe('Graphql Project route testing, no server', () => {
   //         users.should.be.a('array');
   //         users.length.should.equal(5);
   //         users[2].should.have.property('email');
-  //         if (err) console.log(err);
-  //         done();
-  //       });
-  //   });
-  // });
-  // describe('createProject', () => {
-  //   it('it should create a project', done => {
-  //     chai.request('http://localhost:3000')
-  //       .post('/graphql')
-  //       .set({Authorization: `Bearer ${authToken}`})
-  //       // query: 'mutation{createPermission(name:"burn"){id,name}}'
-  //       .send({
-  //         query: 'mutation{createProject(name:"Toast on a stick",description:"Immortalize Larry Bud Melman"){id,name,description}}'
-  //       })
-  //       .end((err, res) => {
-  //         res.should.have.status(200);
-  //         // console.log('res.body.data.createProject', res.body.data.createProject);
-  //         res.body.data.createProject.name.should.equal('toast on a stick');
-  //         res.body.data.createProject.description.should.equal('Immortalize Larry Bud Melman');
-  //         // res.body.data.createProject.id.should.equal(5);
   //         if (err) console.log(err);
   //         done();
   //       });

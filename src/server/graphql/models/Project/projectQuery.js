@@ -62,7 +62,6 @@ export default {
     async resolve(root, args) {
       const foundUser = await Db.models.user.findById(args.id);
       const foundProjects = await foundUser.getProjects();
-      console.log('foundProjects!!!', foundProjects);
       return foundProjects;
     }
   }
