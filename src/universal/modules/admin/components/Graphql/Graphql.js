@@ -4,6 +4,8 @@ import fetch from 'isomorphic-fetch';
 import socketOptions from 'universal/utils/socketOptions';
 import 'universal/styles/global/graphiql.css';
 import {hostUrl} from 'universal/utils/fetching';
+// import {Link} from 'react-router';
+import {browserHistory} from 'react-router'
 
 const graphQLFetcher = async ({query, variables}) => {
   if (!__CLIENT__) {
@@ -24,9 +26,25 @@ const graphQLFetcher = async ({query, variables}) => {
 };
 
 export default class Graphiql extends Component {
+  constructor() {
+    super();
+    this._onClickToolbarButton = this._onClickToolbarButton.bind(this);
+  }
   render() {
     return (
-      <GraphiQL fetcher={graphQLFetcher}/>
+      <GraphiQL fetcher={graphQLFetcher}>
+        <GraphiQL.Toolbar>
+          <GraphiQL.ToolbarButton
+            onClick={this._onClickToolbarButton}
+            title="ToolbarButton"
+            label="CMS Home"
+            />
+        </GraphiQL.Toolbar>
+      </GraphiQL>
     );
+  }
+  _onClickToolbarButton() {
+    console.log('Hi there');
+    browserHistory.push('/');
   }
 }
