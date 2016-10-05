@@ -30,7 +30,7 @@ describe('Datatype Db testing', () => {
       Db.models.datatype.findAll()
       .then(datatype => {
         datatype.should.be.a('array');
-        datatype.length.should.equal(2);
+        datatype.length.should.equal(5);
         datatype[0].should.have.property('name');
         datatype[0].should.have.property('description');
         datatype[1].should.have.property('visible');
@@ -103,7 +103,7 @@ describe('Datatype Db testing', () => {
       })
       .then(datatypes => {
         datatypes.should.be.a('array');
-        datatypes.length.should.equal(2);
+        datatypes.length.should.equal(5);
         done();
       });
     }); // end then

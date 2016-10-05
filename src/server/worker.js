@@ -17,6 +17,8 @@ import {wsGraphQLHandler, wsGraphQLSubHandler} from './graphql/wsGraphQLHandlers
 import httpGraphQLHandler from './graphql/httpGraphQLHandler';
 
 const PROD = process.env.NODE_ENV === 'production';
+const TEST = process.env.NODE_ENV === 'testing';
+console.log('process.env.NODE_ENV!!!!!', process.env.NODE_ENV);
 
 export function run(worker) {
   console.log('   >> Worker PID:', process.pid);

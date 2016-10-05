@@ -95,7 +95,6 @@ export default {
       }
     },
     async resolve(source, args) {
-      console.log('args.name', args.name);
       const userById = await Db.models.user.findById(args.id);
       let userPreviousInfo = {
         email: userById.email,

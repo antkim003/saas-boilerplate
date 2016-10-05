@@ -8,6 +8,7 @@ import {graphql} from 'graphql';
 import Schema from '../../src/server/graphql/rootSchema';
 const chalk = require('chalk');
 const error = chalk.bold.red;
+console.log('inside the first test',process.env.NODE_ENV);
 
 describe('Graphql Asset route testing, no server', () => {
   before(done => {
