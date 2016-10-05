@@ -3,7 +3,7 @@
 
 
 .header {
-  background-image: url('./paddleboard.jpg');
+  background-image: url('./macys2.jpg');
   background-size: 100% 100%;
   background-repeat: no-repeat;
   color: #fff;
@@ -34,4 +34,10 @@
 
 .tryButton {
   padding-top: 24px;
+}
+
+.RaisedButton {
+  margin-right: 10px;
+  margin-left: 10px;
+
 }

@@ -12,10 +12,13 @@ export default class Header extends Component {
           <h3 className={styles.bannerDesc}>Store your projects....</h3>
           <div className={styles.tryButton}>
             <Link to="/users">
-              <RaisedButton secondary label="Users"/>
+              <RaisedButton secondary label="Users" className={styles.RaisedButton}/>
             </Link>
             <Link to="/projects">
-              <RaisedButton secondary label="Projects"/>
+              <RaisedButton secondary label="Projects" className={styles.RaisedButton}/>
+            </Link>
+            <Link to="/graphql">
+              <RaisedButton secondary label="Graphql Browse" className={styles.RaisedButton}/>
             </Link>
           </div>
         </div>
